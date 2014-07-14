@@ -6,6 +6,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
+use Drupal\webprofiler\PhpSqlParser\WebprofilerPhpSqlParser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -149,6 +150,9 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
       '#attributes' => array('id' => array('wp-query-wrapper')),
     );
 
+    // init PhpSqlParser object
+    $webprofile_phpsqlparser = new WebprofilerPhpSqlParser();
+
     $position = 0;
     foreach ($this->getQueries() as $query) {
       $table = $this->getTable('Query arguments', $query['args'], array('Placeholder', 'Value'));
@@ -172,7 +176,8 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
       }
 
       $profile = \Drupal::request()->get('profile');
-      $copyUrl = \Drupal::urlGenerator()->generate('webprofiler.database.arguments', array('profile' => $profile->getToken(), 'qid' => $position));
+      $copyUrl = \Drupal::urlGenerator()
+        ->generate('webprofiler.database.arguments', array('profile' => $profile->getToken(), 'qid' => $position));
       $query['copy_link'] = l($this->t('Copy'), $copyUrl, array(
         'attributes' => array(
           'class' => array('use-ajax', 'wp-button', 'wp-query-copy-button'),
@@ -198,11 +203,87 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
         ),
       );
 
+      // insert into PhpSqlParser
+      $webprofile_phpsqlparser->add_query($query['query']);
+
       $position++;
     }
+
+    // Type of data sqlparser (label=>key_in_array)
+    $tables_data_sqlparser = array(
+      'Type sql' => 'type_sql_allowed',
+      'Operator in Where' => 'where_type_operator'
+    );
+
+    // fields
+    $build['phpsqlparser'] = array(
+      '#type' => 'container',
+      '#prefix' => '<h2>SQL Parser</h2>',
+      '#attributes' => array('id' => 'container-phpsqlparser'),
+    );
+
+    // data for js and build table
+    $setting_js_data = array();
+    $setting_js_graphic = array();
+    foreach ($tables_data_sqlparser as $label => $name) {
+
+      // recovery data
+      $data = $webprofile_phpsqlparser->get_data_in_table($name); // return array_table structure
+
+      if (!empty($data)) {
+        $build['phpsqlparser'][$name] = array(
+          '#theme' => 'table',
+          '#rows' => $data['#rows'],
+          '#header' => $data['#header'],
+          '#prefix' => '<h2>' . t($label) . '</h2>',
+          '#suffix' => '<div id="graphic-' . $name . '" class="graphic"></div>',
+          '#attributes' => $data['#attributes'],
+        );
+
+        $setting_js_data[] = $this->getAttachedJs($data['#rows']);
+        $setting_js_graphic[] = $name;
+      }
+    }
+    // /cycle
+
+    $build['phpsqlparser']['#attached'] = array(
+      'js' => array(
+        array(
+          'data' => array(
+            'webprofiler' => array(
+              'sqlparser' => array(
+                'data' => $setting_js_data,
+                'graphic' => $setting_js_graphic
+              )
+            )
+          ),
+          'type' => 'setting'
+        ),
+      ),
+      'library' => array(
+        'webprofiler/donut3d',
+      ),
+    );
 
     return $build;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  private function getAttachedJs($data) {
+    $data_array = array();
+    foreach ($data as $key => $value) {
+      $data_array[$key]['label'] = $value[0]['data'];
+      $data_array[$key]['value'] = $value[1]['data'];
 
+      // generator/set color
+      //$data_array[$key]['color'] = "#DC3912";
+      $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+      $color = '#' . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)];
+      $data_array[$key]['color'] = $color;
+    }
+
+    return $data_array;
+  }
 }
