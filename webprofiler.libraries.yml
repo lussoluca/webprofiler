@@ -10,6 +10,11 @@ highlight:
   css:
     component:
       /libraries/highlight/idea.css: {}
+donut3d:
+  remote: http://bl.ocks.org/NPashaP/9994181
+  version: 1.0
+  js:
+    js/donut3d.js: {}
 webprofiler:
   version: 1.0
   js:
