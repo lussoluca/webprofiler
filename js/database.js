@@ -59,6 +59,21 @@
             });
 
             hljs.initHighlightingOnLoad();
+
+            // sqlparser
+            var sqlparser_data = drupalSettings.webprofiler.sqlparser.data;
+            var sqlparser_graphic = drupalSettings.webprofiler.sqlparser.graphic;
+
+            // graphic
+            var array_svg = new Array(sqlparser_graphic.length);
+            for (var graphic_number = 0; graphic_number < sqlparser_graphic.length; graphic_number++) {
+
+                var name = sqlparser_graphic[graphic_number];
+                array_svg[graphic_number] = d3.select("#graphic-"+name).append("svg").attr("width",350).attr("height",250);
+                array_svg[graphic_number].append("g").attr("id",name);
+
+                Donut3D.draw(name, sqlparser_data[graphic_number], 120, 100, 100, 60, 30, 0.4);
+            };
         }
     }
 })
