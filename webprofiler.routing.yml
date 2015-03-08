@@ -45,7 +45,7 @@ webprofiler.admin_manage:
 webprofiler.admin_configure:
   path: '/admin/config/development/profiler/configure'
   defaults:
-    _form: 'Drupal\webprofiler\Form\ConfigForm'
+    _form: 'Drupal\webprofiler\Form\WebprofilerConfigForm'
     _title: 'Configure'
   requirements:
     _permission: 'access webprofiler'
