@@ -2,8 +2,8 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal\Core\Authentication\AuthenticationManager;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Authentication\AuthenticationManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -26,7 +26,7 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
   private $currentUser;
 
   /**
-   * @var \Drupal\Core\Authentication\AuthenticationManagerInterface
+   * @var \Drupal\Core\Authentication\AuthenticationManager
    */
   private $authenticationManager;
 
@@ -42,11 +42,11 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
 
   /**
    * @param \Drupal\Core\Session\AccountInterface $currentUser
-   * @param \Drupal\Core\Authentication\AuthenticationManagerInterface $authenticationManager
+   * @param \Drupal\Core\Authentication\AuthenticationManager $authenticationManager
    * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    */
-  public function __construct(AccountInterface $currentUser, AuthenticationManagerInterface $authenticationManager, EntityManagerInterface $entityManager, ConfigFactoryInterface $configFactory) {
+  public function __construct(AccountInterface $currentUser, AuthenticationManager $authenticationManager, EntityManagerInterface $entityManager, ConfigFactoryInterface $configFactory) {
     $this->currentUser = $currentUser;
     $this->authenticationManager = $authenticationManager;
     $this->entityManager = $entityManager;
@@ -102,7 +102,7 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
       $this->data['roles'][] = $entity->label();
     }
 
-    $this->data['provider'] = $this->authenticationManager->defaultProviderId();
+    $this->data['provider'] = $this->authenticationManager->getProvider($request);
     $this->data['anonymous'] = $this->configFactory->get('user.settings')->get('anonymous');
   }
 

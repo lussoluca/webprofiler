@@ -117,5 +117,10 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
     // with a traceable one.
     $definition = $container->findDefinition('asset.css.collection_renderer');
     $definition->setClass('Drupal\webprofiler\Asset\CssCollectionRendererWrapper');
+
+    // Replace the regular authentication service
+    // with a traceable one.
+    $definition = $container->findDefinition('authentication');
+    $definition->setClass('Drupal\webprofiler\Authentication\AuthenticationManagerWrapper');
   }
 }
