@@ -90,9 +90,10 @@ class DatabaseController extends ControllerBase {
     foreach ((array) $query['args'] as $key => $val) {
       $quoted[$key] = is_null($val) ? 'NULL' : $conn->quote($val);
     }
-    $output = strtr($query['query'], $quoted);
 
-    return new Response($output);
+    return array(
+      '#markup' => strtr($query['query'], $quoted),
+    );
   }
 
   /**
