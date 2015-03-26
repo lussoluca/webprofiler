@@ -10,6 +10,8 @@ namespace Drupal\webprofiler\DataCollector;
 use Drupal\Component\Utility\String;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\webprofiler\Helper\IdeLinkGeneratorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\DataCollector\EventDataCollector as BaseEventDataCollector;
 
 /**
@@ -97,7 +99,7 @@ class EventDataCollector extends BaseEventDataCollector implements DrupalDataCol
           '#template' => '{{ class }}::<a href="{{ link }}">{{ method }}</a>',
           '#context' => array(
             'class' => $this->abbrClass($listener['class']),
-            'link' => $this->getFileLink($listener['file'], $listener['line']),
+            'link' => \Drupal::service('webprofiler.ide_link_generator')->generateLink($listener['file'], $listener['line']),
             'method' => $listener['method']
           ),
         );
@@ -130,27 +132,6 @@ class EventDataCollector extends BaseEventDataCollector implements DrupalDataCol
     );
 
     return $build;
-  }
-
-  /**
-   * Returns the link for a given file/line pair.
-   *
-   * @param string $file
-   *   An absolute file path
-   * @param integer $line
-   *   The line number
-   *
-   * @return string
-   *   A link of false
-   */
-  private function getFileLink($file, $line) {
-    $fileLinkFormat = 'txmt://open?url=file://@file&line=@line';
-
-    if (is_file($file)) {
-      return String::format($fileLinkFormat, array('@file' => $file, '@line' => $line));
-    }
-
-    return FALSE;
   }
 
   /**

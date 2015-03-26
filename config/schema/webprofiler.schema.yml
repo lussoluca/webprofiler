@@ -11,10 +11,13 @@ webprofiler.config:
       label: 'Storage implementation'
     exclude:
       type: string
-      label: 'Path to exclude'
+      label: 'Paths to exclude'
     active_toolbar_items:
       type: sequence
       label: 'Active toolbar items'
       sequence:
         - type: string
           label: 'Toolbar item'
+    ide_link:
+      type: string
+      label: 'IDE link'

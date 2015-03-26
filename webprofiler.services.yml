@@ -68,6 +68,7 @@ services:
 
   webprofiler.request:
     class: Drupal\webprofiler\DataCollector\RequestDataCollector
+    arguments: ['@controller_resolver', '@webprofiler.ide_link_generator']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/request.html.twig', id:'request', title:'Request', priority: 30 }
       - { name: event_subscriber }
@@ -174,3 +175,8 @@ services:
     arguments: ['@profiler']
     tags:
       - { name: paramconverter }
+
+# IDE link generator service
+  webprofiler.ide_link_generator:
+    class: Drupal\webprofiler\Helper\IdeLinkGenerator
+    arguments: ['@config.factory']
