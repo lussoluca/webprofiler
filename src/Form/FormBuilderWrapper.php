@@ -26,8 +26,8 @@ class FormBuilderWrapper extends FormBuilder {
   /**
    * {@inheritdoc}
    */
-  public function retrieveForm($form_id, FormStateInterface &$form_state) {
-    $form = parent::retrieveForm($form_id, $form_state);
+  public function prepareForm($form_id, &$form, FormStateInterface &$form_state) {
+    parent::prepareForm($form_id, $form, $form_state);
 
     if (!$this->buildForms) {
       $this->buildForms = array();
