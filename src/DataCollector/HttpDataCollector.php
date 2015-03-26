@@ -137,9 +137,9 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
       $row[] = $request->getUrl();
       $row[] = $request->getMethod();
       $row[] = $request->getStatusCode();
-      $row[] = print_r($request->getRequestHeaders(), TRUE);
-      $row[] = print_r($request->getResponseHeaders(), TRUE);
-      $row[] = print_r($request->getTransferInfo(), TRUE);
+      $row[] = $this->varToString($request->getRequestHeaders());
+      $row[] = $this->varToString($request->getResponseHeaders(), TRUE);
+      $row[] = $this->varToString($request->getTransferInfo(), TRUE);
 
       $rows[] = $row;
     }

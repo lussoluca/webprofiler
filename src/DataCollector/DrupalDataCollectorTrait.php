@@ -3,6 +3,7 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\Component\Utility\String;
+use Symfony\Component\HttpKernel\DataCollector\Util\ValueExporter;
 
 /**
  * Class DrupalDataCollectorTrait
@@ -43,12 +44,14 @@ trait DrupalDataCollectorTrait {
    * @return mixed
    */
   private function getTable($title, $values, $header) {
+    $valueExporter = new ValueExporter();
+
     $rows = array();
     foreach ($values as $key => $value) {
       $row = array();
 
       $row[] = $key;
-      $row[] = print_r($value, TRUE);
+      $row[] = $valueExporter->exportValue($value);
 
       $rows[] = $row;
     }
