@@ -1,6 +1,6 @@
 # Schema for the configuration files of the Webprofiler module.
 webprofiler.config:
-  type: mapping
+  type: config_object
   label: 'Webprofiler configuration'
   mapping:
     purge_on_cache_clear:
