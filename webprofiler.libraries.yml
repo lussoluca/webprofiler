@@ -30,32 +30,23 @@ webprofiler:
     - core/jquery
     - core/drupal
     - core/drupalSettings
-database:
+dashboard:
   version: 1.0
   js:
-    js/database.js: {}
+    js/app/main.js: {}
+    js/app/models/collector.js: {}
+    js/app/collections/collectors.js: {}
+    js/app/views/collector.js: {}
+    js/app/views/collectorsList.js: {}
+    js/app/views/layout.js: {}
+    js/app/views/details.js: {}
+    js/app/views/dashboard.js: {}
+    js/app/routers/collectors.js: {}
   css:
     component:
-      css/database.css: {}
+      css/app/dashboard.css: {}
   dependencies:
     - core/jquery
     - core/drupal
     - core/drupalSettings
-    - core/drupal.ajax
-    - core/jquery.once
-service:
-  version: 1.0
-  js:
-    js/service.js: {}
-  css:
-    component:
-      css/service.css: {}
-timeline:
-  version: 1.0
-  js:
-    js/timeline.js: {}
-  css:
-    component:
-      css/timeline.css: {}
-  dependencies:
     - webprofiler/d3

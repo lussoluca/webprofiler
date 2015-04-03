@@ -89,3 +89,15 @@ webprofiler.frontend.save:
   methods:  [POST]
   requirements:
     _permission: 'access webprofiler'
+
+webprofiler.rest.collector:
+  path: '/admin/reports/profiler/view/{profile}/collectors/{collector}'
+  defaults:
+    _controller: '\Drupal\webprofiler\Controller\WebprofilerController::restCollectorAction'
+    _title: 'Webprofiler'
+  options:
+    parameters:
+      profile:
+        type: 'webprofiler:token'
+  requirements:
+    _permission: 'access webprofiler'

@@ -1,0 +1,16 @@
+<div>Qua ci va il riepilogo</div>
+
+<div id="collectors">
+</div>
+
+<div class="collectors-loading" style="display: none">Loading...</div>
+
+<script id="collector" type="text/template">
+    <a href="#<%= id %>" title="<%= summary %>"><%= name %></a>
+</script>
+
+<script id="dashboard" type="text/template">
+    General dashboard
+</script>
+
+{{ panels }}

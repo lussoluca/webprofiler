@@ -27,32 +27,7 @@
 {% endblock %}
 
 {% block panel %}
-    <div class="title">
-        <h2>{{ 'Timeline'|t }}</h2>
-    </div>
-
-    <div class="content">
-        {{ content }}
-
-        <h3>
-            {{ "Main Request"|t }}
-            <small>
-                - {{ collector.events.__section__.duration }} ms
-            </small>
-        </h3>
-
-        <div class="sf-profiler-timeline">
-            <div class="legends">
-                <span class="default">default</span>
-                <span class="section">section</span>
-                <span class="event_listener">event_listener</span>
-                <span class="event_listener_loading">event_listener_loading</span>
-                <span class="template">template</span>
-            </div>
-
-            <div id="timeline" style="margin-top: 20px"></div>
-        </div>
-
-    </div>
-
+    <script id="time" type="text/template">
+        Time dashboard
+    </script>
 {% endblock %}

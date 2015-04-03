@@ -1,7 +1,8 @@
 {% block toolbar %}
     {# PHP Information #}
     {% set icon %}
-    <a href="{{ url("webprofiler.profiler", {profile: token}, {fragment: 'php_config'}) }}" title="{{ 'PHP config'|t }}">
+    <a href="{{ url("webprofiler.profiler", {profile: token}, {fragment: 'php_config'}) }}"
+       title="{{ 'PHP config'|t }}">
         <img width="26" height="28" alt="PHP"
              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAMAAAC5xgRsAAAAZlBMVEX///////////////////////////////////////////////////////////////////////////////////////////+ZmZmZmZlISEhJSUmdnZ1HR0fR0dFZWVlpaWlfX18/Pz+puygPAAAAIXRSTlMACwwlJygpLzIzNjs8QEtMUmd6e32AucDBw8fIydTm6u5l8MjvAAAAo0lEQVR42r2P2Q6CMBBFL6XsZRGRfZv//0nbDBNEE19MnJeTc5ILKf58ahiUwzy/AJpIWwREwQnEXRdbGCLjrO+djWRvVMiJcigxB7viGogxDdJpSmHEmCVPS7YczJvgUu+CS30IvtbNYZMvsGVo2mVpG/kbm4auiCpdcC3YPCAhSpAdUzaAn6qPKZtUT6ZSzb4bi2hdo9MQ1nX4ASjfV+/4/Z40pyCHrNTbIgAAAABJRU5ErkJggg==">
     </a>
@@ -35,11 +36,13 @@
 {% endblock %}
 
 {% block panel %}
-    <div class="title">
-        <h2>{{ 'PHP config'|t }}</h2>
-    </div>
-
-    <div class="content">
-        {{ content }}
-    </div>
+    <script id="php_config" type="text/template">
+        <ul>
+            <% _.each( data, function( item ){ %>
+            <li>
+                <%- item %>
+            </li>
+            <% }); %>
+        </ul>
+    </script>
 {% endblock %}

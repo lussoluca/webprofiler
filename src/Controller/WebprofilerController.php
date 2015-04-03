@@ -7,7 +7,6 @@
 
 namespace Drupal\webprofiler\Controller;
 
-use Drupal\Core\Archiver\ArchiveTar;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Render\RendererInterface;
@@ -16,7 +15,7 @@ use Drupal\system\FileDownloadController;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\webprofiler\Profiler\ProfilerStorageManager;
 use Drupal\webprofiler\Profiler\TemplateManager;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\webprofiler\Profiler\Profiler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -114,48 +113,43 @@ class WebprofilerController extends ControllerBase {
     $templateManager = $this->templateManager;
     $templates = $templateManager->getTemplates($profile);
 
-    $childrens = array();
+    $panels = array();
+    $collectors = array();
     foreach ($templates as $name => $template) {
       /** @var DrupalDataCollectorInterface $collector */
       $collector = $profile->getCollector($name);
 
       if ($collector->hasPanel()) {
-        $childrens[] = array(
-          '#theme' => 'details',
-          '#attributes' => array('id' => $name),
-          '#title' => $collector->getTitle(),
-          '#summary' => 'test',
-          '#value' => array(
-            '#theme' => 'webprofiler_panel',
-            '#name' => $name,
-            '#template' => $template,
-            '#profile' => $profile,
-            '#summary' => $collector->getPanelSummary(),
-            '#content' => $collector->getPanel(),
-          ),
+        $panels[] = array(
+          '#theme' => 'webprofiler_panel',
+          '#name' => $name,
+          '#template' => $template,
+          '#token' => $profile->getToken(),
+        );
+
+        $collectors[] = array(
+          'id' => $name,
+          'name' => $name,
+          'summary' => $collector->getPanelSummary(),
         );
       }
     }
 
     $build = array();
-    $build['resume'] = array(
-      '#theme' => 'webprofiler_resume',
-      '#profile' => $profile,
-    );
 
     $build['panels'] = array(
-      '#theme' => 'vertical_tabs',
-      '#children' => $childrens,
-      '#attributes' => array('class' => array('webprofiler')),
+      '#theme' => 'webprofiler_dashboard',
+      '#panels' => render($panels),
+      '#profile' => $profile,
       '#attached' => array(
         'drupalSettings' => array(
           'webprofiler' => array(
             'token' => $profile->getToken(),
+            'collectors' => $collectors,
           ),
         ),
         'library' => array(
-          'core/drupal.vertical-tabs',
-          'webprofiler/webprofiler',
+          'webprofiler/dashboard',
         ),
       ),
     );
@@ -276,5 +270,17 @@ class WebprofilerController extends ControllerBase {
     );
 
     return $build;
+  }
+
+  /**
+   * @param \Symfony\Component\HttpKernel\Profiler\Profile $profile
+   * @param $collector
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   */
+  public function restCollectorAction(Profile $profile, $collector) {
+    $data = $profile->getCollector($collector)->getData();
+
+    return new JsonResponse(['data' => $data]);
   }
 }

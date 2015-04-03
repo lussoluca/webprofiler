@@ -32,13 +32,9 @@
 {% endblock %}
 
 {% block panel %}
-    <div class="title">
-        <h2>{{ 'Database'|t }}</h2>
-    </div>
-
-    <div class="content">
-        {{ content }}
-    </div>
+        <script id="database" type="text/template">
+            Database dashboard
+        </script>
 
     <script type="text/template" id="wp-query-explain-template">
         <h3>{{ 'Explain'|t }}</h3>

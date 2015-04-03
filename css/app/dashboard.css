@@ -1,0 +1,14 @@
+#collectors #overview {
+    float: left;
+    width: 10%;
+}
+
+#collectors #details {
+    float: right;
+    width: 89%;
+    border: 1px solid #ccc;
+}
+
+.collectors-loading {
+    position: absolute;
+}

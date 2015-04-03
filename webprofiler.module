@@ -26,44 +26,18 @@ function webprofiler_theme() {
       'template' => 'Profiler/webprofiler_panel',
       'variables' => array(
         'template' => array(),
-        'profile' => NULL,
-        'name' => NULL,
-        'summary' => NULL,
-        'content' => NULL,
-      ),
-    ),
-    'webprofiler_resume' => array(
-      'template' => 'Profiler/webprofiler_resume',
-      'variables' => array(
-        'template' => array(),
-        'profile' => NULL,
+        'token' => NULL,
         'name' => NULL,
       ),
     ),
-    'webprofiler_db_panel' => array(
-      'template' => 'Profiler/webprofiler_db_panel',
+    'webprofiler_dashboard' => array(
+      'template' => 'Profiler/webprofiler_dashboard',
       'variables' => array(
-        'query' => NULL,
-        'table' => NULL,
-        'explain' => FALSE,
-        'query_type' => NULL,
-        'position' => NULL,
+        'panels' => array(),
+        'profile' => array(),
       ),
     ),
   );
-}
-
-/**
- * Implements hook_file_download().
- */
-function webprofiler_file_download($uri) {
-  $scheme = file_uri_scheme($uri);
-  $target = file_uri_target($uri);
-  if ($scheme == 'temporary' && $target == 'profiles.tar.gz') {
-    return array(
-      'Content-disposition' => 'attachment; filename="profiles.tar.gz"',
-    );
-  }
 }
 
 /**
