@@ -33,8 +33,9 @@ function webprofiler_theme() {
     'webprofiler_dashboard' => array(
       'template' => 'Profiler/webprofiler_dashboard',
       'variables' => array(
-        'panels' => array(),
         'profile' => array(),
+        'panels' => array(),
+        'spinner_path' => NULL,
       ),
     ),
   );

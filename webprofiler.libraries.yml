@@ -40,7 +40,6 @@ dashboard:
     js/app/views/collectorsList.js: {}
     js/app/views/layout.js: {}
     js/app/views/details.js: {}
-    js/app/views/dashboard.js: {}
     js/app/routers/collectors.js: {}
   css:
     component:

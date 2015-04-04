@@ -1,6 +1,20 @@
+#wrapper {
+    position: relative;
+}
+
+#wrapper #resume {
+    margin-bottom: 20px;
+}
+
 #collectors #overview {
     float: left;
     width: 10%;
+}
+
+#collectors #overview ul {
+    margin: 0;
+    list-style: outside none none;
+    padding: 0;
 }
 
 #collectors #details {
@@ -9,6 +23,8 @@
     border: 1px solid #ccc;
 }
 
-.collectors-loading {
+#wrapper .collectors-loading {
     position: absolute;
+    left: 50%;
+    top: 50%;
 }

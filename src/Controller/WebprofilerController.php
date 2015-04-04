@@ -130,6 +130,7 @@ class WebprofilerController extends ControllerBase {
         $collectors[] = array(
           'id' => $name,
           'name' => $name,
+          'label' => $collector->getTitle(),
           'summary' => $collector->getPanelSummary(),
         );
       }
@@ -139,8 +140,9 @@ class WebprofilerController extends ControllerBase {
 
     $build['panels'] = array(
       '#theme' => 'webprofiler_dashboard',
-      '#panels' => render($panels),
       '#profile' => $profile,
+      '#panels' => render($panels),
+      '#spinner_path' => '/modules/contrib/webprofiler/images/searching.gif',
       '#attached' => array(
         'drupalSettings' => array(
           'webprofiler' => array(

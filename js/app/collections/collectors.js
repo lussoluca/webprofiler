@@ -7,17 +7,26 @@
 
     url: '/admin/reports/profiler/view/' + drupalSettings.webprofiler.token + '/collectors',
 
-    // Unselect all models
+    /**
+     * Unselect all models.
+     */
     resetSelected: function () {
       this.each(function (model) {
         model.set({"selected": false});
       });
     },
-    // Select a specific model from the collection
+
+    /**
+     * Select a specific model from the collection.
+     *
+     * @param id
+     * @returns {*}
+     */
     selectByID: function (id) {
       this.resetSelected();
       var collector = this.get(id);
       collector.set({"selected": true});
+
       return collector.id;
     }
   });

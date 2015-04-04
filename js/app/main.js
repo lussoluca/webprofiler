@@ -2,6 +2,9 @@
 
   "use strict";
 
+  /**
+   * Define namespaces.
+   */
   Drupal.webprofiler = {
     views: {},
     models: {},
