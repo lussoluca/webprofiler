@@ -7,7 +7,7 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
-use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\Helper\IdeLinkGeneratorInterface;
@@ -143,6 +143,6 @@ class EventDataCollector extends BaseEventDataCollector implements DrupalDataCol
     $parts = explode('\\', $class);
     $short = array_pop($parts);
 
-    return String::format("<abbr title=\"@class\">@short</abbr>", array('@class' => $class, '@short' => $short));
+    return SafeMarkup::format("<abbr title=\"@class\">@short</abbr>", array('@class' => $class, '@short' => $short));
   }
 }
