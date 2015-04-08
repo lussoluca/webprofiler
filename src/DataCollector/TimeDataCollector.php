@@ -8,7 +8,7 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,12 +91,12 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
     $rows = array(
       array(
         $this->t('Total time'),
-        String::format('!duration ms',
+        SafeMarkup::format('!duration ms',
           array('!duration' => sprintf('%.0f', $this->getDuration()))),
       ),
       array(
         $this->t('Initialization time'),
-        String::format('!duration ms',
+        SafeMarkup::format('!duration ms',
           array('!duration' => sprintf('%.0f', $this->getInitTime()))),
       ),
     );
