@@ -35,12 +35,12 @@ class ConfigFactoryWrapper implements ConfigFactoryInterface {
   /**
    * Constructs a new ConfigFactoryWrapper.
    *
-   * @param \Drupal\webprofiler\DataCollector\ConfigDataCollector $configDataCollector
-   *   The config data collector.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
+   * @param \Drupal\webprofiler\DataCollector\ConfigDataCollector $configDataCollector
+   *   The config data collector.
    */
-  public function __construct(ConfigDataCollector $configDataCollector, ConfigFactoryInterface $configFactory) {
+  public function __construct(ConfigFactoryInterface $configFactory, ConfigDataCollector $configDataCollector) {
     $this->configFactory = $configFactory;
     $this->configDataCollector = $configDataCollector;
   }

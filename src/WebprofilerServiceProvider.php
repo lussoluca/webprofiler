@@ -82,27 +82,16 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
       ->addArgument(new Reference('webprofiler.cache'))
       ->addMethodCall('setContainer', array(new Reference('service_container')));
 
-    // Replaces the existing form_builder service to be able to collect the
-    // requested data.
-    $container->setDefinition('form_builder.default', $container->getDefinition('form_builder'));
-    $container->register('form_builder', 'Drupal\webprofiler\Form\FormBuilderWrapper')
-      ->addArgument(new Reference('form_validator'))
-      ->addArgument(new Reference('form_submitter'))
-      ->addArgument(new Reference('form_cache'))
-      ->addArgument(new Reference('module_handler'))
-      ->addArgument(new Reference('event_dispatcher'))
-      ->addArgument(new Reference('request_stack'))
-      ->addArgument(new Reference('class_resolver'))
-      ->addArgument(new Reference('theme.manager'))
-      ->addArgument(new Reference('csrf_token', ContainerInterface::IGNORE_ON_INVALID_REFERENCE))
-      ->addArgument(new Reference('kernel', ContainerInterface::IGNORE_ON_INVALID_REFERENCE));
-
     // Replace the existing config.factory service with a wrapper to collect the
     // requested configs.
     $container->setDefinition('config.factory.default', $container->getDefinition('config.factory'));
     $container->register('config.factory', 'Drupal\webprofiler\Config\ConfigFactoryWrapper')
-      ->addArgument(new Reference('webprofiler.config'))
-      ->addArgument(new Reference('config.factory.default'));
+      ->addArgument(new Reference('config.factory.default'))
+      ->addArgument(new Reference('webprofiler.config'));
+
+    // Replace the regular form_builder service with a traceable one.
+    $definition = $container->findDefinition('form_builder');
+    $definition->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
 
     // Replace the regular entity.manager service with a traceable one.
     $definition = $container->findDefinition('entity.manager');
