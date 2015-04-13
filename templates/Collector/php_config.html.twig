@@ -37,12 +37,15 @@
 
 {% block panel %}
     <script id="php_config" type="text/template">
-        <ul>
-            <% _.each( data, function( item ){ %>
-            <li>
-                <%- item %>
-            </li>
+
+        <h2>{{ 'PHP config'|t }}</h2>
+
+        <table>
+            <% _.each( data, function( item, key ){ %>
+            <tr>
+                <td><%- key %></td><td><%- item %></td>
+            </tr>
             <% }); %>
-        </ul>
+        </table>
     </script>
 {% endblock %}

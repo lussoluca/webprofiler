@@ -17,10 +17,20 @@
     padding: 0;
 }
 
+#collectors #overview li.selected a {
+    font-weight: bold;
+}
+
 #collectors #details {
     float: right;
-    width: 89%;
+    width: 88%;
     border: 1px solid #ccc;
+    padding: 10px;
+}
+
+#collectors #details h2 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
 }
 
 #wrapper .collectors-loading {

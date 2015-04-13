@@ -43,6 +43,71 @@
 
 {% block panel %}
     <script id="request" type="text/template">
-        Request dashboard
+
+        <h2>{{ 'Request'|t }}</h2>
+
+
+        <h3>{{ 'Request GET Parameters'|t }}</h3>
+        <table>
+            <% _.each( data.request_query, function( item, key ){ %>
+            <tr>
+                <td><%- key %></td><td><%- item %></td>
+            </tr>
+            <% }); %>
+        </table>
+
+        <h3>{{ 'Request POST Parameters'|t }}</h3>
+        <table>
+            <% _.each( data.request_request, function( item, key ){ %>
+            <tr>
+                <td><%- key %></td><td><%- item %></td>
+            </tr>
+            <% }); %>
+        </table>
+
+        <h3>{{ 'Request Attributes'|t }}</h3>
+        <table>
+            <% _.each( data.request_attributes, function( item, key ){ %>
+            <tr>
+                <td><%- key %></td><td><%- item %></td>
+            </tr>
+            <% }); %>
+        </table>
+
+        <h3>{{ 'Request Cookies'|t }}</h3>
+        <table>
+            <% _.each( data.request_cookies, function( item, key ){ %>
+            <tr>
+                <td><%- key %></td><td><%- item %></td>
+            </tr>
+            <% }); %>
+        </table>
+
+        <h3>{{ 'Request Headers'|t }}</h3>
+        <table>
+            <% _.each( data.request_headers, function( item, key ){ %>
+            <tr>
+                <td><%- key %></td><td><%- item %></td>
+            </tr>
+            <% }); %>
+        </table>
+
+        <h3>{{ 'Request Server Parameters'|t }}</h3>
+        <table>
+            <% _.each( data.request_server, function( item, key ){ %>
+            <tr>
+                <td><%- key %></td><td><%- item %></td>
+            </tr>
+            <% }); %>
+        </table>
+
+        <h3>{{ 'Response Headers'|t }}</h3>
+        <table>
+            <% _.each( data.response_headers, function( item, key ){ %>
+            <tr>
+                <td><%- key %></td><td><%- item %></td>
+            </tr>
+            <% }); %>
+        </table>
     </script>
 {% endblock %}
