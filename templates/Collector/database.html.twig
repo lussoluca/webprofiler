@@ -32,11 +32,42 @@
 {% endblock %}
 
 {% block panel %}
-        <script id="database" type="text/template">
-            Database dashboard
-        </script>
+    <script id="database" type="text/template">
 
-    <script type="text/template" id="wp-query-explain-template">
+        <h2>{{ 'Database'|t }}</h2>
+
+        <% _.each( data.queries, function( item, key ){ %>
+        <div class="wp-query wp-query-select" data-wp-query-caller="<%- item.caller.class %>"
+             data-wp-query-type="select">
+            <div class="wp-query-sql">
+                <pre><code class="sql"><%- item.query %></code></pre>
+            </div>
+            <div class="wp-button wp-query-info-button">Info</div>
+            {#<%- query.copy_link %>#}
+            <div style="clear:both"></div>
+
+            <div class="wp-query-info">
+
+                <div class="wp-query-arguments">
+                    <table>
+                        <% _.each( item.args, function( item, key ){ %>
+                        <tr><td><%- key %></td><td><%- item %></td></tr>
+                        <% }); %>
+                    </table>
+                </div>
+
+                <span><b>Time</b>: <%- item.time * 1000 %></span><br/>
+                <span><b>Caller</b>: <%- item.caller.file %>:<%- item.caller.line %></span><br/>
+                <span><b>Target</b>: <%- item.target %></span><br/>
+            </div>
+
+        </div>
+        <% }); %>
+
+    </script>
+
+    <script id="wp-query-explain-template" type="text/template">
+
         <h3>{{ 'Explain'|t }}</h3>
         <table>
             <thead>
@@ -54,5 +85,6 @@
             </tr>
             <% }); %>
         </table>
+
     </script>
 {% endblock %}

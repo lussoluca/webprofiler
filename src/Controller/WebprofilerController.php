@@ -281,6 +281,8 @@ class WebprofilerController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
   public function restCollectorAction(Profile $profile, $collector) {
+    $this->profiler->disable();
+
     $data = $profile->getCollector($collector)->getData();
 
     return new JsonResponse(['data' => $data]);

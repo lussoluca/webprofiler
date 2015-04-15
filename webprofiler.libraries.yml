@@ -49,3 +49,14 @@ dashboard:
     - core/drupal
     - core/drupalSettings
     - webprofiler/d3
+database:
+  version: 1.0
+  js:
+    js/database.js: {}
+  css:
+    component:
+      css/database.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings

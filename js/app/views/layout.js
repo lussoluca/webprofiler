@@ -38,7 +38,7 @@
      *
      * @param collector
      */
-    setDetails: function (collector) {
+    setDetails: function (collector) { console.log(collector.get('data'));
       if (this.currentDetails) this.currentDetails.remove();
       this.currentDetails = new Drupal.webprofiler.views.DetailsView({model: collector});
       this.render();

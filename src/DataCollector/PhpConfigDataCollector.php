@@ -30,7 +30,6 @@ class PhpConfigDataCollector extends DataCollector implements DrupalDataCollecto
       'xcache_enabled' => extension_loaded('xcache') && ini_get('xcache.cacher'),
       'wincache_enabled' => extension_loaded('wincache') && ini_get('wincache.ocenabled'),
       'zend_opcache_enabled' => extension_loaded('Zend OPcache') && ini_get('opcache.enable'),
-      'bundles' => array(),
       'sapi_name' => php_sapi_name()
     );
   }

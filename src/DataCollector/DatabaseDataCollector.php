@@ -36,9 +36,9 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
     $queries = $this->database->getLogger()->get('webprofiler');
     usort($queries, array(
-        "Drupal\\webprofiler\\DataCollector\\DatabaseDataCollector",
-        "orderQuery",
-      ));
+      "Drupal\\webprofiler\\DataCollector\\DatabaseDataCollector",
+      "orderQuery",
+    ));
 
     foreach ($queries as &$query) {
       // Remove caller.
@@ -144,76 +144,90 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
    * {@inheritdoc}
    */
   public function getPanel() {
-    $build = array();
-
-    $build['filters'] = \Drupal::formBuilder()
-      ->getForm('Drupal\\webprofiler\\Form\\DatabaseFilterForm');
-
-    $build['container'] = array(
-      '#type' => 'container',
-      '#attributes' => array('id' => array('wp-query-wrapper')),
-    );
-
-    $position = 0;
-    foreach ($this->getQueries() as $query) {
-      $table = $this->getTable('Query arguments', $query['args'], array(
-          'Placeholder',
-          'Value',
-        ));
-
-      $explain = TRUE;
-      $type = 'select';
-
-      if (strpos($query['query'], 'UPDATE') !== FALSE) {
-        $explain = FALSE;
-        $type = 'update';
-      }
-
-      if (strpos($query['query'], 'INSERT') !== FALSE) {
-        $explain = FALSE;
-        $type = 'insert';
-      }
-
-      if (strpos($query['query'], 'DELETE') !== FALSE) {
-        $explain = FALSE;
-        $type = 'delete';
-      }
-
-      $profile = \Drupal::request()->get('profile');
-      $query['copy_link'] = \Drupal::linkGenerator()
-        ->generate($this->t('Copy'), new Url('webprofiler.database.arguments', array(
-          'profile' => $profile->getToken(),
-          'qid' => $position,
-        ), array(
-          'attributes' => array(
-            'class' => array('use-ajax', 'wp-button', 'wp-query-copy-button'),
-            'data-accepts' => 'application/vnd.drupal-modal',
-            'data-dialog-options' => Json::encode(array(
-              'width' => 700,
-            )),
-          ),
-        )));
-
-      $build['container'][] = array(
-        '#theme' => 'webprofiler_db_panel',
-        '#query' => $query,
-        '#table' => $table,
-        '#explain' => $explain,
-        '#query_type' => $type,
-        '#position' => $position,
-        '#attached' => array(
-          'library' => array(
-            'webprofiler/database',
-            'webprofiler/highlight',
-          ),
+    return array(
+      '#attached' => array(
+        'library' => array(
+          'webprofiler/database',
+          'webprofiler/highlight',
         ),
-      );
-
-      $position++;
-    }
-
-    return $build;
+      ),
+    );
   }
+
+  /**
+   * {@inheritdoc}
+   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    $build['filters'] = \Drupal::formBuilder()
+//      ->getForm('Drupal\\webprofiler\\Form\\DatabaseFilterForm');
+//
+//    $build['container'] = array(
+//      '#type' => 'container',
+//      '#attributes' => array('id' => array('wp-query-wrapper')),
+//    );
+//
+//    $position = 0;
+//    foreach ($this->getQueries() as $query) {
+//      $table = $this->getTable('Query arguments', $query['args'], array(
+//          'Placeholder',
+//          'Value',
+//        ));
+//
+//      $explain = TRUE;
+//      $type = 'select';
+//
+//      if (strpos($query['query'], 'UPDATE') !== FALSE) {
+//        $explain = FALSE;
+//        $type = 'update';
+//      }
+//
+//      if (strpos($query['query'], 'INSERT') !== FALSE) {
+//        $explain = FALSE;
+//        $type = 'insert';
+//      }
+//
+//      if (strpos($query['query'], 'DELETE') !== FALSE) {
+//        $explain = FALSE;
+//        $type = 'delete';
+//      }
+//
+//      $profile = \Drupal::request()->get('profile');
+//      $query['copy_link'] = \Drupal::linkGenerator()
+//        ->generate($this->t('Copy'), new Url('webprofiler.database.arguments', array(
+//          'profile' => $profile->getToken(),
+//          'qid' => $position,
+//        ), array(
+//          'attributes' => array(
+//            'class' => array('use-ajax', 'wp-button', 'wp-query-copy-button'),
+//            'data-accepts' => 'application/vnd.drupal-modal',
+//            'data-dialog-options' => Json::encode(array(
+//              'width' => 700,
+//            )),
+//          ),
+//        )));
+//
+//      $build['container'][] = array(
+//        '#theme' => 'webprofiler_db_panel',
+//        '#query' => $query,
+//        '#table' => $table,
+//        '#explain' => $explain,
+//        '#query_type' => $type,
+//        '#position' => $position,
+//        '#attached' => array(
+//          'library' => array(
+//            'webprofiler/database',
+//            'webprofiler/highlight',
+//          ),
+//        ),
+//      );
+//
+//      $position++;
+//    }
+//
+//    return $build;
+//  }
 
 
 }
