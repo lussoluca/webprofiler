@@ -40,9 +40,6 @@ class FormBuilderWrapper extends FormBuilder {
         $elements[$key]['#access'] = isset($value['#access']) ? $value['#access'] : NULL;
         $elements[$key]['#type'] = isset($value['#type']) ? $value['#type'] : NULL;
       }
-      else {
-        $elements[$key] = $form[$key];
-      }
     }
 
     $buildInfo = $form_state->getBuildInfo();
