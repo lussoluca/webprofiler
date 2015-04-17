@@ -58,6 +58,7 @@ services:
 # datacollector services
   webprofiler.drupal:
     class: Drupal\webprofiler\DataCollector\DrupalDataCollector
+    arguments: ['@redirect.destination']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/drupal.html.twig', id:'drupal', title:'Drupal', priority: 10 }
 

@@ -2,6 +2,7 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal\Core\Routing\RedirectDestinationInterface;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +17,24 @@ class DrupalDataCollector extends DataCollector implements DrupalDataCollectorIn
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
   /**
+   * @var \Drupal\Core\Routing\RedirectDestinationInterface
+   */
+  private $redirectDestination;
+
+  /**
+   * @param \Drupal\Core\Routing\RedirectDestinationInterface $redirectDestination
+   */
+  public function __construct(RedirectDestinationInterface $redirectDestination) {
+    $this->redirectDestination = $redirectDestination;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
     $this->data['version'] = \Drupal::VERSION;
     $this->data['profile'] = drupal_get_profile();
-    $this->data['destination'] = drupal_get_destination();
+    $this->data['destination'] = $this->redirectDestination->getAsArray();
   }
 
   /**
