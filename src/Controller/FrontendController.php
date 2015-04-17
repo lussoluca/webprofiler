@@ -9,17 +9,12 @@ namespace Drupal\webprofiler\Controller;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\Database;
-use Drupal\webprofiler\DataCollector\DatabaseDataCollector;
 use Drupal\webprofiler\DataCollector\FrontendDataCollector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Profiler\Profile;
-use Symfony\Component\HttpKernel\Profiler\Profiler;
-use Symfony\Component\HttpFoundation\Response;
+use Drupal\webprofiler\Profiler\Profiler;
 
 /**
  * Class FrontendController
@@ -27,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 class FrontendController extends ControllerBase {
 
   /**
-   * @var \Symfony\Component\HttpKernel\Profiler\Profiler
+   * @var \Drupal\webprofiler\Profiler\Profiler
    */
   private $profiler;
 
@@ -43,7 +38,7 @@ class FrontendController extends ControllerBase {
   /**
    * Constructs a new WebprofilerController.
    *
-   * @param \Symfony\Component\HttpKernel\Profiler\Profiler $profiler
+   * @param \Drupal\webprofiler\Profiler\Profiler $profiler
    */
   public function __construct(Profiler $profiler) {
     $this->profiler = $profiler;
@@ -63,7 +58,7 @@ class FrontendController extends ControllerBase {
     /** @var FrontendDataCollector $collector */
     $collector = $profile->getCollector('frontend');
     $collector->setData($data);
-    $this->profiler->saveProfile($profile);
+    $this->profiler->updateProfile($profile);
 
     return new JsonResponse(array('success' => TRUE));
   }
