@@ -1,7 +1,7 @@
 {% block toolbar %}
     {% set time = collector.templatecount ? '%0.0f ms'|format(collector.time) : 'n/a' %}
     {% set icon %}
-    <a href="#" title="{{ 'Twig'|t }}">
+    <a href="{{ url("webprofiler.profiler", {profile: token}, {fragment: "twig"}) }}" title="{{ 'Twig'|t }}">
         <img height="28" alt="Twig" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAbElEQVRIx2NgGAXUBowMDAwMaWlp/6ll4KxZsxhZYJy0tDRqGMjAwMDAwEQL77OgCxSXlJBsSG9PDwqfJi6lj/fRvTJ4XYocUTBXE4q8oRtRRBnKwsw8RFw6fA0lKkd1dnYOIpfCCthRMIIAAI0IFu9Hxh7ZAAAAAElFTkSuQmCC" />
         <span class="sf-toolbar-status">{{ time }}</span>
     </a>
@@ -28,5 +28,15 @@
     <div class="sf-toolbar-block">
         <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
         <div class="sf-toolbar-info">{{ text|default('') }}</div>
+    </div>
+{% endblock %}
+
+{% block panel %}
+    <div class="title">
+        <h2>{{ 'Twig'|t }}</h2>
+    </div>
+
+    <div class="content">
+        {{ content }}
     </div>
 {% endblock %}

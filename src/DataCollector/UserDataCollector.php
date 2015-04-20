@@ -2,12 +2,12 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
-use Drupal\Core\Authentication\AuthenticationManager;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Component\Utility\SafeMarkup;
+use Drupal\webprofiler\Authentication\AuthenticationManagerWrapper;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
   private $currentUser;
 
   /**
-   * @var \Drupal\Core\Authentication\AuthenticationManager
+   * @var \Drupal\webprofiler\Authentication\AuthenticationManagerWrapper
    */
   private $authenticationManager;
 
@@ -42,11 +42,11 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
 
   /**
    * @param \Drupal\Core\Session\AccountInterface $currentUser
-   * @param \Drupal\Core\Authentication\AuthenticationManager $authenticationManager
+   * @param \Drupal\webprofiler\Authentication\AuthenticationManagerWrapper $authenticationManager
    * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    */
-  public function __construct(AccountInterface $currentUser, AuthenticationManager $authenticationManager, EntityManagerInterface $entityManager, ConfigFactoryInterface $configFactory) {
+  public function __construct(AccountInterface $currentUser, AuthenticationManagerWrapper $authenticationManager, EntityManagerInterface $entityManager, ConfigFactoryInterface $configFactory) {
     $this->currentUser = $currentUser;
     $this->authenticationManager = $authenticationManager;
     $this->entityManager = $entityManager;

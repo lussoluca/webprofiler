@@ -1,16 +1,8 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -19,9 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * TwigDataCollector.
- *
- * @author Fabien Potencier <fabien@symfony.com>
+ * Class TwigDataCollector
  */
 class TwigDataCollector extends DataCollector implements DrupalDataCollectorInterface, LateDataCollectorInterface {
 
@@ -130,18 +120,97 @@ class TwigDataCollector extends DataCollector implements DrupalDataCollectorInte
   /**
    * {@inheritdoc}
    */
+  public function getTitle() {
+    return $this->t('Twig');
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
   public function getName() {
     return 'twig';
   }
 
   /**
-   * Returns the datacollector title.
-   *
-   * @return string
-   *   The datacollector title.
+   * {@inheritdoc}
    */
-  public function getTitle() {
-    return $this->t('Twig');
-  }
+  public function getPanel() {
+    $build = array();
 
+    $rows = array(
+      array(
+        $this->t('Total Render Time'),
+        SafeMarkup::format('!time ms',
+          array('!time' => sprintf('%.0f', $this->getTime()))),
+      ),
+      array(
+        $this->t('Template Calls'),
+        $this->getTemplateCount(),
+      ),
+      array(
+        $this->t('Block Calls'),
+        $this->getBlockCount(),
+      ),
+      array(
+        $this->t('Macro Calls'),
+        $this->getMacroCount(),
+      ),
+    );
+
+    $build['stats_title'] = array(
+      '#type' => 'inline_template',
+      '#template' => '<h3>Twig Stats</h3>',
+    );
+
+    $build['stats'] = array(
+      '#type' => 'table',
+      '#rows' => $rows,
+      '#header' => array(
+        $this->t('Config'),
+        $this->t('Value'),
+      ),
+      '#sticky' => TRUE,
+    );
+
+    $build['rendered_title'] = array(
+      '#type' => 'inline_template',
+      '#template' => '<h3>Rendered Templates</h3>',
+    );
+
+    $rows = array();
+    foreach($this->getTemplates() as $template => $count) {
+      $row = array(
+        $template,
+        $count,
+      );
+
+      $rows[] = $row;
+    }
+
+    $build['rendered'] = array(
+      '#type' => 'table',
+      '#rows' => $rows,
+      '#header' => array(
+        $this->t('Template Name'),
+        $this->t('Render Count'),
+      ),
+      '#sticky' => TRUE,
+    );
+
+    $build['rendering_call_title'] = array(
+      '#type' => 'inline_template',
+      '#template' => '<h3>Rendering Call Graph</h3>',
+    );
+
+    $build['rendering_call'] = array(
+      '#type' => 'inline_template',
+      '#template' => '{{ data }}',
+      '#context' => array(
+        'data' => $this->getHtmlCallGraph(),
+      ),
+    );
+
+    return $build;
+  }
 }

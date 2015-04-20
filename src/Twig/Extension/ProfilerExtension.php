@@ -1,20 +1,11 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Drupal\webprofiler\Twig\Extension;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
- * @author Fabien Potencier <fabien@symfony.com>
+ * Class ProfilerExtension
  */
 class ProfilerExtension extends \Twig_Extension_Profiler {
   private $stopwatch;

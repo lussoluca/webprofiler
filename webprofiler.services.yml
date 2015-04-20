@@ -55,9 +55,20 @@ services:
       tags:
         - { name: event_subscriber }
 
+# twig profiler
+  twig.profile:
+    class: Twig_Profiler_Profile
+
+  twig.extension.profiler:
+    class: Drupal\webprofiler\Twig\Extension\ProfilerExtension
+    arguments: ['@twig.profile', '@stopwatch']
+    tags:
+      - { name: twig.extension, priority: 100 }
+
 # datacollector services
   webprofiler.drupal:
     class: Drupal\webprofiler\DataCollector\DrupalDataCollector
+    arguments: ['@redirect.destination']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/drupal.html.twig', id:'drupal', title:'Drupal', priority: 10 }
 
@@ -147,15 +158,6 @@ services:
     arguments: ['@http_client']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/http.html.twig', id:'http', title:'Http', priority: 160 }
-
-  twig.profile:
-    class: Twig_Profiler_Profile
-
-  twig.extension.profiler:
-    class: Drupal\webprofiler\Twig\Extension\ProfilerExtension
-    arguments: ['@twig.profile', '@stopwatch']
-    tags:
-      - { name: twig.extension, priority: 100 }
 
   webprofiler.twig:
     class: Drupal\webprofiler\DataCollector\TwigDataCollector
