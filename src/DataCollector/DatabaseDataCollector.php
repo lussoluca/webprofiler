@@ -143,14 +143,10 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
   /**
    * {@inheritdoc}
    */
-  public function getPanel() {
+  public function getLibraies() {
     return array(
-      '#attached' => array(
-        'library' => array(
-          'webprofiler/database',
-          'webprofiler/highlight',
-        ),
-      ),
+      'webprofiler/database',
+      'webprofiler/highlight',
     );
   }
 

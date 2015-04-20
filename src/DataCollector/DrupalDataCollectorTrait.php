@@ -31,6 +31,16 @@ trait DrupalDataCollectorTrait {
     return NULL;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getLibraies() {
+    return array();
+  }
+
+  /**
+   * @return mixed
+   */
   public function getData() {
     return $this->data;
   }

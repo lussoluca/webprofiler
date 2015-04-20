@@ -1,4 +1,4 @@
-(function ($, Drupal, Backbone) {
+(function ($, Drupal, drupalSettings, Backbone) {
 
   "use strict";
 
@@ -38,10 +38,11 @@
      *
      * @param collector
      */
-    setDetails: function (collector) { console.log(collector.get('data'));
+    setDetails: function (collector) {
       if (this.currentDetails) this.currentDetails.remove();
       this.currentDetails = new Drupal.webprofiler.views.DetailsView({model: collector});
       this.render();
+      Drupal.attachBehaviors(/*this.$el, drupalSettings*/);
     },
 
     /**
@@ -72,4 +73,4 @@
     return instance;
   }
 
-}(jQuery, Drupal, Backbone));
+}(jQuery, Drupal, drupalSettings, Backbone));

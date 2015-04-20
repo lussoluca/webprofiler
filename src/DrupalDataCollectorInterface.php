@@ -42,7 +42,7 @@ interface DrupalDataCollectorInterface {
    * @return array
    *   The render array for detail panel.
    */
-  public function getPanel();
+  public function getLibraies();
 
   /**
    * Returns the name of the collector.

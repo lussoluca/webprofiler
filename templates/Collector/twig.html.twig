@@ -1,0 +1,32 @@
+{% block toolbar %}
+    {% set time = collector.templatecount ? '%0.0f ms'|format(collector.time) : 'n/a' %}
+    {% set icon %}
+    <a href="#" title="{{ 'Twig'|t }}">
+        <img height="28" alt="Twig" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAbElEQVRIx2NgGAXUBowMDAwMaWlp/6ll4KxZsxhZYJy0tDRqGMjAwMDAwEQL77OgCxSXlJBsSG9PDwqfJi6lj/fRvTJ4XYocUTBXE4q8oRtRRBnKwsw8RFw6fA0lKkd1dnYOIpfCCthRMIIAAI0IFu9Hxh7ZAAAAAElFTkSuQmCC" />
+        <span class="sf-toolbar-status">{{ time }}</span>
+    </a>
+    {% endset %}
+    {% set text %}
+    <div class="sf-toolbar-info-piece">
+        <b>Render Time</b>
+        <span>{{ time }}</span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>Template Calls</b>
+        <span>{{ collector.templatecount }}</span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>Block Calls</b>
+        <span>{{ collector.blockcount }}</span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>Macro Calls</b>
+        <span>{{ collector.macrocount }}</span>
+    </div>
+    {% endset %}
+
+    <div class="sf-toolbar-block">
+        <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
+        <div class="sf-toolbar-info">{{ text|default('') }}</div>
+    </div>
+{% endblock %}

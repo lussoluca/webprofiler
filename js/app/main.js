@@ -14,9 +14,11 @@
 
   Drupal.behaviors.webprofiler = {
     attach: function (context) {
-      new Drupal.webprofiler.routers.CollectorsRouter({el: $('#collectors')});
-      Backbone.history.start({
-        pushState: false
+      $(context).find('#collectors').once('webprofiler').each(function () {
+        new Drupal.webprofiler.routers.CollectorsRouter({el: $('#collectors')});
+        Backbone.history.start({
+          pushState: false
+        });
       });
     }
   };

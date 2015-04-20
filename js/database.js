@@ -9,14 +9,14 @@
   Drupal.behaviors.webprofiler_database = {
     attach: function (context) {
       $(context).find('.wp-query-info-button').once('wp_query_info_button').each(function () {
-        $(this).on('click', function (event) {
+        $(this).on('click', function () {
           $(this).toggleClass('open');
           $('.wp-query-info', $(this).parent()).toggle();
         });
       });
 
       $(context).find('.wp-query-explain-button').once('wp_query_explain_button').each(function () {
-        $(this).on('click', function (event) {
+        $(this).on('click', function () {
           var position = $(this).attr('data-wp-query-position'), wrapper = $(this).parent();
           var url = Drupal.url('admin/reports/profiler/database_explain/' + drupalSettings.webprofiler.token + '/' + position);
 
@@ -33,7 +33,7 @@
       });
 
       $(context).find('#edit-query-filter').once('query_filter').each(function () {
-        $(this).on('click', function (event) {
+        $(this).on('click', function () {
           var queryType = $('#edit-query-type').val(),
             queryCaller = $('#edit-query-caller').val();
 
@@ -52,7 +52,9 @@
       });
 
       if (typeof hljs != "undefined") {
-        hljs.initHighlightingOnLoad();
+        $('code.sql').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
       }
     }
   }

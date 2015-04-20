@@ -60,3 +60,4 @@ database:
     - core/jquery
     - core/drupal
     - core/drupalSettings
+    - webprofiler/highlight

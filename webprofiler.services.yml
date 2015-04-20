@@ -148,6 +148,21 @@ services:
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/http.html.twig', id:'http', title:'Http', priority: 160 }
 
+  twig.profile:
+    class: Twig_Profiler_Profile
+
+  twig.extension.profiler:
+    class: Drupal\webprofiler\Twig\Extension\ProfilerExtension
+    arguments: ['@twig.profile', '@stopwatch']
+    tags:
+      - { name: twig.extension, priority: 100 }
+
+  webprofiler.twig:
+    class: Drupal\webprofiler\DataCollector\TwigDataCollector
+    arguments: ['@twig.profile']
+    tags:
+      - { name: data_collector, template:'@webprofiler/Collector/twig.html.twig', id:'twig', title:'Twig', priority: 170 }
+
 # debug services
   stopwatch:
     class: Drupal\webprofiler\Stopwatch

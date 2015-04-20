@@ -47,7 +47,6 @@
             <div style="clear:both"></div>
 
             <div class="wp-query-info">
-
                 <div class="wp-query-arguments">
                     <table>
                         <% _.each( item.args, function( item, key ){ %>
@@ -56,9 +55,9 @@
                     </table>
                 </div>
 
-                <span><b>Time</b>: <%- item.time * 1000 %></span><br/>
-                <span><b>Caller</b>: <%- item.caller.file %>:<%- item.caller.line %></span><br/>
-                <span><b>Target</b>: <%- item.target %></span><br/>
+                <span><b>{{ 'Time'|t }}</b>: <%- item.time * 1000 %></span><br/>
+                <span><b>{{ 'Caller'|t }}</b>: <%- item.caller.file %>:<%- item.caller.line %></span><br/>
+                <span><b>{{ 'Target'|t }}</b>: <%- item.target %></span><br/>
             </div>
 
         </div>

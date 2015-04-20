@@ -115,6 +115,7 @@ class WebprofilerController extends ControllerBase {
 
     $panels = array();
     $collectors = array();
+    $libraries = array();
     foreach ($templates as $name => $template) {
       /** @var DrupalDataCollectorInterface $collector */
       $collector = $profile->getCollector($name);
@@ -133,6 +134,8 @@ class WebprofilerController extends ControllerBase {
           'label' => $collector->getTitle(),
           'summary' => $collector->getPanelSummary(),
         );
+
+        $libraries = array_merge($libraries, $collector->getLibraies());
       }
     }
 
@@ -142,7 +145,7 @@ class WebprofilerController extends ControllerBase {
       '#theme' => 'webprofiler_dashboard',
       '#profile' => $profile,
       '#panels' => render($panels),
-      '#spinner_path' => '/modules/contrib/webprofiler/images/searching.gif',
+      '#spinner_path' => '/' . $this->moduleHandler()->getModule('webprofiler')->getPath() .  '/images/searching.gif',
       '#attached' => array(
         'drupalSettings' => array(
           'webprofiler' => array(
@@ -150,11 +153,11 @@ class WebprofilerController extends ControllerBase {
             'collectors' => $collectors,
           ),
         ),
-        'library' => array(
-          'webprofiler/dashboard',
-        ),
       ),
     );
+
+    $libraries[] = 'webprofiler/dashboard';
+    $build['panels']['#attached']['library'] = $libraries;
 
     return $build;
   }
