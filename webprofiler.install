@@ -81,34 +81,36 @@ function webprofiler_schema() {
 function webprofiler_requirements($phase) {
   $requirements = array();
 
-  $has_d3 = _webprofiler_verify_library('webprofiler', 'd3');
-  $requirements['d3js'] = array(
-    'title' => t('D3.js library'),
-    'value' => $has_d3 ? t('Enabled') : t('Not found'),
-  );
-
-  if (!$has_d3) {
-    $requirements['d3js']['severity'] = REQUIREMENT_WARNING;
-    $d3_url = Url::fromUri('https://github.com/mbostock/d3', array('attributes' => array('target' => '_blank')));
-    $requirements['d3js']['description'] = t(
-      'Webprofiler module requires D3.js library to proper render data. !d3_link into /libraries/d3/d3.min.js.',
-      array('!d3_link' => Drupal::l(t('Download D3.js'), $d3_url))
+  if ('runtime' == $phase) {
+    $has_d3 = _webprofiler_verify_library('webprofiler', 'd3');
+    $requirements['d3js'] = array(
+      'title' => t('D3.js library'),
+      'value' => $has_d3 ? t('Enabled') : t('Not found'),
     );
-  }
 
-  $has_highlight = _webprofiler_verify_library('webprofiler', 'highlight');
-  $requirements['highlightjs'] = array(
-    'title' => t('highlight.js library'),
-    'value' => $has_highlight ? t('Enabled') : t('Not found'),
-  );
+    if (!$has_d3) {
+      $requirements['d3js']['severity'] = REQUIREMENT_WARNING;
+      $d3_url = Url::fromUri('https://github.com/mbostock/d3', array('attributes' => array('target' => '_blank')));
+      $requirements['d3js']['description'] = t(
+        'Webprofiler module requires D3.js library to proper render data. !d3_link into /libraries/d3/d3.min.js.',
+        array('!d3_link' => Drupal::l(t('Download D3.js'), $d3_url))
+      );
+    }
 
-  if (!$has_highlight) {
-    $requirements['highlightjs']['severity'] = REQUIREMENT_WARNING;
-    $highlight_url = Url::fromUri('http://highlightjs.org', array('attributes' => array('target' => '_blank')));
-    $requirements['highlightjs']['description'] = t(
-      'Webprofiler module requires highlight.js library to syntax highlight collected queries. !highlight_link assets into /libraries/highlight.',
-      array('!highlight_link' => Drupal::l(t('Download highlight.js'), $highlight_url))
+    $has_highlight = _webprofiler_verify_library('webprofiler', 'highlight');
+    $requirements['highlightjs'] = array(
+      'title' => t('highlight.js library'),
+      'value' => $has_highlight ? t('Enabled') : t('Not found'),
     );
+
+    if (!$has_highlight) {
+      $requirements['highlightjs']['severity'] = REQUIREMENT_WARNING;
+      $highlight_url = Url::fromUri('http://highlightjs.org', array('attributes' => array('target' => '_blank')));
+      $requirements['highlightjs']['description'] = t(
+        'Webprofiler module requires highlight.js library to syntax highlight collected queries. !highlight_link assets into /libraries/highlight.',
+        array('!highlight_link' => Drupal::l(t('Download highlight.js'), $highlight_url))
+      );
+    }
   }
 
   return $requirements;

@@ -173,13 +173,6 @@ class WebprofilerController extends ControllerBase {
   public function toolbarAction(Profile $profile) {
     $this->profiler->disable();
 
-    $url = NULL;
-    try {
-      $url = $this->router->generate('webprofiler.profiler', array('token' => $profile->getToken()));
-    } catch (\Exception $e) {
-      // The profiler is not enabled.
-    }
-
     $templates = $this->templateManager->getTemplates($profile);
 
     $toolbar = array(
@@ -187,7 +180,6 @@ class WebprofilerController extends ControllerBase {
       '#token' => $profile->getToken(),
       '#templates' => $templates,
       '#profile' => $profile,
-      '#profiler_url' => $url,
     );
 
     return new Response($this->renderer->render($toolbar));
