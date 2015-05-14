@@ -187,7 +187,7 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
         ), array(
           'attributes' => array(
             'class' => array('use-ajax', 'wp-button', 'wp-query-copy-button'),
-            'data-accepts' => 'application/vnd.drupal-modal',
+            'data-dialog-type' => 'modal',
             'data-dialog-options' => Json::encode(array(
               'width' => 700,
             )),
