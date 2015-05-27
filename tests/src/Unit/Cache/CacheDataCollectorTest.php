@@ -7,6 +7,7 @@ use Drupal\webprofiler\Cache\CacheBackendWrapper;
 use Drupal\webprofiler\DataCollector\CacheDataCollector;
 
 /**
+ * @coversDefaultClass \Drupal\webprofiler\DataCollector
  * @group webprofiler
  */
 class CacheDataCollectorTest extends UnitTestCase {
