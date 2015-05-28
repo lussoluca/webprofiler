@@ -181,10 +181,10 @@ services:
     class: Symfony\Component\HttpKernel\Controller\TraceableControllerResolver
     arguments: ['@controller_resolver', '@stopwatch']
 
-  webprofiler.middleware:
-    class: Drupal\webprofiler\WebprofilerMiddleware
+  http_middleware.webprofiler:
+    class: Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware
     tags:
-      - { name: http_middleware, priority: 400 }
+      - { name: http_middleware, priority: 350 }
 
 # parameter converter service for profile token
   webprofiler.token_converter:

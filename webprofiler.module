@@ -20,7 +20,7 @@ function webprofiler_theme() {
         'token' => NULL,
         'templates' => array(),
         'profile' => NULL,
-        'profiler_url' => NULL),
+      ),
     ),
     'webprofiler_panel' => array(
       'template' => 'Profiler/webprofiler_panel',
