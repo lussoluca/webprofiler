@@ -1,72 +1,73 @@
 <div id="webprofiler{{ token }}" class="sf-toolbar" style="display: none"></div>
 
 <script>
-    Sfjs = (function () {
-        "use strict";
+  Webprofiler = (function () {
+    "use strict";
 
-        var profilerStorageKey = 'webprofiler/profiler/',
+    var key = 'webprofiler/profiler/',
 
-                getPreference = function (name) {
-                    if (!window.localStorage) {
-                        return null;
-                    }
-
-                    return localStorage.getItem(profilerStorageKey + name);
-                },
-
-                setPreference = function (name, value) {
-                    if (!window.localStorage) {
-                        return null;
-                    }
-
-                    localStorage.setItem(profilerStorageKey + name, value);
-                    return true;
-                };
-
-        return {
-            getPreference: getPreference,
-            setPreference: setPreference
+      getPreference = function (name) {
+        if (!window.localStorage) {
+          return null;
         }
-    })();
 
-    function Loader() {
-        "use strict";
+        return localStorage.getItem(key + name);
+      },
 
-        var instance = {};
+      setPreference = function (name, value) {
+        if (!window.localStorage) {
+          return null;
+        }
 
-        instance.load = function () {
-            instance.loadXMLDoc('{{ profiler_url }}', function (result) {
-                document.getElementById('webprofiler{{ token }}').innerHTML = result;
-                document.getElementById('webprofiler{{ token }}').style.display = 'block';
+        localStorage.setItem(key + name, value);
+        return true;
+      },
 
-                if (Sfjs.getPreference('toolbar/displayState') == 'none') {
-                    document.getElementById('sfToolbarMainContent-{{ token }}').style.display = 'none';
-                    document.getElementById('sfToolbarClearer-{{ token }}').style.display = 'none';
-                    document.getElementById('sfMiniToolbar-{{ token }}').style.display = 'block';
-                } else {
-                    document.getElementById('sfToolbarMainContent-{{ token }}').style.display = 'block';
-                    document.getElementById('sfToolbarClearer-{{ token }}').style.display = 'block';
-                    document.getElementById('sfMiniToolbar-{{ token }}').style.display = 'none';
-                }
-            });
-        };
+      load = function () {
+        ajax('{{ profiler_url }}', function (result) {
+          var toolbar = document.getElementById('webprofiler{{ token }}');
+          toolbar.innerHTML = result;
+          toolbar.style.display = 'block';
 
-        instance.loadXMLDoc = function (url, callback) {
-            var xmlhttp = new XMLHttpRequest();
+          if (getPreference('toolbar/displayState') == 'none') {
+            document.getElementById('sfToolbarMainContent-{{ token }}').style.display = 'none';
+            document.getElementById('sfToolbarClearer-{{ token }}').style.display = 'none';
+            document.getElementById('sfMiniToolbar-{{ token }}').style.display = 'block';
+          } else {
+            document.getElementById('sfToolbarMainContent-{{ token }}').style.display = 'block';
+            document.getElementById('sfToolbarClearer-{{ token }}').style.display = 'block';
+            document.getElementById('sfMiniToolbar-{{ token }}').style.display = 'none';
+          }
 
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    callback(xmlhttp.responseText);
-                }
-            };
+          var arr = toolbar.getElementsByTagName('script');
+          for (var n = 0; n < arr.length; n++) {
+            eval(arr[n].innerHTML);
+          }
+        });
+      },
 
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
-        };
+      ajax = function (url, callback, data) {
+        try {
+          var x = new (XMLHttpRequest || ActiveXObject)('MSXML2.XMLHTTP.3.0');
+          x.open(data ? 'POST' : 'GET', url, 1);
+          x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+          x.setRequestHeader('Content-type', 'application/json');
+          x.onreadystatechange = function () {
+            x.readyState > 3 && callback && callback(x.responseText, x);
+          };
+          x.send(data);
+        } catch (e) {
+          window.console && console.log(e);
+        }
+      };
 
-        return instance;
+    return {
+      getPreference: getPreference,
+      setPreference: setPreference,
+      load: load,
+      ajax: ajax
     }
+  })();
 
-    var loader = Loader();
-    loader.load();
+  Webprofiler.load();
 </script>

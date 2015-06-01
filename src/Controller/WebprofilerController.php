@@ -46,11 +46,6 @@ class WebprofilerController extends ControllerBase {
   private $templateManager;
 
   /**
-   * @var \Twig_Loader_Filesystem
-   */
-  private $twigLoader;
-
-  /**
    * @var \Drupal\Core\Datetime\DateFormatter
    */
   private $date;
@@ -78,7 +73,6 @@ class WebprofilerController extends ControllerBase {
       $container->get('profiler'),
       $container->get('router'),
       $container->get('templateManager'),
-      $container->get('twig.loader'),
       $container->get('date.formatter'),
       $container->get('profiler.storage_manager'),
       new FileDownloadController(),
@@ -92,17 +86,15 @@ class WebprofilerController extends ControllerBase {
    * @param \Drupal\webprofiler\Profiler\Profiler $profiler
    * @param \Symfony\Component\Routing\RouterInterface $router
    * @param \Drupal\webprofiler\Profiler\TemplateManager $templateManager
-   * @param \Twig_Loader_Filesystem $twigLoader
    * @param \Drupal\Core\Datetime\DateFormatter $date
    * @param \Drupal\webprofiler\Profiler\ProfilerStorageManager $profilerDownloadManager
    * @param \Drupal\system\FileDownloadController $fileDownloadController
    * @param \Drupal\Core\Render\RendererInterface $renderer
    */
-  public function __construct(Profiler $profiler, RouterInterface $router, TemplateManager $templateManager, Twig_Loader_Filesystem $twigLoader, DateFormatter $date, ProfilerStorageManager $profilerDownloadManager, FileDownloadController $fileDownloadController, RendererInterface $renderer) {
+  public function __construct(Profiler $profiler, RouterInterface $router, TemplateManager $templateManager, DateFormatter $date, ProfilerStorageManager $profilerDownloadManager, FileDownloadController $fileDownloadController, RendererInterface $renderer) {
     $this->profiler = $profiler;
     $this->router = $router;
     $this->templateManager = $templateManager;
-    $this->twigLoader = $twigLoader;
     $this->date = $date;
     $this->fileDownloadController = $fileDownloadController;
     $this->profilerDownloadManager = $profilerDownloadManager;
@@ -140,7 +132,7 @@ class WebprofilerController extends ControllerBase {
             '#profile' => $profile,
             '#summary' => $collector->getPanelSummary(),
             '#content' => $collector->getPanel(),
-          )
+          ),
         );
       }
     }
@@ -156,10 +148,9 @@ class WebprofilerController extends ControllerBase {
       '#children' => $childrens,
       '#attributes' => array('class' => array('webprofiler')),
       '#attached' => array(
-        'js' => array(
-          array(
-            'data' => array('webprofiler' => array('token' => $profile->getToken())),
-            'type' => 'setting'
+        'drupalSettings' => array(
+          'webprofiler' => array(
+            'token' => $profile->getToken(),
           ),
         ),
         'library' => array(
@@ -182,13 +173,6 @@ class WebprofilerController extends ControllerBase {
   public function toolbarAction(Profile $profile) {
     $this->profiler->disable();
 
-    $url = NULL;
-    try {
-      $url = $this->router->generate('webprofiler.profiler', array('token' => $profile->getToken()));
-    } catch (\Exception $e) {
-      // the profiler is not enabled
-    }
-
     $templates = $this->templateManager->getTemplates($profile);
 
     $toolbar = array(
@@ -196,7 +180,6 @@ class WebprofilerController extends ControllerBase {
       '#token' => $profile->getToken(),
       '#templates' => $templates,
       '#profile' => $profile,
-      '#profiler_url' => $url,
     );
 
     return new Response($this->renderer->render($toolbar));
@@ -206,6 +189,7 @@ class WebprofilerController extends ControllerBase {
    * Generates the list page.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
+   *
    * @return array
    */
   public function listAction(Request $request) {
@@ -228,19 +212,6 @@ class WebprofilerController extends ControllerBase {
         $row[] = $profile['url'];
         $row[] = $this->date->format($profile['time']);
 
-        $operations = array(
-          'export' => array(
-            'title' => $this->t('Export'),
-            'route_name' => 'webprofiler.single_export',
-            'route_parameters' => array('profile' => $profile['token']),
-          ),
-        );
-        $dropbutton = array(
-          '#type' => 'operations',
-          '#links' => $operations,
-        );
-        $row[] = $this->renderer->render($dropbutton);
-
         $rows[] = $row;
       }
     }
@@ -249,14 +220,14 @@ class WebprofilerController extends ControllerBase {
         array(
           'data' => $this->t('No profiles found'),
           'colspan' => 6,
-        )
+        ),
       );
     }
 
     $build = array();
 
-    $storageId = $this->config('webprofiler.config')->get('storage');
-    $storage = $this->profilerDownloadManager->getStorage($storageId);
+    $storage_id = $this->config('webprofiler.config')->get('storage');
+    $storage = $this->profilerDownloadManager->getStorage($storage_id);
 
     $build['resume'] = array(
       '#type' => 'inline_template',
@@ -266,7 +237,8 @@ class WebprofilerController extends ControllerBase {
       ),
     );
 
-    $build['filters'] = $this->formBuilder()->getForm('Drupal\\webprofiler\\Form\\ProfilesFilterForm');
+    $build['filters'] = $this->formBuilder()
+      ->getForm('Drupal\\webprofiler\\Form\\ProfilesFilterForm');
 
     $build['table'] = array(
       '#type' => 'table',
@@ -286,7 +258,6 @@ class WebprofilerController extends ControllerBase {
           'data' => $this->t('Time'),
           'class' => array(RESPONSIVE_PRIORITY_MEDIUM),
         ),
-        $this->t('Actions')
       ),
       '#sticky' => TRUE,
       '#attached' => array(
@@ -297,49 +268,5 @@ class WebprofilerController extends ControllerBase {
     );
 
     return $build;
-  }
-
-  /**
-   * Downloads a single profile.
-   *
-   * @param Profile $profile
-   *
-   * @return \Symfony\Component\HttpFoundation\Response
-   */
-  public function singleExportAction(Profile $profile) {
-    $this->profiler->disable();
-    $token = $profile->getToken();
-
-    if (!$profile = $this->profiler->loadProfile($token)) {
-      throw new NotFoundHttpException($this->t('Token @token does not exist.', array('@token' => $token)));
-    }
-
-    return new Response($this->profiler->export($profile), 200, array(
-      'Content-Type' => 'text/plain',
-      'Content-Disposition' => 'attachment; filename= ' . $token . '.txt',
-    ));
-  }
-
-  /**
-   * Downloads a tarball with all stored profiles.
-   *
-   * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-   */
-  public function allExportAction() {
-    $archiver = new ArchiveTar(file_directory_temp() . '/profiles.tar.gz', 'gz');
-    $profiles = $this->profiler->find('', '', 100, '', '', '');
-
-    $files = array();
-    foreach ($profiles as $profile) {
-      $data = $this->profiler->export($this->profiler->loadProfile($profile['token']));
-      $filename = file_directory_temp() . "/{$profile['token']}.txt";
-      file_put_contents($filename, $data);
-      $files[] = $filename;
-    }
-
-    $archiver->createModify($files, '', file_directory_temp());
-
-    $request = new Request(array('file' => 'profiles.tar.gz'));
-    return $this->fileDownloadController->download($request, 'temporary');
   }
 }

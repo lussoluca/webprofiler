@@ -54,7 +54,7 @@ class ProfilerPass implements CompilerPassInterface {
     $container->setParameter('data_collector.templates', $templates);
 
     // set parameter to store the public folder path
-    $path = 'file://' . DRUPAL_ROOT . '/' . PublicStream::basePath() . '/profiler';
+    $path = 'file:' . DRUPAL_ROOT . '/' . PublicStream::basePath() . '/profiler';
     $container->setParameter('data_collector.storage', $path);
   }
 }

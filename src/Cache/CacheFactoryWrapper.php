@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 /**
  * Wraps a cache factory to register all calls to the cache system.
  */
-class CacheFactoryWrapper implements CacheFactoryInterface,  ContainerAwareInterface {
+class CacheFactoryWrapper implements CacheFactoryInterface, ContainerAwareInterface {
 
   use ContainerAwareTrait;
 

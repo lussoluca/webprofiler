@@ -5,6 +5,7 @@ namespace Drupal\webprofiler\Profiler;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 use Symfony\Component\HttpKernel\Profiler\Profiler as SymfonyProfiler;
 use Symfony\Component\HttpKernel\Profiler\ProfilerStorageInterface;
 
@@ -23,6 +24,9 @@ class Profiler extends SymfonyProfiler {
    */
   private $activeToolbarItems;
 
+  private $localStorage;
+  private $localLogger;
+
   /**
    * Constructor.
    *
@@ -35,8 +39,12 @@ class Profiler extends SymfonyProfiler {
   public function __construct(ProfilerStorageInterface $storage, LoggerInterface $logger = NULL, ConfigFactoryInterface $config) {
     parent::__construct($storage, $logger);
 
+    $this->localStorage = $storage;
+    $this->localLogger = $logger;
+
     $this->config = $config;
-    $this->activeToolbarItems = $this->config->get('webprofiler.config')->get('active_toolbar_items');
+    $this->activeToolbarItems = $this->config->get('webprofiler.config')
+      ->get('active_toolbar_items');
   }
 
   /**
@@ -54,4 +62,16 @@ class Profiler extends SymfonyProfiler {
     }
   }
 
+  /**
+   * @param \Symfony\Component\HttpKernel\Profiler\Profile $profile
+   *
+   * @return bool
+   */
+  public function updateProfile(Profile $profile) {
+    if (!($ret = $this->localStorage->write($profile)) && NULL !== $this->localLogger) {
+      $this->localLogger->warning('Unable to store the profiler information.');
+    }
+
+    return $ret;
+  }
 }

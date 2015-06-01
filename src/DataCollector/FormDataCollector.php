@@ -81,14 +81,14 @@ class FormDataCollector extends DataCollector implements DrupalDataCollectorInte
       return $build;
     }
 
-    foreach ($this->getForms() as $form) {
+    foreach ($this->getForms() as $form_id => $form) {
       $formData = $form['form'];
 
-      $build[$formData['#form_id']]['class'] = array(
+      $build[$form_id]['class'] = array(
         '#type' => 'inline_template',
         '#template' => '<h3>#{{ id }}: {{ class }}</h3>',
         '#context' => array(
-          'id' => $formData['#form_id'],
+          'id' => $form_id,
           'class' => $form['class'],
         ),
       );
@@ -107,7 +107,7 @@ class FormDataCollector extends DataCollector implements DrupalDataCollectorInte
         }
       }
 
-      $build[$formData['#form_id']]['fields'] = array(
+      $build[$form_id]['fields'] = array(
         '#type' => 'table',
         '#rows' => $rows,
         '#header' => array(

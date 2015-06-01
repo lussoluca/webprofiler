@@ -15,6 +15,8 @@ class ViewsPass implements CompilerPassInterface {
     $container->setDefinition('views.executable.default', $container->getDefinition('views.executable'));
     $container->register('views.executable', 'Drupal\webprofiler\Views\ViewExecutableFactoryWrapper')
       ->addArgument(new Reference('current_user'))
-      ->addArgument(new Reference('request_stack'));
+      ->addArgument(new Reference('request_stack'))
+      ->addArgument(new Reference('views.views_data'))
+      ->addArgument(new Reference('router.route_provider'));
   }
 }

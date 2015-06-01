@@ -8,7 +8,7 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 
 /**
- * Class TimeDataCollector
+ * Class TimeDataCollector.
  */
 class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataCollectorInterface {
 
@@ -27,7 +27,7 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
    * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
    * @param $stopwatch
    */
-  public function __construct(KernelInterface $kernel = null, $stopwatch = null) {
+  public function __construct(KernelInterface $kernel = NULL, $stopwatch = NULL) {
     parent::__construct($kernel, $stopwatch);
   }
 
@@ -53,7 +53,8 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
   /**
    * Gets the memory.
    *
-   * @return integer The memory
+   * @return int
+   *   The memory
    */
   public function getMemory() {
     return $this->data['memory'];
@@ -62,7 +63,8 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
   /**
    * Gets the PHP memory limit.
    *
-   * @return integer The memory limit
+   * @return int
+   *   The memory limit
    */
   public function getMemoryLimit() {
     return $this->data['memory_limit'];
@@ -89,11 +91,13 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
     $rows = array(
       array(
         $this->t('Total time'),
-        String::format('!duration ms', array('!duration' => sprintf('%.0f', $this->getDuration()))),
+        SafeMarkup::format('!duration ms',
+          array('!duration' => sprintf('%.0f', $this->getDuration()))),
       ),
       array(
         $this->t('Initialization time'),
-        String::format('!duration ms', array('!duration' => sprintf('%.0f', $this->getInitTime()))),
+        SafeMarkup::format('!duration ms',
+          array('!duration' => sprintf('%.0f', $this->getInitTime()))),
       ),
     );
 
@@ -102,11 +106,8 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
       '#rows' => $rows,
       '#sticky' => TRUE,
       '#attached' => array(
-        'js' => array(
-          array(
-            'data' => array('webprofiler' => $this->getAttachedJs()),
-            'type' => 'setting'
-          ),
+        'drupalSettings' => array(
+          'webprofiler' => $this->getAttachedJs(),
         ),
         'library' => array(
           'webprofiler/timeline',
@@ -177,12 +178,15 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
       case 't':
         $max *= 1024;
         break;
+
       case 'g':
         $max *= 1024;
         break;
+
       case 'm':
         $max *= 1024;
         break;
+
       case 'k':
         $max *= 1024;
         break;

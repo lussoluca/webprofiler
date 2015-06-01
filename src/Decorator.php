@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\webprofiler\Decorator.
+ */
+
 namespace Drupal\webprofiler;
 
 /**
- * Class Decorator
+ * Generic class Decorator.
  */
 class Decorator {
 
@@ -13,14 +18,20 @@ class Decorator {
   protected $object;
 
   /**
-   * @param $object
+   * Class constructor.
+   *
+   * @param object $object
+   *   The object to decorate.
    */
-  function __construct($object) {
+  public function __construct($object) {
     $this->object = $object;
   }
 
   /**
+   * Return the original (i.e. non decorated) object.
+   *
    * @return mixed
+   *   The original object.
    */
   public function getOriginalObject() {
     $object = $this->object;
@@ -31,7 +42,10 @@ class Decorator {
   }
 
   /**
-   * @param $method
+   * Returns true if $method is a PHP callable.
+   *
+   * @param string $method
+   *   The method name.
    * @param bool $checkSelf
    *
    * @return bool|mixed
@@ -42,7 +56,7 @@ class Decorator {
     if (is_callable(array($object, $method))) {
       return $object;
     }
-    //Check Decorators
+    // Check Decorators.
     $object = $checkSelf ? $this : $this->object;
     while ($object instanceof Decorator) {
       if (is_callable(array($object, $method))) {

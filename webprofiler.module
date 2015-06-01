@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Legacy Webprofiler module file.
+ */
+
+/**
  * Implements hook_theme().
  */
 function webprofiler_theme() {
@@ -11,7 +16,11 @@ function webprofiler_theme() {
     ),
     'webprofiler_toolbar' => array(
       'template' => 'Profiler/webprofiler_toolbar',
-      'variables' => array('token' => NULL, 'templates' => array(), 'profile' => NULL, 'profiler_url' => NULL),
+      'variables' => array(
+        'token' => NULL,
+        'templates' => array(),
+        'profile' => NULL,
+      ),
     ),
     'webprofiler_panel' => array(
       'template' => 'Profiler/webprofiler_panel',
@@ -28,7 +37,7 @@ function webprofiler_theme() {
       'variables' => array(
         'template' => array(),
         'profile' => NULL,
-        'name' => NULL
+        'name' => NULL,
       ),
     ),
     'webprofiler_db_panel' => array(
@@ -42,19 +51,6 @@ function webprofiler_theme() {
       ),
     ),
   );
-}
-
-/**
- * Implements hook_file_download().
- */
-function webprofiler_file_download($uri) {
-  $scheme = file_uri_scheme($uri);
-  $target = file_uri_target($uri);
-  if ($scheme == 'temporary' && $target == 'profiles.tar.gz') {
-    return array(
-      'Content-disposition' => 'attachment; filename="profiles.tar.gz"',
-    );
-  }
 }
 
 /**

@@ -40,6 +40,13 @@ class WebprofilerEventSubscriber implements EventSubscriberInterface {
     $response = $event->getResponse();
     $request = $event->getRequest();
 
+    if ($response->headers->has('X-Debug-Token') && null !== $this->urlGenerator) {
+      $response->headers->set(
+        'X-Debug-Token-Link',
+        $this->urlGenerator->generate('webprofiler.profiler', array('profile' => $response->headers->get('X-Debug-Token')))
+      );
+    }
+
     // do not capture redirects or modify XML HTTP Requests
     if ($request->isXmlHttpRequest()) {
       return;

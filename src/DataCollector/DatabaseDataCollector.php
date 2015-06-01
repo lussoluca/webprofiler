@@ -37,11 +37,11 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
     $queries = $this->database->getLogger()->get('webprofiler');
     usort($queries, array(
         "Drupal\\webprofiler\\DataCollector\\DatabaseDataCollector",
-        "orderQuery"
+        "orderQuery",
       ));
 
     foreach ($queries as &$query) {
-      // remove caller
+      // Remove caller.
       unset($query['caller']['args']);
     }
 
@@ -49,7 +49,7 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
 
     $options = $this->database->getConnectionOptions();
 
-    // remove password field for security
+    // Remove password field for security.
     unset($options['password']);
 
     $this->data['database'] = $options;
@@ -158,7 +158,7 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
     foreach ($this->getQueries() as $query) {
       $table = $this->getTable('Query arguments', $query['args'], array(
           'Placeholder',
-          'Value'
+          'Value',
         ));
 
       $explain = TRUE;
@@ -183,15 +183,15 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
       $query['copy_link'] = \Drupal::linkGenerator()
         ->generate($this->t('Copy'), new Url('webprofiler.database.arguments', array(
           'profile' => $profile->getToken(),
-          'qid' => $position
+          'qid' => $position,
         ), array(
           'attributes' => array(
             'class' => array('use-ajax', 'wp-button', 'wp-query-copy-button'),
-            'data-accepts' => 'application/vnd.drupal-modal',
+            'data-dialog-type' => 'modal',
             'data-dialog-options' => Json::encode(array(
               'width' => 700,
             )),
-          )
+          ),
         )));
 
       $build['container'][] = array(

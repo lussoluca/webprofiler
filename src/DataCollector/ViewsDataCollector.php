@@ -113,13 +113,14 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
 
         $operations = array();
         if ($entity->access('update') && $entity->hasLinkTemplate('edit-display-form')) {
-          $route = $entity->urlInfo('edit-display-form')->toArray();
-          $route['route_parameters']['display_id'] = $view['current_display'];
+          $route = $entity->urlInfo('edit-display-form');
+          $route->setRouteParameter('display_id', $view['current_display']);
 
           $operations['edit'] = array(
               'title' => $this->t('Edit'),
               'weight' => 10,
-            ) + $route;
+              'url' => $route
+            );
         }
 
         $row[] = $view['id'];

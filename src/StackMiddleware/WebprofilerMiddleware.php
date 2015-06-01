@@ -1,11 +1,19 @@
 <?php
 
-namespace Drupal\webprofiler;
+/**
+ * @file
+ * Contains \Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware.
+ */
+
+namespace Drupal\webprofiler\StackMiddleware;
 
 use Drupal\Core\Database\Database;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+/**
+ * Class WebprofilerMiddleware
+ */
 class WebprofilerMiddleware implements HttpKernelInterface {
 
   /**

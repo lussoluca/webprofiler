@@ -95,7 +95,7 @@ class ConfigForm extends ConfigFormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Exclude'),
       '#default_value' => $config->get('exclude'),
-      '#description' => $this->t('Path to exclude for profiling. One path per line.')
+      '#description' => $this->t('Paths to exclude for profiling. One path per line.'),
     );
 
     $form['active_toolbar_items'] = array(
@@ -104,6 +104,13 @@ class ConfigForm extends ConfigFormBase {
       '#options' => $this->getCollectors(),
       '#description' => $this->t('Choose which items to show into the toolbar.'),
       '#default_value' => $config->get('active_toolbar_items'),
+    );
+
+    $form['ide_link'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('IDE link'),
+      '#description' => $this->t('IDE link for open files.'),
+      '#default_value' => $config->get('ide_link'),
     );
 
     return parent::buildForm($form, $form_state);
@@ -118,6 +125,7 @@ class ConfigForm extends ConfigFormBase {
       ->set('storage', $form_state->getValue('storage'))
       ->set('exclude', $form_state->getValue('exclude'))
       ->set('active_toolbar_items', $form_state->getValue('active_toolbar_items'))
+      ->set('ide_link', $form_state->getValue('ide_link'))
       ->save();
 
     parent::submitForm($form, $form_state);
@@ -138,5 +146,14 @@ class ConfigForm extends ConfigFormBase {
     asort($options);
 
     return $options;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEditableConfigNames() {
+    return [
+      'webprofiler.config',
+    ];
   }
 }

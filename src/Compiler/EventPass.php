@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class EventPass
+ * Class EventPass.
  */
 class EventPass implements CompilerPassInterface {
 
@@ -24,9 +24,9 @@ class EventPass implements CompilerPassInterface {
     $definition = $container->findDefinition('http_kernel.basic');
     $definition->replaceArgument(1, new Reference('webprofiler.debug.controller_resolver'));
 
-    // replace the regular event_dispatcher service with the debug one
+    // Replace the regular event_dispatcher service with the debug one.
     $definition = $container->findDefinition('event_dispatcher');
-    $definition->setPublic(false);
+    $definition->setPublic(FALSE);
     $container->setDefinition('webprofiler.debug.event_dispatcher.default', $definition);
     $container->setAlias('event_dispatcher', 'webprofiler.debug.event_dispatcher');
   }

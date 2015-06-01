@@ -12,7 +12,6 @@ use Drupal\Core\Entity\EntityManager;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\webprofiler\Entity\Block\BlockStorageDecorator;
 use Drupal\webprofiler\Entity\EntityManagerWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,13 +45,14 @@ class BlockDataCollector extends DataCollector implements DrupalDataCollectorInt
 
     if ($loaded) {
       foreach ($loaded as $blocks) {
-        /** @var BlockStorageDecorator $blocks */
+        /** @var \Drupal\webprofiler\Entity\Block\BlockStorageDecorator $blocks */
+        /** @var \Drupal\block\BlockInterface $block */
         foreach ($blocks->getBlocks() as $block) {
           $this->data['blocks']['loaded'][] = array(
-            'id' => $block->id,
-            'region' => $block->get('region'),
+            'id'  => $block->get('id'),
+            'region' => $block->getRegion(),
             'status' => $block->get('status'),
-            'theme' => $block->get('theme'),
+            'theme' => $block->getTheme(),
             'plugin' => $block->get('plugin'),
             'settings' => $block->get('settings'),
           );
@@ -62,13 +62,14 @@ class BlockDataCollector extends DataCollector implements DrupalDataCollectorInt
 
     if ($rendered) {
       foreach ($rendered as $blocks) {
-        /** @var BlockStorageDecorator $blocks */
+        /** @var \Drupal\webprofiler\Entity\Block\BlockStorageDecorator $blocks */
+        /** @var \Drupal\block\BlockInterface $block */
         foreach ($blocks->getBlocks() as $block) {
           $this->data['blocks']['rendered'][] = array(
-            'id' => $block->id,
-            'region' => $block->get('region'),
+            'id' => $block->get('id'),
+            'region' => $block->getRegion(),
             'status' => $block->get('status'),
-            'theme' => $block->get('theme'),
+            'theme' => $block->getTheme(),
             'plugin' => $block->get('plugin'),
             'settings' => $block->get('settings'),
           );
@@ -140,7 +141,7 @@ class BlockDataCollector extends DataCollector implements DrupalDataCollectorInt
     $storage = $entity_manager->getStorage('block');
 
     if ($this->getLoadedBlocks()) {
-      $build['loaded'] =$this->getTable($this->getLoadedBlocks(), $storage, $this->t('Loaded blocks'));
+      $build['loaded'] = $this->getTable($this->getLoadedBlocks(), $storage, $this->t('Loaded blocks'));
     }
 
     if ($this->getRenderedBlocks()) {
@@ -167,9 +168,10 @@ class BlockDataCollector extends DataCollector implements DrupalDataCollectorInt
       $operations = array();
       if ($entity->access('update') && $entity->hasLinkTemplate('edit-form')) {
         $operations['edit'] = array(
-            'title' => $this->t('Edit'),
-            'weight' => 10,
-          ) + $entity->urlInfo('edit-form')->toArray();
+          'title'  => $this->t('Edit'),
+          'weight' => 10,
+          'url' => $entity->urlInfo('edit-form'),
+        );
       }
 
       $row[] = $entity->id();

@@ -1,17 +1,14 @@
 {% block toolbar %}
     {% set request_handler %}
-    {% if collector.controller.class is defined %}
-        {% set link = collector.controller.file %}
-        <span class="sf-toolbar-info-class sf-toolbar-info-with-next-pointer">{{ collector.controller.class }}</span>
-        <span class="sf-toolbar-info-method">
-                {{ collector.controller.method }}
-            </span>
-    {% else %}
-        <span class="sf-toolbar-info-class">{{ collector.controller }}</span>
-    {% endif %}
+    {% set link = collector.controller.file %}
+    <span class="sf-toolbar-info-class sf-toolbar-info-with-next-pointer">{{ collector.controller.class }}</span>
+    <span class="sf-toolbar-info-method"><a href="{{ link }}">{{ collector.controller.method }}</a></span>
     {% endset %}
+
     {% set request_status_code_color = (400 > collector.statuscode) ? ((200 == collector.statuscode) ? 'green' : 'yellow') : 'red' %}
+
     {% set request_route = collector.route ? collector.route : 'NONE' %}
+
     {% set icon %}
     <a href="{{ url("webprofiler.profiler", {profile: token}, {fragment: 'request'}) }}" title="{{ 'Request'|t }}">
         <img width="28" height="28" alt="Request"
@@ -20,6 +17,7 @@
           title="{{ collector.statustext }}">{{ collector.statuscode }}</span>
     </a>
     {% endset %}
+
     {% set text %}
     {% spaceless %}
         <div class="sf-toolbar-info-piece">

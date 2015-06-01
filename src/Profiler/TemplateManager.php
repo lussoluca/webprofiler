@@ -26,7 +26,7 @@ class TemplateManager {
   protected $twig;
 
   /**
-   * @var \Twig_Loader_Filesystem
+   * @var \Twig_Loader_Chain
    */
   protected $twigLoader;
 
@@ -45,10 +45,10 @@ class TemplateManager {
    *
    * @param SymfonyProfiler $profiler
    * @param \Twig_Environment $twig
-   * @param \Twig_Loader_Filesystem $twigLoader
+   * @param \Twig_Loader_Chain $twigLoader
    * @param array $templates
    */
-  public function __construct(SymfonyProfiler $profiler, \Twig_Environment $twig, \Twig_Loader_Filesystem $twigLoader, array $templates) {
+  public function __construct(SymfonyProfiler $profiler, \Twig_Environment $twig, \Twig_Loader_Chain $twigLoader, array $templates) {
     $this->profiler = $profiler;
     $this->twig = $twig;
     $this->twigLoader = $twigLoader;
@@ -118,7 +118,7 @@ class TemplateManager {
         $template = substr($template, 0, -10);
       }
 
-      if (!$this->templateExists($template . '.html.twig')) {
+      if (!$this->twigLoader->exists($template . '.html.twig')) {
         throw new \UnexpectedValueException(sprintf('The profiler template "%s.html.twig" for data collector "%s" does not exist.', $template, $name));
       }
 
@@ -126,22 +126,5 @@ class TemplateManager {
     }
 
     return $templates;
-  }
-
-  // TODO to be removed when the minimum required version of Twig is >= 2.0
-  protected function templateExists($template) {
-    $loader = $this->twig->getLoader();
-    if ($loader instanceof \Twig_ExistsLoaderInterface) {
-      return $loader->exists($template);
-    }
-
-    try {
-      $loader->getSource($template);
-
-      return TRUE;
-    } catch (\Twig_Error_Loader $e) {
-    }
-
-    return FALSE;
   }
 }

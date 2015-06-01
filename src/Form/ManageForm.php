@@ -85,26 +85,6 @@ class ManageForm extends FormBase {
       ),
     );
 
-    $form['data'] = array(
-      '#type' => 'details',
-      '#title' => $this->t('Data'),
-      '#open' => TRUE,
-    );
-
-    $form['data']['export'] = array(
-      '#type' => 'submit',
-      '#value' => $this->t('Export'),
-      '#submit' => array(array($this, 'export')),
-    );
-
-    $form['data']['purge-help'] = array(
-      '#type' => 'inline_template',
-      '#template' => '<div class="form-item">{{ message }}</div>',
-      '#context' => array(
-        'message' =>  $this->t('Export all %storage profiles.', array('%storage' => $storage['title'])),
-      ),
-    );
-
     return $form;
   }
 
@@ -114,13 +94,6 @@ class ManageForm extends FormBase {
   public function purge(array &$form, FormStateInterface $form_state) {
     $this->profiler->purge();
     drupal_set_message($this->t('Profiles purged'));
-  }
-
-  /**
-   * Purges profiles.
-   */
-  public function export(array &$form, FormStateInterface $form_state) {
-    $form_state->setRedirectUrl(new Url('webprofiler.all_export'));
   }
 
   /**

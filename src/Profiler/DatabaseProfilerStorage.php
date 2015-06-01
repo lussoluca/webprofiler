@@ -67,7 +67,14 @@ class DatabaseProfilerStorage implements ProfilerStorageInterface {
       $select->condition('time', $end, '<=');
     }
 
-    $select->fields('wp', array('token', 'ip', 'method', 'url', 'time', 'parent'));
+    $select->fields('wp', array(
+      'token',
+      'ip',
+      'method',
+      'url',
+      'time',
+      'parent'
+    ));
     $select->orderBy('time', 'DESC');
     $select->range(0, $limit);
     return $select->execute()
@@ -78,7 +85,10 @@ class DatabaseProfilerStorage implements ProfilerStorageInterface {
    * {@inheritdoc}
    */
   public function read($token) {
-    $record = $this->database->select('webprofiler', 'w')->fields('w')->condition('token', $token)->execute()
+    $record = $this->database->select('webprofiler', 'w')
+      ->fields('w')
+      ->condition('token', $token)
+      ->execute()
       ->fetch();
     if (isset($record->data)) {
       return $this->createProfileFromData($token, $record);
@@ -101,7 +111,21 @@ class DatabaseProfilerStorage implements ProfilerStorageInterface {
     );
 
     try {
-      $this->database->insert('webprofiler')->fields($args)->execute();
+      $query = $this->database->select('webprofiler', 'w')
+        ->fields('w', ['token']);
+      $query->condition('token', $profile->getToken());
+      $count = $query->countQuery()->execute()->fetchAssoc();
+
+      if ($count['expression']) {
+        $this->database->update('webprofiler')
+          ->fields($args)
+          ->condition('token', $profile->getToken())
+          ->execute();
+      }
+      else {
+        $this->database->insert('webprofiler')->fields($args)->execute();
+      }
+
       $status = TRUE;
     } catch (\Exception $e) {
       $status = FALSE;

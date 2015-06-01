@@ -8,7 +8,7 @@
 
   Drupal.behaviors.webprofiler_service = {
     attach: function (context) {
-      $('#edit-service-filter').once(function () {
+      $('#edit-service-filter').once('edit-service-filter').each(function () {
         $(this).on('click', function (event) {
           var sid = $('#edit-sid').val(),
             initialized = $('#edit-initialized').val(),

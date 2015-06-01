@@ -48,20 +48,6 @@ class ConfigFactoryWrapper implements ConfigFactoryInterface {
   /**
    * {@inheritdoc}
    */
-  public function setOverrideState($state) {
-    return $this->configFactory->setOverrideState($state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOverrideState() {
-    return $this->configFactory->getOverrideState();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function get($name) {
     $result = $this->configFactory->get($name);
     $this->configDataCollector->addConfigName($name);
@@ -121,4 +107,10 @@ class ConfigFactoryWrapper implements ConfigFactoryInterface {
     return $this->configFactory->addOverride($config_factory_override);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getEditable($name) {
+    return $this->configFactory->getEditable($name);
+  }
 }

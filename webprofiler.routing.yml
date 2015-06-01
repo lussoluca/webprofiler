@@ -23,28 +23,6 @@ webprofiler.profiler:
   requirements:
     _permission: 'access webprofiler'
 
-# export single profile
-webprofiler.single_export:
-  path: '/admin/config/development/profiler/export/{profile}'
-  defaults:
-    _controller: '\Drupal\webprofiler\Controller\WebprofilerController::singleExportAction'
-    _title: 'Export single profile'
-  options:
-    parameters:
-      profile:
-        type: 'webprofiler:token'
-  requirements:
-    _permission: 'access webprofiler'
-
-# export all profiles
-webprofiler.all_export:
-  path: '/admin/config/development/profiler/exportall'
-  defaults:
-    _controller: '\Drupal\webprofiler\Controller\WebprofilerController::allExportAction'
-    _title: 'Export all profiles'
-  requirements:
-    _permission: 'access webprofiler'
-
 # list stored profiles
 webprofiler.admin_list:
   path: '/admin/reports/profiler/list'
@@ -95,5 +73,19 @@ webprofiler.database.arguments:
     parameters:
       profile:
         type: 'webprofiler:token'
+  requirements:
+    _permission: 'access webprofiler'
+
+# save frontend data
+webprofiler.frontend.save:
+  path: '/admin/reports/profiler/frontend/{profile}/save'
+  defaults:
+    _controller: '\Drupal\webprofiler\Controller\FrontendController::saveAction'
+    _title: 'Save frontend data'
+  options:
+    parameters:
+      profile:
+        type: 'webprofiler:token'
+  methods:  [POST]
   requirements:
     _permission: 'access webprofiler'

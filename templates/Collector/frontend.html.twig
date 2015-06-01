@@ -1,0 +1,65 @@
+{% block toolbar %}
+    {% set icon %}
+    <a href="{{ url("webprofiler.profiler", {profile: token}, {fragment: 'frontend'}) }}" title="{{ 'Frontend'|t }}">
+        <img width="20" height="28" alt="Asset"
+             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpi/P//PwO1ARMDDcCooUPEUEYi1AgAcQIQ+0P5H4B4IxAvwKaYmCSqAMT7gbgBajhMrB8qLkCsoQFQQ0CuOw/EBjgsLIAajmEouvdBhukD8UQgdkASwwXuA7EhNEhwuvQ8iXHSj2Q53FBY7BtADVxIoqEfoQYnYJPEF3bEROZ6WDDBvO+ALcCxJCsBAmpA4SuA7P2PBDQUEOGTDTA1TNCYs6dCRgIlxQswQ0GMB0A8nwgv4gqa+VCXgpMWC1QiEerF9WgaDmJJp/OhkUNIHUHQgJ4ecQHkiMKXXALQIowqpdR8pJi/AA0qvC4lFsyHYqK8zzhaRQ8NQwECDABNaU12xhTp2QAAAABJRU5ErkJggg=="/>
+        <span id="wp--frontend__toolbar"></span>
+    </a>
+    {% endset %}
+    {% set text %}
+
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'DNS lookup'|t }}</b>
+        <span id="wp--frontend__dns"></span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'TCP handshake'|t }}</b>
+        <span id="wp--frontend__tcp"></span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'TTFB' }}</b>
+        <span id="wp--frontend__ttfb"></span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'Data download'|t }}</b>
+        <span id="wp--frontend__data"></span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'DOM building'|t }}</b>
+        <span id="wp--frontend__dom"></span>
+    </div>
+    {% endset %}
+
+    <div class="sf-toolbar-block">
+        <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
+        <div class="sf-toolbar-info">{{ text|default('') }}</div>
+    </div>
+
+    <script>
+        var perf = performance.timing,
+            dns = parseInt(perf.domainLookupEnd - perf.domainLookupStart),
+            tcp = parseInt(perf.connectEnd - perf.connectStart),
+            ttfb = parseInt(perf.responseStart - perf.connectEnd),
+            data = parseInt(perf.responseEnd - perf.responseStart),
+            dom = parseInt(perf.loadEventStart - perf.responseEnd);
+
+        Webprofiler.ajax('{{ url("webprofiler.frontend.save", {profile: token}) }}', false, JSON.stringify(perf));
+
+        document.getElementById('wp--frontend__toolbar').innerHTML = ttfb + ' ms';
+        document.getElementById('wp--frontend__dns').innerHTML = dns + ' ms';
+        document.getElementById('wp--frontend__tcp').innerHTML = tcp + ' ms';
+        document.getElementById('wp--frontend__ttfb').innerHTML = ttfb + ' ms';
+        document.getElementById('wp--frontend__data').innerHTML = data + ' ms';
+        document.getElementById('wp--frontend__dom').innerHTML = dom + ' ms';
+    </script>
+{% endblock %}
+
+{% block panel %}
+    <div class="title">
+        <h2>{{ 'Frontend'|t }}</h2>
+    </div>
+
+    <div class="content">
+        {{ content }}
+    </div>
+{% endblock %}

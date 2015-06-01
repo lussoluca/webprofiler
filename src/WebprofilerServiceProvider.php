@@ -34,7 +34,6 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
 
     $container->addCompilerPass(new StoragePass());
     $container->addCompilerPass(new EventPass(), PassConfig::TYPE_AFTER_REMOVING);
-    $container->addCompilerPass(new EntityPass(), PassConfig::TYPE_AFTER_REMOVING);
     $container->addCompilerPass(new ServicePass(), PassConfig::TYPE_AFTER_REMOVING);
 
     // Add ViewsDataCollector only if Views module is enabled.
@@ -47,7 +46,7 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
           'template' => '@webprofiler/Collector/views.html.twig',
           'id' => 'views',
           'title' => 'Views',
-          'priority' => 65
+          'priority' => 75,
         ));
     }
 
@@ -59,7 +58,7 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
           'template' => '@webprofiler/Collector/block.html.twig',
           'id' => 'block',
           'title' => 'Block',
-          'priority' => 68
+          'priority' => 78,
         ));
     }
 
@@ -72,30 +71,30 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
         'template' => '@webprofiler/Collector/state.html.twig',
         'id' => 'state',
         'title' => 'State',
-        'priority' => 135
+        'priority' => 135,
       ));
 
-    // Replaces the existing form_builder service to be able to collect the
-    // requested data.
-    $container->setDefinition('form_builder.default', $container->getDefinition('form_builder'));
-    $container->register('form_builder', 'Drupal\webprofiler\Form\FormBuilderWrapper')
-      ->addArgument(new Reference('form_validator'))
-      ->addArgument(new Reference('form_submitter'))
-      ->addArgument(new Reference('form_cache'))
-      ->addArgument(new Reference('module_handler'))
-      ->addArgument(new Reference('event_dispatcher'))
-      ->addArgument(new Reference('request_stack'))
-      ->addArgument(new Reference('class_resolver'))
-      ->addArgument(new Reference('theme.manager'))
-      ->addArgument(new Reference('csrf_token', ContainerInterface::IGNORE_ON_INVALID_REFERENCE))
-      ->addArgument(new Reference('kernel', ContainerInterface::IGNORE_ON_INVALID_REFERENCE));
-  }
+    // Replace the regular form_builder service with a traceable one.
+    $definition = $container->findDefinition('form_builder');
+    $definition->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
 
-  /**
-   * {@inheritdoc}
-   */
-  public function alter(ContainerBuilder $container) {
-    $container->getDefinition('twig')
-      ->addMethodCall('addExtension', array(new Reference('webprofiler.twig_extension')));
+    // Replace the regular entity.manager service with a traceable one.
+    $definition = $container->findDefinition('entity.manager');
+    $definition->setClass('Drupal\webprofiler\Entity\EntityManagerWrapper');
+
+    // Replace the regular asset.js.collection_renderer service
+    // with a traceable one.
+    $definition = $container->findDefinition('asset.js.collection_renderer');
+    $definition->setClass('Drupal\webprofiler\Asset\JsCollectionRendererWrapper');
+
+    // Replace the regular asset.js.collection_renderer service
+    // with a traceable one.
+    $definition = $container->findDefinition('asset.css.collection_renderer');
+    $definition->setClass('Drupal\webprofiler\Asset\CssCollectionRendererWrapper');
+
+    // Replace the regular authentication service
+    // with a traceable one.
+    $definition = $container->findDefinition('authentication');
+    $definition->setClass('Drupal\webprofiler\Authentication\AuthenticationManagerWrapper');
   }
 }
