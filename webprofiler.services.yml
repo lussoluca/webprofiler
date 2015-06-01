@@ -1,10 +1,13 @@
+parameters:
+  webprofiler.only_exceptions: false
+  webprofiler.only_master_requests: false
+
 services:
 
 # profiler services
   logger.channel.webprofiler:
     class: Drupal\Core\Logger\LoggerChannel
-    factory_method: get
-    factory_service: logger.factory
+    factory: logger.factory:get
     arguments: ['webprofiler']
 
   profiler.file_storage:
@@ -24,8 +27,7 @@ services:
 
   profiler.storage:
     class: Symfony\Component\HttpKernel\Profiler\ProfilerStorageInterface
-    factory_class: Drupal\webprofiler\Profiler\ProfilerStorageFactory
-    factory_method: getProfilerStorage
+    factory: Drupal\webprofiler\Profiler\ProfilerStorageFactory::getProfilerStorage
     arguments: ['@config.factory', '@service_container']
 
   profiler:
@@ -45,7 +47,7 @@ services:
 # event subscribers
   webprofiler.profilerListener:
     class: Symfony\Component\HttpKernel\EventListener\ProfilerListener
-    arguments: ['@profiler', '@webprofiler.matcher']
+    arguments: ['@profiler', '@?webprofiler.matcher', '%webprofiler.only_exceptions%', '%webprofiler.only_master_requests%', @request_stack]
     tags:
       - { name: event_subscriber }
 
