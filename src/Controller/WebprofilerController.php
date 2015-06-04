@@ -72,7 +72,7 @@ class WebprofilerController extends ControllerBase {
     return new static(
       $container->get('profiler'),
       $container->get('router'),
-      $container->get('templateManager'),
+      $container->get('template_manager'),
       $container->get('date.formatter'),
       $container->get('profiler.storage_manager'),
       new FileDownloadController(),
