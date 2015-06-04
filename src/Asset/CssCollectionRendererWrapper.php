@@ -7,34 +7,39 @@
 
 namespace Drupal\webprofiler\Asset;
 
-use Drupal\Core\Asset\CssCollectionRenderer;
+use Drupal\Core\Asset\AssetCollectionRendererInterface;
+use Drupal\webprofiler\DataCollector\AssetDataCollector;
 
 /**
  * Class CssCollectionRendererWrapper.
  */
-class CssCollectionRendererWrapper extends CssCollectionRenderer {
+class CssCollectionRendererWrapper implements AssetCollectionRendererInterface {
 
   /**
-   * @var
+   * @var \Drupal\Core\Asset\AssetCollectionRendererInterface
    */
-  private $cssAssets;
+  private $assetCollectionRenderer;
+
+  /**
+   * @var \Drupal\webprofiler\DataCollector\AssetDataCollector
+   */
+  private $dataCollector;
+
+  /**
+   * @param \Drupal\Core\Asset\AssetCollectionRendererInterface $assetCollectionRenderer
+   * @param \Drupal\webprofiler\DataCollector\AssetDataCollector $dataCollector
+   */
+  public function __construct(AssetCollectionRendererInterface $assetCollectionRenderer, AssetDataCollector $dataCollector) {
+    $this->assetCollectionRenderer = $assetCollectionRenderer;
+    $this->dataCollector = $dataCollector;
+  }
 
   /**
    * {@inheritdoc}
    */
   public function render(array $css_assets) {
-    $this->cssAssets[] = $css_assets;
+    $this->dataCollector->addCssAsset($css_assets);
 
-    return parent::render($css_assets);
+    return $this->assetCollectionRenderer->render($css_assets);
   }
-
-  /**
-   * Returns the css assets.
-   *
-   * @return array
-   */
-  public function getAssets() {
-    return $this->cssAssets;
-  }
-
 }

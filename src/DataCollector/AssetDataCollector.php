@@ -39,31 +39,30 @@ class AssetDataCollector extends DataCollector implements DrupalDataCollectorInt
 
   /**
    * Constructs a AssetDataCollector object.
-   *
-   * @param AssetCollectionRendererInterface $jsCollectionRenderer
-   *   The javascript asset collection renderer.
-   * @param AssetCollectionRendererInterface $cssCollectionRenderer
-   *   The css asset collection renderer.
    */
-  public function __construct(AssetCollectionRendererInterface $jsCollectionRenderer, AssetCollectionRendererInterface $cssCollectionRenderer) {
-    $this->jsCollectionRenderer = $jsCollectionRenderer;
-    $this->cssCollectionRenderer = $cssCollectionRenderer;
+  public function __construct() {
+    $this->data['js'] = array();
+    $this->data['css'] = array();
   }
 
   /**
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-    $this->data['js'] = array();
-    $this->data['css'] = array();
+  }
 
-    if(is_array($this->jsCollectionRenderer->getAssets())) {
-      $this->data['js'] = NestedArray::mergeDeepArray($this->jsCollectionRenderer->getAssets());
-    }
+  /**
+   * @param $jsAsset
+   */
+  public function addJsAsset($jsAsset) {
+    $this->data['js'] = NestedArray::mergeDeepArray(array($jsAsset, $this->data['js']));
+  }
 
-    if(is_array($this->cssCollectionRenderer->getAssets())) {
-      $this->data['css'] = NestedArray::mergeDeepArray($this->cssCollectionRenderer->getAssets());
-    }
+  /**
+   * @param $cssAsset
+   */
+  public function addCssAsset($cssAsset) {
+    $this->data['css'] = NestedArray::mergeDeepArray(array($cssAsset, $this->data['css']));
   }
 
   /**

@@ -134,7 +134,6 @@ services:
 
   webprofiler.assets:
     class: Drupal\webprofiler\DataCollector\AssetDataCollector
-    arguments: ['@asset.js.collection_renderer', '@asset.css.collection_renderer']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/asset.html.twig', id:'asset', title:'Assets', priority: 120}
 
@@ -195,6 +194,31 @@ services:
     decorates: config.factory
     arguments: ['@webprofiler.debug.config.factory.inner', '@webprofiler.config']
 
+  webprofiler.debug.authentication:
+    class: Drupal\webprofiler\Authentication\AuthenticationManagerWrapper
+    public: false
+    decorates: authentication
+    arguments: ['@webprofiler.debug.authentication.inner']
+
+  webprofiler.debug.asset.css.collection_renderer:
+    class: Drupal\webprofiler\Asset\CssCollectionRendererWrapper
+    public: false
+    decorates: asset.css.collection_renderer
+    arguments: ['@webprofiler.debug.asset.css.collection_renderer.inner', '@webprofiler.assets']
+
+  webprofiler.debug.asset.js.collection_renderer:
+    class: Drupal\webprofiler\Asset\JsCollectionRendererWrapper
+    public: false
+    decorates: asset.js.collection_renderer
+    arguments: ['@webprofiler.debug.asset.js.collection_renderer.inner', '@webprofiler.assets']
+
+  webprofiler.debug.entity.manager:
+    class: Drupal\webprofiler\Entity\EntityManagerWrapper
+    public: false
+    decorates: entity.manager
+    arguments: ['@webprofiler.debug.entity.manager.inner', '@webprofiler.assets']
+
+# webprofiler middleware
   http_middleware.webprofiler:
     class: Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware
     tags:

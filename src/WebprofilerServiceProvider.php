@@ -77,24 +77,5 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
     // Replace the regular form_builder service with a traceable one.
     $definition = $container->findDefinition('form_builder');
     $definition->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
-
-    // Replace the regular entity.manager service with a traceable one.
-    $definition = $container->findDefinition('entity.manager');
-    $definition->setClass('Drupal\webprofiler\Entity\EntityManagerWrapper');
-
-    // Replace the regular asset.js.collection_renderer service
-    // with a traceable one.
-    $definition = $container->findDefinition('asset.js.collection_renderer');
-    $definition->setClass('Drupal\webprofiler\Asset\JsCollectionRendererWrapper');
-
-    // Replace the regular asset.js.collection_renderer service
-    // with a traceable one.
-    $definition = $container->findDefinition('asset.css.collection_renderer');
-    $definition->setClass('Drupal\webprofiler\Asset\CssCollectionRendererWrapper');
-
-    // Replace the regular authentication service
-    // with a traceable one.
-    $definition = $container->findDefinition('authentication');
-    $definition->setClass('Drupal\webprofiler\Authentication\AuthenticationManagerWrapper');
   }
 }
