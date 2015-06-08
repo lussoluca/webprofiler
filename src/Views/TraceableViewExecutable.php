@@ -13,7 +13,7 @@ class TraceableViewExecutable extends ViewExecutable {
   /**
    * @var int
    */
-  private $render_time;
+  protected $render_time;
 
   /**
    * Gets the build time.
