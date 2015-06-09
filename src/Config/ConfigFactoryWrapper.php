@@ -9,8 +9,6 @@ namespace Drupal\webprofiler\Config;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
-use Drupal\Core\Language\Language;
-use Drupal\Core\Language\LanguageDefault;
 use Drupal\webprofiler\DataCollector\ConfigDataCollector;
 
 /**

@@ -38,7 +38,12 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
 
     // Add ViewsDataCollector only if Views module is enabled.
     if (FALSE !== $container->hasDefinition('views.executable')) {
-      $container->addCompilerPass(new ViewsPass(), PassConfig::TYPE_AFTER_REMOVING);
+      $container->setDefinition('views.executable.default', $container->getDefinition('views.executable'));
+      $container->register('views.executable', 'Drupal\webprofiler\Views\ViewExecutableFactoryWrapper')
+        ->addArgument(new Reference('current_user'))
+        ->addArgument(new Reference('request_stack'))
+        ->addArgument(new Reference('views.views_data'))
+        ->addArgument(new Reference('router.route_provider'));
 
       $container->register('webprofiler.views', 'Drupal\webprofiler\DataCollector\ViewsDataCollector')
         ->addArgument(new Reference(('views.executable')))
@@ -73,9 +78,5 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
         'title' => 'State',
         'priority' => 135,
       ));
-
-    // Replace the regular form_builder service with a traceable one.
-    $definition = $container->findDefinition('form_builder');
-    $definition->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
   }
 }

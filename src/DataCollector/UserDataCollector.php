@@ -7,7 +7,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Component\Utility\SafeMarkup;
-use Drupal\webprofiler\Authentication\AuthenticationManagerWrapper;
+use Drupal\webprofiler\Authentication\WebprofilerProviderCollector;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,11 +26,6 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
   private $currentUser;
 
   /**
-   * @var \Drupal\webprofiler\Authentication\AuthenticationManagerWrapper
-   */
-  private $authenticationManager;
-
-  /**
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   private $entityManager;
@@ -41,16 +36,21 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
   private $configFactory;
 
   /**
+   * @var \Drupal\webprofiler\Authentication\WebprofilerProviderCollector
+   */
+  private $providerCollector;
+
+  /**
    * @param \Drupal\Core\Session\AccountInterface $currentUser
-   * @param \Drupal\webprofiler\Authentication\AuthenticationManagerWrapper $authenticationManager
    * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   * @param \Drupal\webprofiler\Authentication\WebprofilerProviderCollector $providerCollector
    */
-  public function __construct(AccountInterface $currentUser, AuthenticationManagerWrapper $authenticationManager, EntityManagerInterface $entityManager, ConfigFactoryInterface $configFactory) {
+  public function __construct(AccountInterface $currentUser, EntityManagerInterface $entityManager, ConfigFactoryInterface $configFactory, WebprofilerProviderCollector $providerCollector) {
     $this->currentUser = $currentUser;
-    $this->authenticationManager = $authenticationManager;
     $this->entityManager = $entityManager;
     $this->configFactory = $configFactory;
+    $this->providerCollector = $providerCollector;
   }
 
   /**
@@ -102,7 +102,7 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
       $this->data['roles'][] = $entity->label();
     }
 
-    $this->data['provider'] = $this->authenticationManager->getProvider($request);
+    $this->data['provider'] = $this->providerCollector->getProvider($request);
     $this->data['anonymous'] = $this->configFactory->get('user.settings')->get('anonymous');
   }
 

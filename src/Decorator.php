@@ -71,6 +71,8 @@ class Decorator {
    * @param $method
    * @param $args
    *
+   * @return mixed
+   *
    * @throws \Exception
    */
   public function __call($method, $args) {

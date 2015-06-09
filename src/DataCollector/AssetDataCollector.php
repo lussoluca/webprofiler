@@ -24,20 +24,6 @@ class AssetDataCollector extends DataCollector implements DrupalDataCollectorInt
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
   /**
-   * The javascript asset collection.
-   *
-   * @var AssetCollectionRendererInterface
-   */
-  private $jsCollectionRenderer;
-
-  /**
-   * The css asset collection.
-   *
-   * @var AssetCollectionRendererInterface
-   */
-  private $cssCollectionRenderer;
-
-  /**
    * Constructs a AssetDataCollector object.
    */
   public function __construct() {
