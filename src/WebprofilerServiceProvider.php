@@ -66,17 +66,5 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
           'priority' => 78,
         ));
     }
-
-    // Replace the existing state service with a wrapper to collect the
-    // requested data.
-    $container->setDefinition('state.default', $container->getDefinition('state'));
-    $container->register('state', 'Drupal\webprofiler\DataCollector\StateDataCollector')
-      ->addArgument(new Reference(('state.default')))
-      ->addTag('data_collector', array(
-        'template' => '@webprofiler/Collector/state.html.twig',
-        'id' => 'state',
-        'title' => 'State',
-        'priority' => 135,
-      ));
   }
 }

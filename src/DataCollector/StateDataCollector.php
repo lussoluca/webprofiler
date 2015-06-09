@@ -17,26 +17,9 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 /**
  * Provides a data collector to get all requested state values.
  */
-class StateDataCollector extends DataCollector implements StateInterface, DrupalDataCollectorInterface {
+class StateDataCollector extends DataCollector implements DrupalDataCollectorInterface {
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
-
-  /**
-   * The state service.
-   *
-   * @var \Drupal\Core\State\StateInterface
-   */
-  protected $state;
-
-  /**
-   * Constructs a new StateDataCollector.
-   *
-   * @param \Drupal\Core\State\StateInterface $state
-   *   The state service.
-   */
-  public function __construct(StateInterface $state) {
-    $this->state = $state;
-  }
 
   /**
    * {@inheritdoc}
@@ -45,63 +28,17 @@ class StateDataCollector extends DataCollector implements StateInterface, Drupal
   }
 
   /**
+   * @param $key
+   */
+  public function addState($key) {
+    $this->data['state_get'][$key] = isset($this->data['state_get'][$key]) ? $this->data['state_get'][$key] + 1 : 1;
+  }
+
+  /**
    * Twig callback to show all requested state keys.
    */
   public function stateKeys() {
     return $this->data['state_get'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function get($key, $default = NULL) {
-    $this->data['state_get'][$key] = isset($this->data['state_get'][$key]) ? $this->data['state_get'][$key] + 1 : 1;
-    return $this->state->get($key, $default);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getMultiple(array $keys) {
-    foreach ($keys as $key) {
-      $this->data['state_get'][$key] = isset($this->data['state_get'][$key]) ? $this->data['state_get'][$key] + 1 : 1;
-    }
-    return $this->state->getMultiple($keys);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function set($key, $value) {
-    return $this->state->set($key, $value);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setMultiple(array $data) {
-    return $this->state->setMultiple($data);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function delete($key) {
-    return $this->state->delete($key);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function deleteMultiple(array $keys) {
-    return $this->state->resetCache();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function resetCache() {
-    return $this->state->resetCache();
   }
 
   /**
@@ -128,7 +65,7 @@ class StateDataCollector extends DataCollector implements StateInterface, Drupal
   /**
    * {@inheritdoc}
    */
-  public function getPanel() {
+  public function getPanel() { var_dump($this->stateKeys());
     // State
     $build['state'] = $this->getTable($this->t('State variables used'), $this->stateKeys(), array(
       $this->t('id'),

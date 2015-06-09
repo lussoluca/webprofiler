@@ -141,29 +141,34 @@ services:
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/config.html.twig', id:'config', title:'Config', priority: 130 }
 
+  webprofiler.state:
+    class: Drupal\webprofiler\DataCollector\StateDataCollector
+    tags:
+      - { name: data_collector, template:'@webprofiler/Collector/state.html.twig', id:'state', title:'State', priority: 140 }
+
   webprofiler.event:
     class: Drupal\webprofiler\DataCollector\EventDataCollector
     arguments: ['@event_dispatcher']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/events.html.twig', id:'events', title:'Events', priority: 140 }
+      - { name: data_collector, template:'@webprofiler/Collector/events.html.twig', id:'events', title:'Events', priority: 150 }
 
   webprofiler.service:
     class: Drupal\webprofiler\DataCollector\ServiceDataCollector
     arguments: ['@service_container']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/service.html.twig', id:'service', title:'Service', priority: 150 }
+      - { name: data_collector, template:'@webprofiler/Collector/service.html.twig', id:'service', title:'Service', priority: 160 }
 
   webprofiler.http:
     class: Drupal\webprofiler\DataCollector\HttpDataCollector
     arguments: ['@http_client']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/http.html.twig', id:'http', title:'Http', priority: 160 }
+      - { name: data_collector, template:'@webprofiler/Collector/http.html.twig', id:'http', title:'Http', priority: 170 }
 
   webprofiler.twig:
     class: Drupal\webprofiler\DataCollector\TwigDataCollector
     arguments: ['@twig.profile']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/twig.html.twig', id:'twig', title:'Twig', priority: 170 }
+      - { name: data_collector, template:'@webprofiler/Collector/twig.html.twig', id:'twig', title:'Twig', priority: 180 }
 
 # debug services
   stopwatch:
@@ -216,6 +221,12 @@ services:
     public: false
     decorates: form_builder
     arguments: ['@webprofiler.debug.form_builder.inner', '@webprofiler.form']
+
+  webprofiler.debug.state:
+    class: Drupal\webprofiler\State\StateWrapper
+    public: false
+    decorates: state
+    arguments: ['@webprofiler.debug.state.inner', '@webprofiler.state']
 
 # webprofiler authentication provider collector
   webprofiler.providercollector:
