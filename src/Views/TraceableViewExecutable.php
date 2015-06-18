@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 class TraceableViewExecutable extends ViewExecutable {
 
   /**
+   * @var int
+   */
+  protected $render_time;
+
+  /**
    * Gets the build time.
    *
    * @return float
@@ -41,9 +46,9 @@ class TraceableViewExecutable extends ViewExecutable {
    * {@inheritdoc}
    */
   public function render($display_id = NULL) {
-    $this->execute($display_id);
-
     $start = microtime(TRUE);
+
+    $this->execute($display_id);
 
     // Check to see if the build failed.
     if (!empty($this->build_info['fail'])) {
@@ -58,8 +63,8 @@ class TraceableViewExecutable extends ViewExecutable {
 
     $module_handler = \Drupal::moduleHandler();
 
-    // @TODO on the longrun it would be great to execute a view without
-    //   the theme system at all, see https://drupal.org/node/2322623.
+    // @TODO In the longrun, it would be great to execute a view without
+    //   the theme system at all. See https://www.drupal.org/node/2322623.
     $active_theme = \Drupal::theme()->getActiveTheme();
     $themes = array_keys($active_theme->getBaseThemes());
     $themes[] = $active_theme->getName();
@@ -69,70 +74,59 @@ class TraceableViewExecutable extends ViewExecutable {
       $cache = FALSE;
     }
     else {
+      /** @var \Drupal\views\Plugin\views\cache\CachePluginBase $cache */
       $cache = $this->display_handler->getPlugin('cache');
     }
 
-    /** @var \Drupal\views\Plugin\views\cache\CachePluginBase $cache */
-    if ($cache && $cache->cacheGet('output')) {
+    // Run preRender for the pager as it might change the result.
+    if (!empty($this->pager)) {
+      $this->pager->preRender($this->result);
     }
-    else {
-      if ($cache) {
-        $cache->cacheStart();
-      }
 
-      // Run preRender for the pager as it might change the result.
-      if (!empty($this->pager)) {
-        $this->pager->preRender($this->result);
-      }
+    // Initialize the style plugin.
+    $this->initStyle();
 
-      // Initialize the style plugin.
-      $this->initStyle();
+    if (!isset($this->response)) {
+      // Set the response so other parts can alter it.
+      $this->response = new Response('', 200);
+    }
 
-      if (!isset($this->response)) {
-        // Set the response so other parts can alter it.
-        $this->response = new Response('', 200);
-      }
-
-      // Give field handlers the opportunity to perform additional queries
-      // using the entire resultset prior to rendering.
-      if ($this->style_plugin->usesFields()) {
-        foreach ($this->field as $id => $handler) {
-          if (!empty($this->field[$id])) {
-            $this->field[$id]->preRender($this->result);
-          }
+    // Give field handlers the opportunity to perform additional queries
+    // using the entire resultset prior to rendering.
+    if ($this->style_plugin->usesFields()) {
+      foreach ($this->field as $id => $handler) {
+        if (!empty($this->field[$id])) {
+          $this->field[$id]->preRender($this->result);
         }
-      }
-
-      $this->style_plugin->preRender($this->result);
-
-      // Let each area handler have access to the result set.
-      $areas = array('header', 'footer');
-      // Only call preRender() on the empty handlers if the result is empty.
-      if (empty($this->result)) {
-        $areas[] = 'empty';
-      }
-      foreach ($areas as $area) {
-        foreach ($this->{$area} as $handler) {
-          $handler->preRender($this->result);
-        }
-      }
-
-      // Let modules modify the view just prior to rendering it.
-      $module_handler->invokeAll('views_pre_render', array($this));
-
-      // Let the themes play too, because pre render is a very themey thing.
-      foreach ($themes as $theme_name) {
-        $function = $theme_name . '_views_pre_render';
-        if (function_exists($function)) {
-          $function($this);
-        }
-      }
-
-      $this->display_handler->output = $this->display_handler->render();
-      if ($cache) {
-        $cache->cacheSet('output');
       }
     }
+
+    $this->style_plugin->preRender($this->result);
+
+    // Let each area handler have access to the result set.
+    $areas = array('header', 'footer');
+    // Only call preRender() on the empty handlers if the result is empty.
+    if (empty($this->result)) {
+      $areas[] = 'empty';
+    }
+    foreach ($areas as $area) {
+      foreach ($this->{$area} as $handler) {
+        $handler->preRender($this->result);
+      }
+    }
+
+    // Let modules modify the view just prior to rendering it.
+    $module_handler->invokeAll('views_pre_render', array($this));
+
+    // Let the themes play too, because pre render is a very themey thing.
+    foreach ($themes as $theme_name) {
+      $function = $theme_name . '_views_pre_render';
+      if (function_exists($function)) {
+        $function($this);
+      }
+    }
+
+    $this->display_handler->output = $this->display_handler->render();
 
     $exposed_form->postRender($this->display_handler->output);
 

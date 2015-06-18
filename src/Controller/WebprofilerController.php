@@ -11,7 +11,6 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
-use Drupal\system\FileDownloadController;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\webprofiler\Profiler\ProfilerStorageManager;
 use Drupal\webprofiler\Profiler\TemplateManager;
@@ -50,11 +49,6 @@ class WebprofilerController extends ControllerBase {
   private $date;
 
   /**
-   * @var \Drupal\system\FileDownloadController
-   */
-  private $fileDownloadController;
-
-  /**
    * @var \Drupal\webprofiler\Profiler\ProfilerStorageManager
    */
   private $profilerDownloadManager;
@@ -71,10 +65,9 @@ class WebprofilerController extends ControllerBase {
     return new static(
       $container->get('profiler'),
       $container->get('router'),
-      $container->get('templateManager'),
+      $container->get('template_manager'),
       $container->get('date.formatter'),
       $container->get('profiler.storage_manager'),
-      new FileDownloadController(),
       $container->get('renderer')
     );
   }
@@ -87,15 +80,13 @@ class WebprofilerController extends ControllerBase {
    * @param \Drupal\webprofiler\Profiler\TemplateManager $templateManager
    * @param \Drupal\Core\Datetime\DateFormatter $date
    * @param \Drupal\webprofiler\Profiler\ProfilerStorageManager $profilerDownloadManager
-   * @param \Drupal\system\FileDownloadController $fileDownloadController
    * @param \Drupal\Core\Render\RendererInterface $renderer
    */
-  public function __construct(Profiler $profiler, RouterInterface $router, TemplateManager $templateManager, DateFormatter $date, ProfilerStorageManager $profilerDownloadManager, FileDownloadController $fileDownloadController, RendererInterface $renderer) {
+  public function __construct(Profiler $profiler, RouterInterface $router, TemplateManager $templateManager, DateFormatter $date, ProfilerStorageManager $profilerDownloadManager, RendererInterface $renderer) {
     $this->profiler = $profiler;
     $this->router = $router;
     $this->templateManager = $templateManager;
     $this->date = $date;
-    $this->fileDownloadController = $fileDownloadController;
     $this->profilerDownloadManager = $profilerDownloadManager;
     $this->renderer = $renderer;
   }
