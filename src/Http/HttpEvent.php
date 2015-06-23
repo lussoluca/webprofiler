@@ -45,7 +45,7 @@ class HttpEvent {
    * @param array $responseHeaders
    * @param array $transferInfo
    */
-  public function __construct($url, $method, $statusCode, $requestHeaders, $responseHeaders, $transferInfo) {
+  public function __construct($url, $method, $statusCode, array $requestHeaders, array $responseHeaders, array $transferInfo) {
     $this->url = $url;
     $this->method = $method;
     $this->statusCode = $statusCode;
