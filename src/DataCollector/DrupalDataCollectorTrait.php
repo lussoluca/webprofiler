@@ -36,14 +36,14 @@ trait DrupalDataCollectorTrait {
    *
    * @param string $title
    *   The title of the table.
-   * @param array $values
+   * @param array|object $values
    *   The array of values for the table.
    * @param array $header
    *   The array of header values for the table.
    *
    * @return mixed
    */
-  private function getTable($title, $values, $header) {
+  private function getTable($title, $values, array $header) {
     $valueExporter = new ValueExporter();
 
     $rows = array();
