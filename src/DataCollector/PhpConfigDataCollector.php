@@ -2,9 +2,10 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal\Core\Routing\LinkGeneratorTrait;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PhpConfigDataCollector extends DataCollector implements DrupalDataCollectorInterface {
 
-  use StringTranslationTrait, DrupalDataCollectorTrait;
+  use StringTranslationTrait, DrupalDataCollectorTrait, LinkGeneratorTrait;
 
   /**
    * {@inheritdoc}
@@ -192,7 +193,7 @@ class PhpConfigDataCollector extends DataCollector implements DrupalDataCollecto
       ),
       array(
         $this->t('Full PHP configuration'),
-        \Drupal::linkGenerator()->generate('php info', new Url('system.php')),
+        $this->l('php info', new Url('system.php')),
       ),
     );
 
