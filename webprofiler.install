@@ -17,7 +17,7 @@ function webprofiler_schema() {
       'token' => array(
         'description' => 'Profile token.',
         'type' => 'varchar',
-        'length' => 255,
+        'length' => 6,
         'not null' => TRUE,
       ),
       'data' => array(
@@ -53,7 +53,7 @@ function webprofiler_schema() {
       'parent' => array(
         'description' => 'Profile parent.',
         'type' => 'varchar',
-        'length' => 255,
+        'length' => 6,
         'not null' => FALSE,
       ),
       'created_at' => array(
