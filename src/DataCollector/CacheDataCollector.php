@@ -168,63 +168,63 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
     ));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    $build = array();
-
-    foreach ($this->data['cache'] as $bin => $caches) {
-      $rows = array();
-
-      $build[$bin . '_title'] = array(
-        '#type' => 'inline_template',
-        '#template' => '<h3>{{ key }} ({{ totalNum }})</h3>',
-        '#context' => array(
-          'key' => $bin,
-          'totalNum' => count($caches),
-        ),
-      );
-
-      foreach($caches as $cid => $cache) {
-        $row = array();
-
-        $row[] = $cid;
-        $row[] = $cache->{CacheDataCollector::WEBPROFILER_CACHE_HIT};
-        $row[] = $cache->{CacheDataCollector::WEBPROFILER_CACHE_MISS};
-        $row[] = isset($cache->tags) ? implode(', ', $cache->tags) : '';
-
-        $rows[] = $row;
-      }
-
-      $header = array(
-        array(
-          'data' => $this->t('cid'),
-          'class' => array('cache-data-cid'),
-        ),
-        array(
-          'data' => $this->t('hits'),
-          'class' => array('cache-data-hit'),
-        ),
-        array(
-          'data' => $this->t('misses'),
-          'class' => array('cache-data-miss'),
-        ),
-        array(
-          'data' => $this->t('tags'),
-          'class' => array('cache-data-tags'),
-        ),
-      );
-
-      $build[$bin . '_table'] = array(
-        '#type' => 'table',
-        '#rows' => $rows,
-        '#header' => $header,
-        '#attributes' => array('class' => array('cache-data')),
-        '#sticky' => TRUE,
-      );
-    }
-
-    return $build;
-  }
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    foreach ($this->data['cache'] as $bin => $caches) {
+//      $rows = array();
+//
+//      $build[$bin . '_title'] = array(
+//        '#type' => 'inline_template',
+//        '#template' => '<h3>{{ key }} ({{ totalNum }})</h3>',
+//        '#context' => array(
+//          'key' => $bin,
+//          'totalNum' => count($caches),
+//        ),
+//      );
+//
+//      foreach($caches as $cid => $cache) {
+//        $row = array();
+//
+//        $row[] = $cid;
+//        $row[] = $cache->{CacheDataCollector::WEBPROFILER_CACHE_HIT};
+//        $row[] = $cache->{CacheDataCollector::WEBPROFILER_CACHE_MISS};
+//        $row[] = isset($cache->tags) ? implode(', ', $cache->tags) : '';
+//
+//        $rows[] = $row;
+//      }
+//
+//      $header = array(
+//        array(
+//          'data' => $this->t('cid'),
+//          'class' => array('cache-data-cid'),
+//        ),
+//        array(
+//          'data' => $this->t('hits'),
+//          'class' => array('cache-data-hit'),
+//        ),
+//        array(
+//          'data' => $this->t('misses'),
+//          'class' => array('cache-data-miss'),
+//        ),
+//        array(
+//          'data' => $this->t('tags'),
+//          'class' => array('cache-data-tags'),
+//        ),
+//      );
+//
+//      $build[$bin . '_table'] = array(
+//        '#type' => 'table',
+//        '#rows' => $rows,
+//        '#header' => $header,
+//        '#attributes' => array('class' => array('cache-data')),
+//        '#sticky' => TRUE,
+//      );
+//    }
+//
+//    return $build;
+//  }
 }

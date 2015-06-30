@@ -123,24 +123,24 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
     return $this->t('Total active extensions: @extensions', array('@extensions' => $this->getExtensionsCount()));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    $build = array();
-
-    // Active modules
-    $build['modules'] = $this->getTable($this->t('Active modules'), $this->moduleInfo(), array(
-      $this->t('Key'),
-      $this->t('Value')
-    ));
-
-    // Active themes
-    $build['themes'] = $this->getTable($this->t('Active themes'), $this->themeInfo(), array(
-      $this->t('Key'),
-      $this->t('Value')
-    ));
-
-    return $build;
-  }
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    // Active modules
+//    $build['modules'] = $this->getTable($this->t('Active modules'), $this->moduleInfo(), array(
+//      $this->t('Key'),
+//      $this->t('Value')
+//    ));
+//
+//    // Active themes
+//    $build['themes'] = $this->getTable($this->t('Active themes'), $this->themeInfo(), array(
+//      $this->t('Key'),
+//      $this->t('Value')
+//    ));
+//
+//    return $build;
+//  }
 }

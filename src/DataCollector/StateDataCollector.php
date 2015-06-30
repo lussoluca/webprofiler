@@ -125,16 +125,16 @@ class StateDataCollector extends DataCollector implements StateInterface, Drupal
     return $this->t('State variables: @variables', array('@variables' => count($this->stateKeys())));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    // State
-    $build['state'] = $this->getTable($this->t('State variables used'), $this->stateKeys(), array(
-      $this->t('id'),
-      $this->t('get')
-    ));
-
-    return $build;
-  }
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    // State
+//    $build['state'] = $this->getTable($this->t('State variables used'), $this->stateKeys(), array(
+//      $this->t('id'),
+//      $this->t('get')
+//    ));
+//
+//    return $build;
+//  }
 }

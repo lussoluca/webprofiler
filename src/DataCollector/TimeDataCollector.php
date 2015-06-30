@@ -87,39 +87,16 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
   /**
    * {@inheritdoc}
    */
-  public function getPanel() {
-    $rows = array(
-      array(
-        $this->t('Total time'),
-        SafeMarkup::format('!duration ms',
-          array('!duration' => sprintf('%.0f', $this->getDuration()))),
-      ),
-      array(
-        $this->t('Initialization time'),
-        SafeMarkup::format('!duration ms',
-          array('!duration' => sprintf('%.0f', $this->getInitTime()))),
-      ),
-    );
-
+  public function getLibraries() {
     return array(
-      '#type' => 'table',
-      '#rows' => $rows,
-      '#sticky' => TRUE,
-      '#attached' => array(
-        'drupalSettings' => array(
-          'webprofiler' => $this->getAttachedJs(),
-        ),
-        'library' => array(
-          'webprofiler/timeline',
-        ),
-      ),
+      'webprofiler/timeline',
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  private function getAttachedJs() {
+  public function getDrupalSettings() {
     /** @var StopwatchEvent[] $collectedEvents */
     $collectedEvents = $this->getEvents();
     $sectionPeriods = $collectedEvents['__section__']->getPeriods();
@@ -151,48 +128,4 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
 
     return array('time' => array('events' => $events, 'endtime' => $endTime));
   }
-
-  /**
-   * @param $memoryLimit
-   *
-   * @return int|string
-   */
-  private function convertToBytes($memoryLimit) {
-    if ('-1' === $memoryLimit) {
-      return -1;
-    }
-
-    $memoryLimit = strtolower($memoryLimit);
-    $max = strtolower(ltrim($memoryLimit, '+'));
-    if (0 === strpos($max, '0x')) {
-      $max = intval($max, 16);
-    }
-    elseif (0 === strpos($max, '0')) {
-      $max = intval($max, 8);
-    }
-    else {
-      $max = intval($max);
-    }
-
-    switch (substr($memoryLimit, -1)) {
-      case 't':
-        $max *= 1024;
-        break;
-
-      case 'g':
-        $max *= 1024;
-        break;
-
-      case 'm':
-        $max *= 1024;
-        break;
-
-      case 'k':
-        $max *= 1024;
-        break;
-    }
-
-    return $max;
-  }
-
 }

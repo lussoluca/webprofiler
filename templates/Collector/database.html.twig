@@ -1,6 +1,6 @@
 {% block toolbar %}
     {% set icon %}
-    <a href="{{ url("webprofiler.profiler", {profile: token}, {fragment: 'database'}) }}" title="{{ 'Database'|t }}">
+    <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'database'}) }}" title="{{ 'Database'|t }}">
         <img width="20" height="28" alt="Database"
              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQRJREFUeNpi/P//PwM1ARMDlcGogZQDlpMnT7pxc3NbA9nhQKxOpL5rQLwJiPeBsI6Ozl+YBOOOHTv+AOllQNwtLS39F2owKYZ/gRq8G4i3ggxEToggWzvc3d2Pk+1lNL4fFAs6ODi8JzdS7mMRVyDVoAMHDsANdAPiOCC+jCQvQKqBQB/BDbwBxK5AHA3E/kB8nKJkA8TMQBwLxaBIKQbi70AvTADSBiSadwFXpCikpKQU8PDwkGTaly9fHFigkaKIJid4584dkiMFFI6jkTJII0WVmpHCAixZQEXWYhDeuXMnyLsVlEQKI45qFBQZ8eRECi4DBaAlDqle/8A48ip6gAADANdQY88Uc0oGAAAAAElFTkSuQmCC"/>
         <span class="sf-toolbar-info-piece-additional sf-toolbar-status sf-toolbar-status-{{ collector.colorCode }}">{{ collector.querycount }}</span>
@@ -43,7 +43,6 @@
                 <pre><code class="sql"><%- item.query %></code></pre>
             </div>
             <div class="wp-button wp-query-info-button">Info</div>
-            {#<%- query.copy_link %>#}
             <div style="clear:both"></div>
 
             <div class="wp-query-info">

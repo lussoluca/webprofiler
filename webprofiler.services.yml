@@ -199,3 +199,7 @@ services:
   webprofiler.ide_link_generator:
     class: Drupal\webprofiler\Helper\IdeLinkGenerator
     arguments: ['@config.factory']
+
+# class shortener service
+  webprofiler.class_shortener:
+    class: Drupal\webprofiler\Helper\ClassShortener

@@ -11,10 +11,10 @@ webprofiler.toolbar:
     _permission: 'view webprofiler toolbar'
 
 # view profile
-webprofiler.profiler:
+webprofiler.dashboard:
   path: '/admin/reports/profiler/view/{profile}'
   defaults:
-    _controller: '\Drupal\webprofiler\Controller\WebprofilerController::profilerAction'
+    _controller: '\Drupal\webprofiler\Controller\WebprofilerController::dashboardAction'
     _title: 'Webprofiler'
   options:
     parameters:

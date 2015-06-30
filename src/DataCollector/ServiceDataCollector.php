@@ -106,87 +106,87 @@ class ServiceDataCollector extends DataCollector implements DrupalDataCollectorI
       ));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    $build = array();
-
-    $build['filters'] = \Drupal::formBuilder()
-      ->getForm('Drupal\\webprofiler\\Form\\ServiceFilterForm');
-
-    $build['container'] = array(
-      '#type' => 'container',
-      '#attributes' => array('id' => array('wp-service-wrapper')),
-    );
-
-    if ($this->getServicesCount()) {
-      $rows = array();
-      $services = $this->getServices();
-      ksort($services);
-
-      foreach ($services as $id => $service) {
-        $row = array();
-
-        $row[] = $id;
-
-        $class = $service['value']['class'];
-        $row[] = $class;
-
-        $edges = array();
-        foreach ($service['outEdges'] AS $edge) {
-          $edges[] = $edge['id'];
-        }
-
-        $initialized = in_array($id, $this->data['initialized_services']);
-        $row[] = ($initialized) ? $this->t('Yes') : $this->t('No');
-
-        $dependsOn = implode(', ', $edges);
-        $row[] = $dependsOn;
-
-        $tags = array();
-        foreach ($service['value']['tags'] AS $tag => $value) {
-          $tags[] = $tag;
-        }
-
-        $implodedTags = implode(', ', $tags);
-        $row[] = $implodedTags;
-
-        $rows[] = array(
-          'data' => $row,
-          'data-wp-service-id' => $id,
-          'data-wp-service-class' => $class,
-          'data-wp-service-initialized' => ($initialized) ? 1 : 0,
-          'data-wp-service-depends-on' => $dependsOn,
-          'data-wp-service-tags' => $implodedTags,
-        );
-      }
-
-      $header = array(
-        $this->t('Id'),
-        $this->t('Class'),
-        $this->t('Initialized'),
-        $this->t('Depends on'),
-        $this->t('Tags'),
-      );
-
-      $build['container']['table'] = array(
-        '#type' => 'table',
-        '#rows' => $rows,
-        '#header' => $header,
-        '#sticky' => TRUE,
-        '#attached' => array(
-          'library' => array(
-            'webprofiler/service',
-          ),
-        ),
-        '#attributes' => array(
-          'class' => array('wp-service-table'),
-        ),
-      );
-    }
-
-    return $build;
-  }
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    $build['filters'] = \Drupal::formBuilder()
+//      ->getForm('Drupal\\webprofiler\\Form\\ServiceFilterForm');
+//
+//    $build['container'] = array(
+//      '#type' => 'container',
+//      '#attributes' => array('id' => array('wp-service-wrapper')),
+//    );
+//
+//    if ($this->getServicesCount()) {
+//      $rows = array();
+//      $services = $this->getServices();
+//      ksort($services);
+//
+//      foreach ($services as $id => $service) {
+//        $row = array();
+//
+//        $row[] = $id;
+//
+//        $class = $service['value']['class'];
+//        $row[] = $class;
+//
+//        $edges = array();
+//        foreach ($service['outEdges'] AS $edge) {
+//          $edges[] = $edge['id'];
+//        }
+//
+//        $initialized = in_array($id, $this->data['initialized_services']);
+//        $row[] = ($initialized) ? $this->t('Yes') : $this->t('No');
+//
+//        $dependsOn = implode(', ', $edges);
+//        $row[] = $dependsOn;
+//
+//        $tags = array();
+//        foreach ($service['value']['tags'] AS $tag => $value) {
+//          $tags[] = $tag;
+//        }
+//
+//        $implodedTags = implode(', ', $tags);
+//        $row[] = $implodedTags;
+//
+//        $rows[] = array(
+//          'data' => $row,
+//          'data-wp-service-id' => $id,
+//          'data-wp-service-class' => $class,
+//          'data-wp-service-initialized' => ($initialized) ? 1 : 0,
+//          'data-wp-service-depends-on' => $dependsOn,
+//          'data-wp-service-tags' => $implodedTags,
+//        );
+//      }
+//
+//      $header = array(
+//        $this->t('Id'),
+//        $this->t('Class'),
+//        $this->t('Initialized'),
+//        $this->t('Depends on'),
+//        $this->t('Tags'),
+//      );
+//
+//      $build['container']['table'] = array(
+//        '#type' => 'table',
+//        '#rows' => $rows,
+//        '#header' => $header,
+//        '#sticky' => TRUE,
+//        '#attached' => array(
+//          'library' => array(
+//            'webprofiler/service',
+//          ),
+//        ),
+//        '#attributes' => array(
+//          'class' => array('wp-service-table'),
+//        ),
+//      );
+//    }
+//
+//    return $build;
+//  }
 
 }

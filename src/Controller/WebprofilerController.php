@@ -92,21 +92,28 @@ class WebprofilerController extends ControllerBase {
   }
 
   /**
-   * Generates the profile page.
+   * Generates the dashboard page.
    *
    * @param Profile $profile
    *
    * @return array
    */
-  public function profilerAction(Profile $profile) {
+  public function dashboardAction(Profile $profile) {
     $this->profiler->disable();
 
     $templateManager = $this->templateManager;
     $templates = $templateManager->getTemplates($profile);
 
     $panels = array();
-    $collectors = array();
-    $libraries = array();
+    $libraries = array('webprofiler/dashboard');
+    $drupalSettings = array(
+      'webprofiler' => array(
+        'token' => $profile->getToken(),
+        'idelink' => $this->config('webprofiler.config')->get('ide_link'),
+        'collectors' => array(),
+      ),
+    );
+
     foreach ($templates as $name => $template) {
       /** @var DrupalDataCollectorInterface $collector */
       $collector = $profile->getCollector($name);
@@ -119,36 +126,31 @@ class WebprofilerController extends ControllerBase {
           '#token' => $profile->getToken(),
         );
 
-        $collectors[] = array(
+        $drupalSettings['webprofiler']['collectors'][] = array(
           'id' => $name,
           'name' => $name,
           'label' => $collector->getTitle(),
           'summary' => $collector->getPanelSummary(),
         );
 
-        $libraries = array_merge($libraries, $collector->getLibraies());
+        $libraries = array_merge($libraries, $collector->getLibraries());
+        $drupalSettings['webprofiler'] += $collector->getDrupalSettings();
       }
     }
 
     $build = array();
-
     $build['panels'] = array(
       '#theme' => 'webprofiler_dashboard',
       '#profile' => $profile,
       '#panels' => render($panels),
-      '#spinner_path' => '/' . $this->moduleHandler()->getModule('webprofiler')->getPath() .  '/images/searching.gif',
+      '#spinner_path' => '/' . $this->moduleHandler()
+          ->getModule('webprofiler')
+          ->getPath() . '/images/searching.gif',
       '#attached' => array(
-        'drupalSettings' => array(
-          'webprofiler' => array(
-            'token' => $profile->getToken(),
-            'collectors' => $collectors,
-          ),
-        ),
+        'drupalSettings' => $drupalSettings,
+        'library' => $libraries,
       ),
     );
-
-    $libraries[] = 'webprofiler/dashboard';
-    $build['panels']['#attached']['library'] = $libraries;
 
     return $build;
   }
@@ -196,7 +198,7 @@ class WebprofilerController extends ControllerBase {
     if (count($profiles)) {
       foreach ($profiles as $profile) {
         $row = array();
-        $row[] = $this->l($profile['token'], new Url('webprofiler.profiler', array('profile' => $profile['token'])));
+        $row[] = $this->l($profile['token'], new Url('webprofiler.dashboard', array('profile' => $profile['token'])));
         $row[] = $profile['ip'];
         $row[] = $profile['method'];
         $row[] = $profile['url'];

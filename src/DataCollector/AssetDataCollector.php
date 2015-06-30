@@ -127,110 +127,110 @@ class AssetDataCollector extends DataCollector implements DrupalDataCollectorInt
     return $this->t('Total assets: @count', array('@count' => ($this->getCssCount() + $this->getJsCount())));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    $build = array();
-
-    $build['css_title'] = array(
-      '#type' => 'inline_template',
-      '#template' => '<h3>CSS</h3>',
-    );
-
-    $cssHeader = array(
-      'file',
-      'preprocess',
-      'type',
-      'version',
-      'media',
-      'every_page',
-      'preprocess',
-    );
-
-    $rows = array();
-    foreach ($this->getCssFiles() as $css) {
-      $row = array();
-
-      $row[] = $css['data'];
-      $row[] = ($css['preprocess']) ? $this->t('true') : $this->t('false');
-      $row[] = $css['type'];
-      $row[] = isset($css['version']) ? $css['version'] : '-';
-      $row[] = $css['media'];
-      $row[] = ($css['every_page']) ? $this->t('true') : $this->t('false');
-      $row[] = ($css['preprocess']) ? $this->t('true') : $this->t('false');
-
-      $rows[] = $row;
-    }
-
-    $build['css_table'] = array(
-      '#type' => 'table',
-      '#rows' => $rows,
-      '#header' => $cssHeader,
-      '#sticky' => TRUE,
-    );
-
-    $build['js_title'] = array(
-      '#type' => 'inline_template',
-      '#template' => '<h3>JS</h3>',
-    );
-
-    $jsHeader = array(
-      'file',
-      'preprocess',
-      'type',
-      'version',
-      'scope',
-      'minified',
-      'every_page',
-      'preprocess',
-    );
-
-    $rows = array();
-    foreach ($this->getJsFiles() as $js) {
-      $row = array();
-
-      $row[] = $js['data'];
-      $row[] = ($js['preprocess']) ? $this->t('true') : $this->t('false');
-      $row[] = $js['type'];
-      $row[] = isset($js['version']) ? $js['version'] : '-';
-      $row[] = $js['scope'];
-      $row[] = ($js['minified']) ? $this->t('true') : $this->t('false');
-      $row[] = ($js['every_page']) ? $this->t('true') : $this->t('false');
-      $row[] = ($js['preprocess']) ? $this->t('true') : $this->t('false');
-
-      $rows[] = $row;
-    }
-
-    $build['js_table'] = array(
-      '#type' => 'table',
-      '#rows' => $rows,
-      '#header' => $jsHeader,
-      '#sticky' => TRUE,
-    );
-
-    // Js settings.
-    if (isset($this->data['js']['drupalSettings'])) {
-      $build['js-settings'] = array(
-        array(
-          '#type' => 'inline_template',
-          '#template' => '<h3>{{ message }}</h3>',
-          '#context' => array(
-            'message' => $this->t('JS settings'),
-          ),
-          array(
-            '#type' => 'inline_template',
-            '#template' => '<textarea style="width:100%; height:400px">{{ settings }}</textarea>',
-            '#context' => array(
-              'settings' => json_encode($this->data['js']['drupalSettings']['data'], JSON_PRETTY_PRINT | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return $build;
-  }
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    $build['css_title'] = array(
+//      '#type' => 'inline_template',
+//      '#template' => '<h3>CSS</h3>',
+//    );
+//
+//    $cssHeader = array(
+//      'file',
+//      'preprocess',
+//      'type',
+//      'version',
+//      'media',
+//      'every_page',
+//      'preprocess',
+//    );
+//
+//    $rows = array();
+//    foreach ($this->getCssFiles() as $css) {
+//      $row = array();
+//
+//      $row[] = $css['data'];
+//      $row[] = ($css['preprocess']) ? $this->t('true') : $this->t('false');
+//      $row[] = $css['type'];
+//      $row[] = isset($css['version']) ? $css['version'] : '-';
+//      $row[] = $css['media'];
+//      $row[] = ($css['every_page']) ? $this->t('true') : $this->t('false');
+//      $row[] = ($css['preprocess']) ? $this->t('true') : $this->t('false');
+//
+//      $rows[] = $row;
+//    }
+//
+//    $build['css_table'] = array(
+//      '#type' => 'table',
+//      '#rows' => $rows,
+//      '#header' => $cssHeader,
+//      '#sticky' => TRUE,
+//    );
+//
+//    $build['js_title'] = array(
+//      '#type' => 'inline_template',
+//      '#template' => '<h3>JS</h3>',
+//    );
+//
+//    $jsHeader = array(
+//      'file',
+//      'preprocess',
+//      'type',
+//      'version',
+//      'scope',
+//      'minified',
+//      'every_page',
+//      'preprocess',
+//    );
+//
+//    $rows = array();
+//    foreach ($this->getJsFiles() as $js) {
+//      $row = array();
+//
+//      $row[] = $js['data'];
+//      $row[] = ($js['preprocess']) ? $this->t('true') : $this->t('false');
+//      $row[] = $js['type'];
+//      $row[] = isset($js['version']) ? $js['version'] : '-';
+//      $row[] = $js['scope'];
+//      $row[] = ($js['minified']) ? $this->t('true') : $this->t('false');
+//      $row[] = ($js['every_page']) ? $this->t('true') : $this->t('false');
+//      $row[] = ($js['preprocess']) ? $this->t('true') : $this->t('false');
+//
+//      $rows[] = $row;
+//    }
+//
+//    $build['js_table'] = array(
+//      '#type' => 'table',
+//      '#rows' => $rows,
+//      '#header' => $jsHeader,
+//      '#sticky' => TRUE,
+//    );
+//
+//    // Js settings.
+//    if (isset($this->data['js']['drupalSettings'])) {
+//      $build['js-settings'] = array(
+//        array(
+//          '#type' => 'inline_template',
+//          '#template' => '<h3>{{ message }}</h3>',
+//          '#context' => array(
+//            'message' => $this->t('JS settings'),
+//          ),
+//          array(
+//            '#type' => 'inline_template',
+//            '#template' => '<textarea style="width:100%; height:400px">{{ settings }}</textarea>',
+//            '#context' => array(
+//              'settings' => json_encode($this->data['js']['drupalSettings']['data'], JSON_PRETTY_PRINT | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT),
+//            ),
+//          ),
+//        ),
+//      );
+//    }
+//
+//    return $build;
+//  }
 
   /**
    * Sorts an assets collection array by weight.

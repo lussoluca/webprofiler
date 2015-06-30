@@ -3,7 +3,6 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\Component\Utility\String;
-use Symfony\Component\HttpKernel\DataCollector\Util\ValueExporter;
 
 /**
  * Class DrupalDataCollectorTrait
@@ -27,14 +26,14 @@ trait DrupalDataCollectorTrait {
   /**
    * {@inheritdoc}
    */
-  public function getPanel() {
-    return NULL;
+  public function getLibraries() {
+    return array();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getLibraies() {
+  public function getDrupalSettings() {
     return array();
   }
 
@@ -46,48 +45,45 @@ trait DrupalDataCollectorTrait {
   }
 
   /**
-   * Builds a simple key/value table.
+   * @param $value
    *
-   * @param string $title
-   *   The title of the table.
-   * @param array|object $values
-   *   The array of values for the table.
-   * @param array $header
-   *   The array of header values for the table.
-   *
-   * @return mixed
+   * @return int|string
    */
-  private function getTable($title, $values, array $header) {
-    $valueExporter = new ValueExporter();
-
-    $rows = array();
-    foreach ($values as $key => $value) {
-      $row = array();
-
-      $row[] = $key;
-      $row[] = $valueExporter->exportValue($value);
-
-      $rows[] = $row;
+  private function convertToBytes($value) {
+    if ('-1' === $value) {
+      return -1;
     }
 
-    if ($title) {
-      $build['title'] = array(
-        '#type' => 'inline_template',
-        '#template' => '<h3>{{ title }}</h3>',
-        '#context' => array(
-          'title' => $title,
-        ),
-      );
+    $value = strtolower($value);
+    $max = strtolower(ltrim($value, '+'));
+    if (0 === strpos($max, '0x')) {
+      $max = intval($max, 16);
+    }
+    elseif (0 === strpos($max, '0')) {
+      $max = intval($max, 8);
+    }
+    else {
+      $max = intval($max);
     }
 
-    $build['table'] = array(
-      '#type' => 'table',
-      '#rows' => $rows,
-      '#header' => $header,
-      '#sticky' => TRUE,
-    );
+    switch (substr($value, -1)) {
+      case 't':
+        $max *= 1024;
+        break;
 
-    return $build;
+      case 'g':
+        $max *= 1024;
+        break;
+
+      case 'm':
+        $max *= 1024;
+        break;
+
+      case 'k':
+        $max *= 1024;
+        break;
+    }
+
+    return $max;
   }
-
 }

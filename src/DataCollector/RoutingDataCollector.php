@@ -88,38 +88,38 @@ class RoutingDataCollector extends DataCollector implements DrupalDataCollectorI
     return $this->t('Defined routes: @route', array('@route' => count($this->routing())));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    $build = array();
-
-    $rows = array();
-    foreach ($this->routing() as $value) {
-      $row = array();
-
-      $row[] = $value['name'];
-      $row[] = $value['path'];
-
-      $rows[] = $row;
-    }
-
-    $build['title'] = array(
-      '#type' => 'inline_template',
-      '#template' => '<h3>{{ title }}</h3>',
-      '#context' => array(
-        'title' => $this->t('Available routes'),
-      ),
-    );
-
-    $build['table'] = array(
-      '#type' => 'table',
-      '#rows' => $rows,
-      '#header' => array($this->t('Route name'), 'URL'),
-      '#sticky' => TRUE,
-    );
-
-    return $build;
-  }
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    $rows = array();
+//    foreach ($this->routing() as $value) {
+//      $row = array();
+//
+//      $row[] = $value['name'];
+//      $row[] = $value['path'];
+//
+//      $rows[] = $row;
+//    }
+//
+//    $build['title'] = array(
+//      '#type' => 'inline_template',
+//      '#template' => '<h3>{{ title }}</h3>',
+//      '#context' => array(
+//        'title' => $this->t('Available routes'),
+//      ),
+//    );
+//
+//    $build['table'] = array(
+//      '#type' => 'table',
+//      '#rows' => $rows,
+//      '#header' => array($this->t('Route name'), 'URL'),
+//      '#sticky' => TRUE,
+//    );
+//
+//    return $build;
+//  }
 
 }

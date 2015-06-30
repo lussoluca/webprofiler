@@ -43,7 +43,7 @@ class WebprofilerEventSubscriber implements EventSubscriberInterface {
     if ($response->headers->has('X-Debug-Token') && null !== $this->urlGenerator) {
       $response->headers->set(
         'X-Debug-Token-Link',
-        $this->urlGenerator->generate('webprofiler.profiler', array('profile' => $response->headers->get('X-Debug-Token')))
+        $this->urlGenerator->generate('webprofiler.dashboard', array('profile' => $response->headers->get('X-Debug-Token')))
       );
     }
 

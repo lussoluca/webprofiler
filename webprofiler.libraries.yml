@@ -34,6 +34,7 @@ dashboard:
   version: 1.0
   js:
     js/app/main.js: {}
+    js/app/helpers.js: {}
     js/app/models/collector.js: {}
     js/app/collections/collectors.js: {}
     js/app/views/collector.js: {}
@@ -48,7 +49,6 @@ dashboard:
     - core/jquery
     - core/drupal
     - core/drupalSettings
-    - webprofiler/d3
 database:
   version: 1.0
   js:
@@ -61,3 +61,12 @@ database:
     - core/drupal
     - core/drupalSettings
     - webprofiler/highlight
+timeline:
+  version: 1.0
+  js:
+    js/timeline.js: {}
+  css:
+    component:
+      css/timeline.css: {}
+  dependencies:
+    - webprofiler/d3

@@ -93,85 +93,85 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
     return $this->t('Total views: @count', array('@count' => $this->getViewsCount()));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    $build = array();
-
-    if ($this->getViewsCount()) {
-
-      /** @var EntityManager $entity_manager */
-      $entity_manager = \Drupal::service('entity.manager');
-      $storage = $entity_manager->getStorage('view');
-
-      $rows = array();
-      foreach ($this->getViews() as $view) {
-        $row = array();
-
-        $entity = $storage->load($view['id']);
-
-        $operations = array();
-        if ($entity->access('update') && $entity->hasLinkTemplate('edit-display-form')) {
-          $route = $entity->urlInfo('edit-display-form');
-          $route->setRouteParameter('display_id', $view['current_display']);
-
-          $operations['edit'] = array(
-              'title' => $this->t('Edit'),
-              'weight' => 10,
-              'url' => $route
-            );
-        }
-
-        $row[] = $view['id'];
-        $row[] = $view['current_display'];
-        $row[] = sprintf('%0.2f ms', ($view['build_time'] * 1000));
-        $row[] = sprintf('%0.2f ms', ($view['execute_time'] * 1000));
-        $row[] = sprintf('%0.2f ms', ($view['render_time'] * 1000));
-        $row[] = array(
-          'data' => array(
-            '#type' => 'operations',
-            '#links' => $operations,
-          ),
-        );
-
-        $rows[] = $row;
-      }
-
-      $header = array(
-        $this->t('Id'),
-        $this->t('Display'),
-        array(
-          'data' => $this->t('Build time'),
-          'class' => array(RESPONSIVE_PRIORITY_LOW),
-        ),
-        array(
-          'data' => $this->t('Execute time'),
-          'class' => array(RESPONSIVE_PRIORITY_LOW),
-        ),
-        array(
-          'data' => $this->t('Render time'),
-          'class' => array(RESPONSIVE_PRIORITY_LOW),
-        ),
-        $this->t('Operations'),
-      );
-
-      $build['title'] = array(
-        '#type' => 'inline_template',
-        '#template' => '<h3>{{ title }}</h3>',
-        '#context' => array(
-          'title' => $this->t('Rendered views'),
-        ),
-      );
-
-      $build['table'] = array(
-        '#type' => 'table',
-        '#rows' => $rows,
-        '#header' => $header,
-        '#sticky' => TRUE,
-      );
-    }
-
-    return $build;
-  }
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    if ($this->getViewsCount()) {
+//
+//      /** @var EntityManager $entity_manager */
+//      $entity_manager = \Drupal::service('entity.manager');
+//      $storage = $entity_manager->getStorage('view');
+//
+//      $rows = array();
+//      foreach ($this->getViews() as $view) {
+//        $row = array();
+//
+//        $entity = $storage->load($view['id']);
+//
+//        $operations = array();
+//        if ($entity->access('update') && $entity->hasLinkTemplate('edit-display-form')) {
+//          $route = $entity->urlInfo('edit-display-form');
+//          $route->setRouteParameter('display_id', $view['current_display']);
+//
+//          $operations['edit'] = array(
+//              'title' => $this->t('Edit'),
+//              'weight' => 10,
+//              'url' => $route
+//            );
+//        }
+//
+//        $row[] = $view['id'];
+//        $row[] = $view['current_display'];
+//        $row[] = sprintf('%0.2f ms', ($view['build_time'] * 1000));
+//        $row[] = sprintf('%0.2f ms', ($view['execute_time'] * 1000));
+//        $row[] = sprintf('%0.2f ms', ($view['render_time'] * 1000));
+//        $row[] = array(
+//          'data' => array(
+//            '#type' => 'operations',
+//            '#links' => $operations,
+//          ),
+//        );
+//
+//        $rows[] = $row;
+//      }
+//
+//      $header = array(
+//        $this->t('Id'),
+//        $this->t('Display'),
+//        array(
+//          'data' => $this->t('Build time'),
+//          'class' => array(RESPONSIVE_PRIORITY_LOW),
+//        ),
+//        array(
+//          'data' => $this->t('Execute time'),
+//          'class' => array(RESPONSIVE_PRIORITY_LOW),
+//        ),
+//        array(
+//          'data' => $this->t('Render time'),
+//          'class' => array(RESPONSIVE_PRIORITY_LOW),
+//        ),
+//        $this->t('Operations'),
+//      );
+//
+//      $build['title'] = array(
+//        '#type' => 'inline_template',
+//        '#template' => '<h3>{{ title }}</h3>',
+//        '#context' => array(
+//          'title' => $this->t('Rendered views'),
+//        ),
+//      );
+//
+//      $build['table'] = array(
+//        '#type' => 'table',
+//        '#rows' => $rows,
+//        '#header' => $header,
+//        '#sticky' => TRUE,
+//      );
+//    }
+//
+//    return $build;
+//  }
 }

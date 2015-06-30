@@ -64,16 +64,16 @@ class ConfigDataCollector extends DataCollector implements DrupalDataCollectorIn
     return $this->t('Total config: @count', array('@count' => count($this->configNames())));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    // Config
-    $build['config'] = $this->getTable($this->t('Configurations used'), $this->configNames(), array(
-      $this->t('id'),
-      $this->t('get')
-    ));
-
-    return $build;
-  }
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    // Config
+//    $build['config'] = $this->getTable($this->t('Configurations used'), $this->configNames(), array(
+//      $this->t('id'),
+//      $this->t('get')
+//    ));
+//
+//    return $build;
+//  }
 }

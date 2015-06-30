@@ -8,7 +8,7 @@ webprofiler.admin_manage:
   route_name: webprofiler.admin_manage
   base_route: webprofiler.admin_configure
   weight: 20
-webprofiler.profiler:
-  title: 'Profile'
-  route_name: webprofiler.profiler
-  base_route: webprofiler.profiler
+webprofiler.dashboard:
+  title: 'dashboard'
+  route_name: webprofiler.dashboard
+  base_route: webprofiler.dashboard

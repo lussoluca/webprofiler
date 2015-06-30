@@ -130,103 +130,103 @@ class BlockDataCollector extends DataCollector implements DrupalDataCollectorInt
     ));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    $build = array();
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    /** @var EntityManager $entity_manager */
+//    $entity_manager = \Drupal::service('entity.manager');
+//    $storage = $entity_manager->getStorage('block');
+//
+//    if ($this->getLoadedBlocks()) {
+//      $build['loaded'] = $this->getTable($this->getLoadedBlocks(), $storage, $this->t('Loaded blocks'));
+//    }
+//
+//    if ($this->getRenderedBlocks()) {
+//      $build['rendered'] = $this->getTable($this->getRenderedBlocks(), $storage, $this->t('Rendered blocks'));
+//    }
+//
+//    return $build;
+//  }
 
-    /** @var EntityManager $entity_manager */
-    $entity_manager = \Drupal::service('entity.manager');
-    $storage = $entity_manager->getStorage('block');
-
-    if ($this->getLoadedBlocks()) {
-      $build['loaded'] = $this->getTable($this->getLoadedBlocks(), $storage, $this->t('Loaded blocks'));
-    }
-
-    if ($this->getRenderedBlocks()) {
-      $build['rendered'] = $this->getTable($this->getRenderedBlocks(), $storage, $this->t('Rendered blocks'));
-    }
-
-    return $build;
-  }
-
-  /**
-   * @param $blocks
-   * @param EntityStorageInterface $storage
-   *
-   * @return mixed
-   */
-  private function getTable($blocks, $storage, $title) {
-    $rows = array();
-    foreach ($blocks as $block) {
-      $row = array();
-
-      /** @var Block $entity */
-      $entity = $storage->load($block['id']);
-
-      $operations = array();
-      if ($entity->access('update') && $entity->hasLinkTemplate('edit-form')) {
-        $operations['edit'] = array(
-          'title'  => $this->t('Edit'),
-          'weight' => 10,
-          'url' => $entity->urlInfo('edit-form'),
-        );
-      }
-
-      $row[] = $entity->id();
-      $row[] = $block['settings']['label'];
-      $row[] = $block['settings']['provider'];
-      $row[] = ($block['region'] == -1) ? $this->t('No region') : $block['region'];
-      $row[] = $block['theme'];
-      $row[] = ($block['status']) ? $this->t('Enabled') : $this->t('Disabled');
-      $row[] = $block['plugin'];
-      $row[] = array(
-        'data' => array(
-          '#type' => 'operations',
-          '#links' => $operations,
-        ),
-      );
-
-      $rows[] = $row;
-    }
-
-    $header = array(
-      $this->t('Id'),
-      $this->t('Label'),
-      $this->t('Provider'),
-      $this->t('Region'),
-      array(
-        'data' => $this->t('Theme'),
-        'class' => array(RESPONSIVE_PRIORITY_LOW),
-      ),
-      array(
-        'data' => $this->t('Status'),
-        'class' => array(RESPONSIVE_PRIORITY_LOW),
-      ),
-      array(
-        'data' => $this->t('Plugin'),
-        'class' => array(RESPONSIVE_PRIORITY_LOW),
-      ),
-      $this->t('Operations'),
-    );
-
-    $build['title'] = array(
-      '#type' => 'inline_template',
-      '#template' => '<h3>{{ title }}</h3>',
-      '#context' => array(
-        'title' => $title,
-      ),
-    );
-
-    $build['table'] = array(
-      '#type' => 'table',
-      '#rows' => $rows,
-      '#header' => $header,
-      '#sticky' => TRUE,
-    );
-
-    return $build;
-  }
+//  /**
+//   * @param $blocks
+//   * @param EntityStorageInterface $storage
+//   *
+//   * @return mixed
+//   */
+//  private function getTable($blocks, $storage, $title) {
+//    $rows = array();
+//    foreach ($blocks as $block) {
+//      $row = array();
+//
+//      /** @var Block $entity */
+//      $entity = $storage->load($block['id']);
+//
+//      $operations = array();
+//      if ($entity->access('update') && $entity->hasLinkTemplate('edit-form')) {
+//        $operations['edit'] = array(
+//          'title'  => $this->t('Edit'),
+//          'weight' => 10,
+//          'url' => $entity->urlInfo('edit-form'),
+//        );
+//      }
+//
+//      $row[] = $entity->id();
+//      $row[] = $block['settings']['label'];
+//      $row[] = $block['settings']['provider'];
+//      $row[] = ($block['region'] == -1) ? $this->t('No region') : $block['region'];
+//      $row[] = $block['theme'];
+//      $row[] = ($block['status']) ? $this->t('Enabled') : $this->t('Disabled');
+//      $row[] = $block['plugin'];
+//      $row[] = array(
+//        'data' => array(
+//          '#type' => 'operations',
+//          '#links' => $operations,
+//        ),
+//      );
+//
+//      $rows[] = $row;
+//    }
+//
+//    $header = array(
+//      $this->t('Id'),
+//      $this->t('Label'),
+//      $this->t('Provider'),
+//      $this->t('Region'),
+//      array(
+//        'data' => $this->t('Theme'),
+//        'class' => array(RESPONSIVE_PRIORITY_LOW),
+//      ),
+//      array(
+//        'data' => $this->t('Status'),
+//        'class' => array(RESPONSIVE_PRIORITY_LOW),
+//      ),
+//      array(
+//        'data' => $this->t('Plugin'),
+//        'class' => array(RESPONSIVE_PRIORITY_LOW),
+//      ),
+//      $this->t('Operations'),
+//    );
+//
+//    $build['title'] = array(
+//      '#type' => 'inline_template',
+//      '#template' => '<h3>{{ title }}</h3>',
+//      '#context' => array(
+//        'title' => $title,
+//      ),
+//    );
+//
+//    $build['table'] = array(
+//      '#type' => 'table',
+//      '#rows' => $rows,
+//      '#header' => $header,
+//      '#sticky' => TRUE,
+//    );
+//
+//    return $build;
+//  }
 
 }

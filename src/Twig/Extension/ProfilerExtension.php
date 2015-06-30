@@ -2,15 +2,28 @@
 
 namespace Drupal\webprofiler\Twig\Extension;
 
+use Drupal\webprofiler\Helper\ClassShortenerInterface;
+use Drupal\webprofiler\Helper\IdeLinkGeneratorInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Class ProfilerExtension
  */
 class ProfilerExtension extends \Twig_Extension_Profiler {
+
+  /**
+   * @var \Symfony\Component\Stopwatch\Stopwatch
+   */
   private $stopwatch;
+
+  /**
+   * @var \SplObjectStorage
+   */
   private $events;
 
+  /**
+   * {@inheritdoc}
+   */
   public function __construct(\Twig_Profiler_Profile $profile, Stopwatch $stopwatch = NULL) {
     parent::__construct($profile);
 
@@ -18,6 +31,9 @@ class ProfilerExtension extends \Twig_Extension_Profiler {
     $this->events = new \SplObjectStorage();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function enter(\Twig_Profiler_Profile $profile) {
     if ($this->stopwatch && $profile->isTemplate()) {
       $this->events[$profile] = $this->stopwatch->start($profile->getName(), 'template');
@@ -26,6 +42,9 @@ class ProfilerExtension extends \Twig_Extension_Profiler {
     parent::enter($profile);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function leave(\Twig_Profiler_Profile $profile) {
     parent::leave($profile);
 

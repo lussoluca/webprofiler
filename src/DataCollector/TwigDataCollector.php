@@ -132,85 +132,85 @@ class TwigDataCollector extends DataCollector implements DrupalDataCollectorInte
     return 'twig';
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    $build = array();
-
-    $rows = array(
-      array(
-        $this->t('Total Render Time'),
-        SafeMarkup::format('!time ms',
-          array('!time' => sprintf('%.0f', $this->getTime()))),
-      ),
-      array(
-        $this->t('Template Calls'),
-        $this->getTemplateCount(),
-      ),
-      array(
-        $this->t('Block Calls'),
-        $this->getBlockCount(),
-      ),
-      array(
-        $this->t('Macro Calls'),
-        $this->getMacroCount(),
-      ),
-    );
-
-    $build['stats_title'] = array(
-      '#type' => 'inline_template',
-      '#template' => '<h3>Twig Stats</h3>',
-    );
-
-    $build['stats'] = array(
-      '#type' => 'table',
-      '#rows' => $rows,
-      '#header' => array(
-        $this->t('Config'),
-        $this->t('Value'),
-      ),
-      '#sticky' => TRUE,
-    );
-
-    $build['rendered_title'] = array(
-      '#type' => 'inline_template',
-      '#template' => '<h3>Rendered Templates</h3>',
-    );
-
-    $rows = array();
-    foreach($this->getTemplates() as $template => $count) {
-      $row = array(
-        $template,
-        $count,
-      );
-
-      $rows[] = $row;
-    }
-
-    $build['rendered'] = array(
-      '#type' => 'table',
-      '#rows' => $rows,
-      '#header' => array(
-        $this->t('Template Name'),
-        $this->t('Render Count'),
-      ),
-      '#sticky' => TRUE,
-    );
-
-    $build['rendering_call_title'] = array(
-      '#type' => 'inline_template',
-      '#template' => '<h3>Rendering Call Graph</h3>',
-    );
-
-    $build['rendering_call'] = array(
-      '#type' => 'inline_template',
-      '#template' => '{{ data }}',
-      '#context' => array(
-        'data' => $this->getHtmlCallGraph(),
-      ),
-    );
-
-    return $build;
-  }
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    $rows = array(
+//      array(
+//        $this->t('Total Render Time'),
+//        SafeMarkup::format('!time ms',
+//          array('!time' => sprintf('%.0f', $this->getTime()))),
+//      ),
+//      array(
+//        $this->t('Template Calls'),
+//        $this->getTemplateCount(),
+//      ),
+//      array(
+//        $this->t('Block Calls'),
+//        $this->getBlockCount(),
+//      ),
+//      array(
+//        $this->t('Macro Calls'),
+//        $this->getMacroCount(),
+//      ),
+//    );
+//
+//    $build['stats_title'] = array(
+//      '#type' => 'inline_template',
+//      '#template' => '<h3>Twig Stats</h3>',
+//    );
+//
+//    $build['stats'] = array(
+//      '#type' => 'table',
+//      '#rows' => $rows,
+//      '#header' => array(
+//        $this->t('Config'),
+//        $this->t('Value'),
+//      ),
+//      '#sticky' => TRUE,
+//    );
+//
+//    $build['rendered_title'] = array(
+//      '#type' => 'inline_template',
+//      '#template' => '<h3>Rendered Templates</h3>',
+//    );
+//
+//    $rows = array();
+//    foreach($this->getTemplates() as $template => $count) {
+//      $row = array(
+//        $template,
+//        $count,
+//      );
+//
+//      $rows[] = $row;
+//    }
+//
+//    $build['rendered'] = array(
+//      '#type' => 'table',
+//      '#rows' => $rows,
+//      '#header' => array(
+//        $this->t('Template Name'),
+//        $this->t('Render Count'),
+//      ),
+//      '#sticky' => TRUE,
+//    );
+//
+//    $build['rendering_call_title'] = array(
+//      '#type' => 'inline_template',
+//      '#template' => '<h3>Rendering Call Graph</h3>',
+//    );
+//
+//    $build['rendering_call'] = array(
+//      '#type' => 'inline_template',
+//      '#template' => '{{ data }}',
+//      '#context' => array(
+//        'data' => $this->getHtmlCallGraph(),
+//      ),
+//    );
+//
+//    return $build;
+//  }
 }

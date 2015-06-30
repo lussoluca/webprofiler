@@ -111,72 +111,72 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
     ));
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getPanel() {
-    $build = array();
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function getPanel() {
+//    $build = array();
+//
+//    $build += $this->getTable($this->getCompleted(), $this->t('Completed'));
+//    $build += $this->getTable($this->getError(), $this->t('Error'));
+//
+//    return $build;
+//  }
 
-    $build += $this->getTable($this->getCompleted(), $this->t('Completed'));
-    $build += $this->getTable($this->getError(), $this->t('Error'));
-
-    return $build;
-  }
-
-  /**
-   * @param HttpEvent[] $requests
-   * @param string $type
-   *
-   * @return array
-   */
-  private function getTable($requests, $type) {
-    $rows = array();
-    foreach ($requests as $request) {
-      $row = array();
-
-      $row[] = $request->getUrl();
-      $row[] = $request->getMethod();
-      $row[] = $request->getStatusCode();
-      $row[] = $this->varToString($request->getRequestHeaders());
-      $row[] = $this->varToString($request->getResponseHeaders(), TRUE);
-      $row[] = $this->varToString($request->getTransferInfo(), TRUE);
-
-      $rows[] = $row;
-    }
-
-    $header = array(
-      $this->t('Url'),
-      $this->t('Method'),
-      $this->t('Status code'),
-      array(
-        'data' => $this->t('Request headers'),
-        'class' => array(RESPONSIVE_PRIORITY_LOW),
-      ),
-      array(
-        'data' => $this->t('Response headers'),
-        'class' => array(RESPONSIVE_PRIORITY_LOW),
-      ),
-      array(
-        'data' => $this->t('Transfer info'),
-        'class' => array(RESPONSIVE_PRIORITY_LOW),
-      ),
-    );
-
-    $build['title_' . $type] = array(
-      '#type' => 'inline_template',
-      '#template' => '<h3>{{ title }}</h3>',
-      '#context' => array(
-        'title' => $type,
-      ),
-    );
-
-    $build['table_' . $type] = array(
-      '#type' => 'table',
-      '#rows' => $rows,
-      '#header' => $header,
-      '#sticky' => TRUE,
-    );
-
-    return $build;
-  }
+//  /**
+//   * @param HttpEvent[] $requests
+//   * @param string $type
+//   *
+//   * @return array
+//   */
+//  private function getTable($requests, $type) {
+//    $rows = array();
+//    foreach ($requests as $request) {
+//      $row = array();
+//
+//      $row[] = $request->getUrl();
+//      $row[] = $request->getMethod();
+//      $row[] = $request->getStatusCode();
+//      $row[] = $this->varToString($request->getRequestHeaders());
+//      $row[] = $this->varToString($request->getResponseHeaders(), TRUE);
+//      $row[] = $this->varToString($request->getTransferInfo(), TRUE);
+//
+//      $rows[] = $row;
+//    }
+//
+//    $header = array(
+//      $this->t('Url'),
+//      $this->t('Method'),
+//      $this->t('Status code'),
+//      array(
+//        'data' => $this->t('Request headers'),
+//        'class' => array(RESPONSIVE_PRIORITY_LOW),
+//      ),
+//      array(
+//        'data' => $this->t('Response headers'),
+//        'class' => array(RESPONSIVE_PRIORITY_LOW),
+//      ),
+//      array(
+//        'data' => $this->t('Transfer info'),
+//        'class' => array(RESPONSIVE_PRIORITY_LOW),
+//      ),
+//    );
+//
+//    $build['title_' . $type] = array(
+//      '#type' => 'inline_template',
+//      '#template' => '<h3>{{ title }}</h3>',
+//      '#context' => array(
+//        'title' => $type,
+//      ),
+//    );
+//
+//    $build['table_' . $type] = array(
+//      '#type' => 'table',
+//      '#rows' => $rows,
+//      '#header' => $header,
+//      '#sticky' => TRUE,
+//    );
+//
+//    return $build;
+//  }
 }

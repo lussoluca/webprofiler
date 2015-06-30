@@ -21,6 +21,14 @@ interface DrupalDataCollectorInterface {
   public function getTitle();
 
   /**
+   * Returns the name of the collector.
+   *
+   * @return string
+   *   The collector name.
+   */
+  public function getName();
+
+  /**
    * Returns th string used in vertical tab summary.
    *
    * @return string
@@ -37,19 +45,15 @@ interface DrupalDataCollectorInterface {
   public function hasPanel();
 
   /**
-   * Returns the detail panel.
+   * Returns the libraries needed in detail panel.
    *
    * @return array
    *   The render array for detail panel.
    */
-  public function getLibraies();
+  public function getLibraries();
 
   /**
-   * Returns the name of the collector.
-   *
-   * @return string
-   *   The collector name.
+   * @return array
    */
-  public function getName();
-
+  public function getDrupalSettings();
 }

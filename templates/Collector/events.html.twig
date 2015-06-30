@@ -1,32 +1,49 @@
 {% block toolbar %}
-  {% set icon %}
-  <a href="{{ url("webprofiler.profiler", {profile: token}, {fragment: 'events'}) }}" title="{{ 'Events'|t }}">
-    <img width="20" height="28" alt="Asset"
-         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABFJJREFUeNrkVVlIY2cY/RMTE81NMkkajUs1OBqkiVsjjAtStGrtSGyFjOjAQNVCKRb66ot9KrjgQx+FUgTBKkURbIfighWl4r6h44pajcZEo3ESTeKS9PzB2AyNZaD1qRcOem+S83/f+c53Lsvj8ZD/+mKTB7gehJTj+2d9fZ1MTk6S0NBQSW9vb97e3t7jmpqaXzIzM185HA7vd4KDg8nGxoaysbGxVCwWm/V6/aDL5TKlpKSQpKSkv5NyuVxyc3Mj7e7u/jw2NjYxJyfnMDIykmGz2UQgEBAWi0XcbjeRSqWhZWVl4v39fXVXV5cqNzf3exxmCNj+9fU1MzQ09JVWq32sUqmMu7u7QhwiDwoKIoeHh2R7e5twOByCwcrQhUShUJjz8vJkw8PDX5+fn8sDkvb3938YHR39rlAoNBoMBgGqtWxubnJRKbu9vZ20trZSQoJnvKioKMvZ2Rn/6urKmpqayvT19ekCks7NzaUnJyeboK0kPj7+cGZmJprH4zGnp6duEBFUTg4ODqjmIfPz87GQxoRnori4ODOKUPuTsnw+RRvPGIYJMZvNDNplYmJiLvPz839oamoSj4yMfAJNuRqN5mV9ff0fOPDF1NSUAt85lclkDkjnys7O/vGOlZLeQgjIgUggnmqHqmMqKip+z8jI8MAFnpKSkpXZ2dn38JkIUAFRQNjt/R2Xv09twBFwAGwClunp6efLy8tZdFgUW1tbiaOjo1/is9fUhcA+YL69fzvzSyQSEQZHfBJBT4J2Bf9qo9Rq9bxcLndeXl4STJrA8B4Mc/atN4pesAk5OTkh1PB0exYXF/kWi4UTFhZG+Hw+wZQJ5BDR7fEPIroYASu9uLggJpOJYO2I0+kkqI47Njb2MdzAKS4uXisvL5/FurIGBgaeYoDS1dVVsrKyQpaWlghsF7hS2IJERER4T4U/qckT4ccP6BYplco+rOcxqn0fZFqj0fgkLS3tV18m0EICktJV9F101xcWFj5Cu+HQ1YGNoeSXWGErpv8IwVOSlZXVh7xw0zy4V1MY3/uXWgetMzB8EZUHw7lKSEjgQ0MONLei2kcTExN5R0dHMehshw7x3umLRKI7YDhaDOSJ18hstq2qquobLMG30DKYkuzs7KggTa5Pf4p/rJReSCud1WplEBYuSMGrra39FG1ywsPDgwsLC+0YFoMAKi0qKupA5c57K0V1XjsdHx+/g6mXUksVFBS8wmF23FeMj48/w7PXiLsxePcG65qPDNCsra15XRCQFNP1AgRPMaA4aOvp6OjQ2O12cVtb20vE389YAHFLS0sO2vbYbLYQHKRHShEEy5ul+kIAe02Q5vy6urouTNyDV8VNT0/PBGzzxW1wRIHsM7T+W3V1tROvEE9lZeUCKlVgSfyD6S9SGsKdnZ1pOp3OkJ6efj04OPgTnmsAlv8PACXa/Q4L4UByuZqbm/UNDQ1vkLL+3+/9ByH9U4ABADscgvUMKuLiAAAAAElFTkSuQmCC"
-         alt="Events">
-    <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.calledListenersCount }}</span>
-  </a>
-  {% endset %}
+    {% set icon %}
+    <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'events'}) }}" title="{{ 'Events'|t }}">
+        <img width="20" height="28" alt="Events"
+             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABFJJREFUeNrkVVlIY2cY/RMTE81NMkkajUs1OBqkiVsjjAtStGrtSGyFjOjAQNVCKRb66ot9KrjgQx+FUgTBKkURbIfighWl4r6h44pajcZEo3ESTeKS9PzB2AyNZaD1qRcOem+S83/f+c53Lsvj8ZD/+mKTB7gehJTj+2d9fZ1MTk6S0NBQSW9vb97e3t7jmpqaXzIzM185HA7vd4KDg8nGxoaysbGxVCwWm/V6/aDL5TKlpKSQpKSkv5NyuVxyc3Mj7e7u/jw2NjYxJyfnMDIykmGz2UQgEBAWi0XcbjeRSqWhZWVl4v39fXVXV5cqNzf3exxmCNj+9fU1MzQ09JVWq32sUqmMu7u7QhwiDwoKIoeHh2R7e5twOByCwcrQhUShUJjz8vJkw8PDX5+fn8sDkvb3938YHR39rlAoNBoMBgGqtWxubnJRKbu9vZ20trZSQoJnvKioKMvZ2Rn/6urKmpqayvT19ekCks7NzaUnJyeboK0kPj7+cGZmJprH4zGnp6duEBFUTg4ODqjmIfPz87GQxoRnori4ODOKUPuTsnw+RRvPGIYJMZvNDNplYmJiLvPz839oamoSj4yMfAJNuRqN5mV9ff0fOPDF1NSUAt85lclkDkjnys7O/vGOlZLeQgjIgUggnmqHqmMqKip+z8jI8MAFnpKSkpXZ2dn38JkIUAFRQNjt/R2Xv09twBFwAGwClunp6efLy8tZdFgUW1tbiaOjo1/is9fUhcA+YL69fzvzSyQSEQZHfBJBT4J2Bf9qo9Rq9bxcLndeXl4STJrA8B4Mc/atN4pesAk5OTkh1PB0exYXF/kWi4UTFhZG+Hw+wZQJ5BDR7fEPIroYASu9uLggJpOJYO2I0+kkqI47Njb2MdzAKS4uXisvL5/FurIGBgaeYoDS1dVVsrKyQpaWlghsF7hS2IJERER4T4U/qckT4ccP6BYplco+rOcxqn0fZFqj0fgkLS3tV18m0EICktJV9F101xcWFj5Cu+HQ1YGNoeSXWGErpv8IwVOSlZXVh7xw0zy4V1MY3/uXWgetMzB8EZUHw7lKSEjgQ0MONLei2kcTExN5R0dHMehshw7x3umLRKI7YDhaDOSJ18hstq2qquobLMG30DKYkuzs7KggTa5Pf4p/rJReSCud1WplEBYuSMGrra39FG1ywsPDgwsLC+0YFoMAKi0qKupA5c57K0V1XjsdHx+/g6mXUksVFBS8wmF23FeMj48/w7PXiLsxePcG65qPDNCsra15XRCQFNP1AgRPMaA4aOvp6OjQ2O12cVtb20vE389YAHFLS0sO2vbYbLYQHKRHShEEy5ul+kIAe02Q5vy6urouTNyDV8VNT0/PBGzzxW1wRIHsM7T+W3V1tROvEE9lZeUCKlVgSfyD6S9SGsKdnZ1pOp3OkJ6efj04OPgTnmsAlv8PACXa/Q4L4UByuZqbm/UNDQ1vkLL+3+/9ByH9U4ABADscgvUMKuLiAAAAAElFTkSuQmCC">
+        <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.calledListenersCount }}</span>
+    </a>
+    {% endset %}
 
-  {% set text %}
-  <div class="sf-toolbar-info-piece">
-    <b>{{ 'Triggered'|t }}</b>
-    <span>{{ collector.calledListenersCount }}</span>
-  </div>
-  <div class="sf-toolbar-info-piece">
-    <b>{{ 'Not triggered'|t }}</b>
-    <span>{{ collector.notCalledListenersCount }}</span>
-  </div>
-  {% endset %}
+    {% set text %}
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'Triggered'|t }}</b>
+        <span>{{ collector.calledListenersCount }}</span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'Not triggered'|t }}</b>
+        <span>{{ collector.notCalledListenersCount }}</span>
+    </div>
+    {% endset %}
 
-  <div class="sf-toolbar-block">
-    <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
-    <div class="sf-toolbar-info">{{ text|default('') }}</div>
-  </div>
+    <div class="sf-toolbar-block">
+        <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
+        <div class="sf-toolbar-info">{{ text|default('') }}</div>
+    </div>
 {% endblock %}
 
 {% block panel %}
     <script id="events" type="text/template">
-        Events dashboard
+
+        <h2>{{ 'Events'|t }}</h2>
+
+        <table>
+            <% _.each( data.called_listeners, function( item ){ %>
+            <tr>
+                <td><%= item.event %></td>
+                <% if(item.type == 'Method') { %>
+                <td>
+                    <a href="<%= Drupal.webprofiler.helpers.ideLink(item.file, item.line) %>">
+                        <%= Drupal.webprofiler.helpers.abbr(item.class)%>::<%= item.method %>
+                    </a>
+                </td>
+                <% } else { %>
+                <td>{{ 'Closure'|t }}</td>
+                <% } %>
+            </tr>
+            <% }); %>
+        </table>
     </script>
 {% endblock %}
