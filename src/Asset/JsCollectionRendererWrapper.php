@@ -7,35 +7,39 @@
 
 namespace Drupal\webprofiler\Asset;
 
-use Drupal\Core\Asset\JsCollectionRenderer;
+use Drupal\Core\Asset\AssetCollectionRendererInterface;
+use Drupal\webprofiler\DataCollector\AssetDataCollector;
 
 /**
  * Class JsCollectionRendererWrapper.
  */
-class JsCollectionRendererWrapper extends JsCollectionRenderer {
+class JsCollectionRendererWrapper implements AssetCollectionRendererInterface {
 
   /**
-   * @var
+   * @var \Drupal\Core\Asset\AssetCollectionRendererInterface
    */
-  private $jsAssets;
+  private $assetCollectionRenderer;
+
+  /**
+   * @var \Drupal\webprofiler\DataCollector\AssetDataCollector
+   */
+  private $dataCollector;
+
+  /**
+   * @param \Drupal\Core\Asset\AssetCollectionRendererInterface $assetCollectionRenderer
+   * @param \Drupal\webprofiler\DataCollector\AssetDataCollector $dataCollector
+   */
+  public function __construct(AssetCollectionRendererInterface $assetCollectionRenderer, AssetDataCollector $dataCollector) {
+    $this->assetCollectionRenderer = $assetCollectionRenderer;
+    $this->dataCollector = $dataCollector;
+  }
 
   /**
    * {@inheritdoc}
    */
   public function render(array $js_assets) {
-    $this->jsAssets[] = $js_assets;
+    $this->dataCollector->addJsAsset($js_assets);
 
-    return parent::render($js_assets);
+    return $this->assetCollectionRenderer->render($js_assets);
   }
-
-  /**
-   * Returns the javascript assets.
-   *
-   * @return array
-   *   The javascript assets.
-   */
-  public function getAssets() {
-    return $this->jsAssets;
-  }
-
 }

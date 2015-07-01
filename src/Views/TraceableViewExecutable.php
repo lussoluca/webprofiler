@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class TraceableViewExecutable extends ViewExecutable {
 
   /**
-   * @var int
+   * @var float
    */
   protected $render_time;
 

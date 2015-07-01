@@ -38,7 +38,12 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
 
     // Add ViewsDataCollector only if Views module is enabled.
     if (FALSE !== $container->hasDefinition('views.executable')) {
-      $container->addCompilerPass(new ViewsPass(), PassConfig::TYPE_AFTER_REMOVING);
+      $container->setDefinition('views.executable.default', $container->getDefinition('views.executable'));
+      $container->register('views.executable', 'Drupal\webprofiler\Views\ViewExecutableFactoryWrapper')
+        ->addArgument(new Reference('current_user'))
+        ->addArgument(new Reference('request_stack'))
+        ->addArgument(new Reference('views.views_data'))
+        ->addArgument(new Reference('router.route_provider'));
 
       $container->register('webprofiler.views', 'Drupal\webprofiler\DataCollector\ViewsDataCollector')
         ->addArgument(new Reference(('views.executable')))
@@ -61,55 +66,5 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
           'priority' => 78,
         ));
     }
-
-    // Replace the existing state service with a wrapper to collect the
-    // requested data.
-    $container->setDefinition('state.default', $container->getDefinition('state'));
-    $container->register('state', 'Drupal\webprofiler\DataCollector\StateDataCollector')
-      ->addArgument(new Reference(('state.default')))
-      ->addTag('data_collector', array(
-        'template' => '@webprofiler/Collector/state.html.twig',
-        'id' => 'state',
-        'title' => 'State',
-        'priority' => 135,
-      ));
-
-    // Replaces the existing cache_factory service to be able to collect the
-    // requested data.
-    $container->setDefinition('cache_factory.default', $container->getDefinition('cache_factory'));
-    $container->register('cache_factory', 'Drupal\webprofiler\Cache\CacheFactoryWrapper')
-      ->addArgument(new Reference('cache_factory.default'))
-      ->addArgument(new Reference('webprofiler.cache'))
-      ->addMethodCall('setContainer', array(new Reference('service_container')));
-
-    // Replace the existing config.factory service with a wrapper to collect the
-    // requested configs.
-    $container->setDefinition('config.factory.default', $container->getDefinition('config.factory'));
-    $container->register('config.factory', 'Drupal\webprofiler\Config\ConfigFactoryWrapper')
-      ->addArgument(new Reference('config.factory.default'))
-      ->addArgument(new Reference('webprofiler.config'));
-
-    // Replace the regular form_builder service with a traceable one.
-    $definition = $container->findDefinition('form_builder');
-    $definition->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
-
-    // Replace the regular entity.manager service with a traceable one.
-    $definition = $container->findDefinition('entity.manager');
-    $definition->setClass('Drupal\webprofiler\Entity\EntityManagerWrapper');
-
-    // Replace the regular asset.js.collection_renderer service
-    // with a traceable one.
-    $definition = $container->findDefinition('asset.js.collection_renderer');
-    $definition->setClass('Drupal\webprofiler\Asset\JsCollectionRendererWrapper');
-
-    // Replace the regular asset.js.collection_renderer service
-    // with a traceable one.
-    $definition = $container->findDefinition('asset.css.collection_renderer');
-    $definition->setClass('Drupal\webprofiler\Asset\CssCollectionRendererWrapper');
-
-    // Replace the regular authentication service
-    // with a traceable one.
-    $definition = $container->findDefinition('authentication');
-    $definition->setClass('Drupal\webprofiler\Authentication\AuthenticationManagerWrapper');
   }
 }

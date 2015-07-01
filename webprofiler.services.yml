@@ -105,13 +105,12 @@ services:
 
   webprofiler.user:
     class: Drupal\webprofiler\DataCollector\UserDataCollector
-    arguments: ['@current_user', '@authentication', '@entity.manager', '@config.factory']
+    arguments: ['@current_user', '@entity.manager', '@config.factory', '@webprofiler.providercollector']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/user.html.twig', id:'user', title:'User', priority: 70 }
 
   webprofiler.form:
     class: Drupal\webprofiler\DataCollector\FormDataCollector
-    arguments: ['@form_builder']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/form.html.twig', id:'form', title:'Forms', priority: 80 }
 
@@ -134,7 +133,6 @@ services:
 
   webprofiler.assets:
     class: Drupal\webprofiler\DataCollector\AssetDataCollector
-    arguments: ['@asset.js.collection_renderer', '@asset.css.collection_renderer']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/asset.html.twig', id:'asset', title:'Assets', priority: 120}
 
@@ -143,29 +141,34 @@ services:
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/config.html.twig', id:'config', title:'Config', priority: 130 }
 
+  webprofiler.state:
+    class: Drupal\webprofiler\DataCollector\StateDataCollector
+    tags:
+      - { name: data_collector, template:'@webprofiler/Collector/state.html.twig', id:'state', title:'State', priority: 140 }
+
   webprofiler.event:
     class: Drupal\webprofiler\DataCollector\EventDataCollector
     arguments: ['@event_dispatcher']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/events.html.twig', id:'events', title:'Events', priority: 140 }
+      - { name: data_collector, template:'@webprofiler/Collector/events.html.twig', id:'events', title:'Events', priority: 150 }
 
   webprofiler.service:
     class: Drupal\webprofiler\DataCollector\ServiceDataCollector
     arguments: ['@service_container']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/service.html.twig', id:'service', title:'Service', priority: 150 }
+      - { name: data_collector, template:'@webprofiler/Collector/service.html.twig', id:'service', title:'Service', priority: 160 }
 
   webprofiler.http:
     class: Drupal\webprofiler\DataCollector\HttpDataCollector
     arguments: ['@http_client']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/http.html.twig', id:'http', title:'Http', priority: 160 }
+      - { name: data_collector, template:'@webprofiler/Collector/http.html.twig', id:'http', title:'Http', priority: 170 }
 
   webprofiler.twig:
     class: Drupal\webprofiler\DataCollector\TwigDataCollector
     arguments: ['@twig.profile']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/twig.html.twig', id:'twig', title:'Twig', priority: 170 }
+      - { name: data_collector, template:'@webprofiler/Collector/twig.html.twig', id:'twig', title:'Twig', priority: 180 }
 
 # debug services
   stopwatch:
@@ -173,9 +176,9 @@ services:
 
   webprofiler.debug.event_dispatcher:
     class: Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher
-    arguments: ['@webprofiler.debug.event_dispatcher.parent', '@stopwatch']
+    arguments: ['@webprofiler.debug.event_dispatcher.default', '@stopwatch']
 
-  webprofiler.debug.event_dispatcher.parent:
+  webprofiler.debug.event_dispatcher.default:
     class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
     arguments: ['@service_container']
 
@@ -183,6 +186,55 @@ services:
     class: Symfony\Component\HttpKernel\Controller\TraceableControllerResolver
     arguments: ['@controller_resolver', '@stopwatch']
 
+  webprofiler.debug.cache_factory:
+    class: Drupal\webprofiler\Cache\CacheFactoryWrapper
+    public: false
+    decorates: cache_factory
+    arguments: ['@webprofiler.debug.cache_factory.inner', '@webprofiler.cache']
+
+  webprofiler.debug.config.factory:
+    class: Drupal\webprofiler\Config\ConfigFactoryWrapper
+    public: false
+    decorates: config.factory
+    arguments: ['@webprofiler.debug.config.factory.inner', '@webprofiler.config']
+
+  webprofiler.debug.asset.css.collection_renderer:
+    class: Drupal\webprofiler\Asset\CssCollectionRendererWrapper
+    public: false
+    decorates: asset.css.collection_renderer
+    arguments: ['@webprofiler.debug.asset.css.collection_renderer.inner', '@webprofiler.assets']
+
+  webprofiler.debug.asset.js.collection_renderer:
+    class: Drupal\webprofiler\Asset\JsCollectionRendererWrapper
+    public: false
+    decorates: asset.js.collection_renderer
+    arguments: ['@webprofiler.debug.asset.js.collection_renderer.inner', '@webprofiler.assets']
+
+  webprofiler.debug.entity.manager:
+    class: Drupal\webprofiler\Entity\EntityManagerWrapper
+    public: false
+    decorates: entity.manager
+    arguments: ['@webprofiler.debug.entity.manager.inner']
+
+  webprofiler.debug.form_builder:
+    class: Drupal\webprofiler\Form\FormBuilderWrapper
+    public: false
+    decorates: form_builder
+    arguments: ['@webprofiler.debug.form_builder.inner', '@webprofiler.form']
+
+  webprofiler.debug.state:
+    class: Drupal\webprofiler\State\StateWrapper
+    public: false
+    decorates: state
+    arguments: ['@webprofiler.debug.state.inner', '@webprofiler.state']
+
+# webprofiler authentication provider collector
+  webprofiler.providercollector:
+    class: Drupal\webprofiler\Authentication\WebprofilerProviderCollector
+    tags:
+    - { name: service_collector, tag: authentication_provider, call: addProvider }
+
+# webprofiler middleware
   http_middleware.webprofiler:
     class: Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware
     tags:
