@@ -15,17 +15,18 @@ class ProfilerExtension extends \Twig_Extension_Profiler {
    * @var \Symfony\Component\Stopwatch\Stopwatch
    */
   private $stopwatch;
-
-  /**
-   * @var \SplObjectStorage
-   */
   private $events;
+  private $ideLink;
+  private $classShortener;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(\Twig_Profiler_Profile $profile, Stopwatch $stopwatch = NULL) {
+  public function __construct(\Twig_Profiler_Profile $profile, Stopwatch $stopwatch = NULL, IdeLinkGeneratorInterface $ideLink, ClassShortenerInterface $classShortener) {
     parent::__construct($profile);
+
+    $this->ideLink = $ideLink;
+    $this->classShortener = $classShortener;
 
     $this->stopwatch = $stopwatch;
     $this->events = new \SplObjectStorage();
@@ -57,7 +58,36 @@ class ProfilerExtension extends \Twig_Extension_Profiler {
   /**
    * {@inheritdoc}
    */
+  public function getFunctions() {
+    return [
+      new \Twig_SimpleFunction('abbr', array($this, 'getAbbr')),
+      new \Twig_SimpleFunction('idelink', array($this, 'getIdeLink')),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getName() {
     return 'native_profiler';
+  }
+
+  /**
+   * @param $class
+   *
+   * @return string
+   */
+  public function getAbbr($class) {
+    return $this->classShortener->shortenClass($class);
+  }
+
+  /**
+   * @param $file
+   * @param $line
+   *
+   * @return string
+   */
+  public function getIdeLink($file, $line) {
+    return $this->ideLink->generateLink($file, $line);
   }
 }

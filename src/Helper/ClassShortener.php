@@ -14,8 +14,17 @@ class ClassShortener implements ClassShortenerInterface {
    */
   public function shortenClass($class) {
     $parts = explode('\\', $class);
-    $short = array_pop($parts);
+    $result = [];
+    $size = count($parts) - 1;
 
-    return SafeMarkup::format("<abbr title=\"@class\">@short</abbr>", array('@class' => $class, '@short' => $short));
+    foreach($parts as $key => $part) {
+      if ($key < $size) {
+        $result[] = substr($part, 0 ,1);
+      } else {
+        $result[] = $part;
+      }
+    }
+
+    return SafeMarkup::format("<abbr title=\"@class\">@short</abbr>", array('@class' => $class, '@short' => implode('\\', $result)));
   }
 }

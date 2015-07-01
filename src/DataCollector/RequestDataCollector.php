@@ -29,19 +29,12 @@ class RequestDataCollector extends BaseRequestDataCollector implements DrupalDat
   private $controllerResolver;
 
   /**
-   * @var \Drupal\webprofiler\Helper\IdeLinkGeneratorInterface
-   */
-  private $ideLinkGenerator;
-
-  /**
    * @param \Drupal\Core\Controller\ControllerResolverInterface $controllerResolver
-   * @param \Drupal\webprofiler\Helper\IdeLinkGeneratorInterface $ideLinkGenerator
    */
-  public function __construct(ControllerResolverInterface $controllerResolver, IdeLinkGeneratorInterface $ideLinkGenerator) {
+  public function __construct(ControllerResolverInterface $controllerResolver) {
     parent::__construct();
 
     $this->controllerResolver = $controllerResolver;
-    $this->ideLinkGenerator = $ideLinkGenerator;
   }
 
   /**
@@ -59,9 +52,11 @@ class RequestDataCollector extends BaseRequestDataCollector implements DrupalDat
       $this->data['controller'] = array(
         'class' => is_object($controller[0]) ? $class : $controller[0],
         'method' => $controller[1],
-        'file' => $this->ideLinkGenerator->generateLink($method->getFilename(), $method->getStartLine()),
+        'file' => $method->getFilename(),
+        'line' => $method->getStartLine(),
       );
     } catch (\ReflectionException $re) {
+      // TODO: handle the exception.
     }
   }
 

@@ -63,7 +63,7 @@ services:
 
   twig.extension.profiler:
     class: Drupal\webprofiler\Twig\Extension\ProfilerExtension
-    arguments: ['@twig.profile', '@stopwatch']
+    arguments: ['@twig.profile', '@stopwatch', '@webprofiler.ide_link_generator', '@webprofiler.class_shortener']
     tags:
       - { name: twig.extension, priority: 100 }
 
