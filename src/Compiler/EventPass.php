@@ -30,5 +30,4 @@ class EventPass implements CompilerPassInterface {
     $container->setDefinition('webprofiler.debug.event_dispatcher.default', $definition);
     $container->setAlias('event_dispatcher', 'webprofiler.debug.event_dispatcher');
   }
-
 }

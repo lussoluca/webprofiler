@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityManager;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\views\ViewExecutable;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
+use Drupal\webprofiler\Entity\EntityManagerWrapper;
 use Drupal\webprofiler\Views\TraceableViewExecutable;
 use Drupal\webprofiler\Views\ViewExecutableFactoryWrapper;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,13 +25,22 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
-  /** @var ViewExecutableFactoryWrapper $view_executable_factory */
+  /**
+   * @var \Drupal\webprofiler\Views\ViewExecutableFactoryWrapper
+   */
   private $view_executable_factory;
 
   /**
-   * @param ViewExecutableFactoryWrapper $view_executable_factory
+   * @var \Drupal\webprofiler\Entity\EntityManagerWrapper
    */
-  public function __construct(ViewExecutableFactoryWrapper $view_executable_factory) {
+  private $entityManager;
+
+  /**
+   * @param ViewExecutableFactoryWrapper $view_executable_factory
+   * @param \Drupal\webprofiler\Entity\EntityManagerWrapper $entityManager
+   */
+  public function __construct(ViewExecutableFactoryWrapper $view_executable_factory, EntityManagerWrapper $entityManager) {
+    $this->entityManager = $entityManager;
     $this->view_executable_factory = $view_executable_factory;
 
     $this->data['views'] = array();
@@ -56,6 +66,18 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
         $this->data['views'][] = $data;
       }
     }
+
+//    TODO: also use those data.
+//    $loaded = $this->entityManager->getLoaded('view');
+//
+//    if ($loaded) {
+//      /** @var \Drupal\webprofiler\Entity\EntityStorageDecorator $views */
+//      foreach ($loaded->getEntities() as $views) {
+//        $this->data['views'][] = array(
+//          'id' => $views->get('id'),
+//        );
+//      }
+//    }
   }
 
   /**

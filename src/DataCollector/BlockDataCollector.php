@@ -24,7 +24,9 @@ class BlockDataCollector extends DataCollector implements DrupalDataCollectorInt
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
-  /** @var $entityManager */
+  /**
+   * @var \Drupal\webprofiler\Entity\EntityManagerWrapper
+   */
   private $entityManager;
 
   /**
@@ -38,42 +40,38 @@ class BlockDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-    $loaded = $this->entityManager->getLoaded();
-    $rendered = $this->entityManager->getRendered();
+    $loaded = $this->entityManager->getLoaded('block');
+    $rendered = $this->entityManager->getRendered('block');
 
     $this->data['blocks'] = array();
 
     if ($loaded) {
-      foreach ($loaded as $blocks) {
-        /** @var \Drupal\webprofiler\Entity\Block\BlockStorageDecorator $blocks */
-        /** @var \Drupal\block\BlockInterface $block */
-        foreach ($blocks->getBlocks() as $block) {
-          $this->data['blocks']['loaded'][] = array(
-            'id'  => $block->get('id'),
-            'region' => $block->getRegion(),
-            'status' => $block->get('status'),
-            'theme' => $block->getTheme(),
-            'plugin' => $block->get('plugin'),
-            'settings' => $block->get('settings'),
-          );
-        }
+      /** @var \Drupal\webprofiler\Entity\EntityStorageDecorator $loaded */
+      /** @var \Drupal\block\BlockInterface $block */
+      foreach ($loaded->getEntities() as $block) {
+        $this->data['blocks']['loaded'][] = array(
+          'id' => $block->get('id'),
+          'region' => $block->getRegion(),
+          'status' => $block->get('status'),
+          'theme' => $block->getTheme(),
+          'plugin' => $block->get('plugin'),
+          'settings' => $block->get('settings'),
+        );
       }
     }
 
     if ($rendered) {
-      foreach ($rendered as $blocks) {
-        /** @var \Drupal\webprofiler\Entity\Block\BlockStorageDecorator $blocks */
-        /** @var \Drupal\block\BlockInterface $block */
-        foreach ($blocks->getBlocks() as $block) {
-          $this->data['blocks']['rendered'][] = array(
-            'id' => $block->get('id'),
-            'region' => $block->getRegion(),
-            'status' => $block->get('status'),
-            'theme' => $block->getTheme(),
-            'plugin' => $block->get('plugin'),
-            'settings' => $block->get('settings'),
-          );
-        }
+      /** @var \Drupal\webprofiler\Entity\EntityStorageDecorator $rendered */
+      /** @var \Drupal\block\BlockInterface $block */
+      foreach ($rendered->getEntities() as $block) {
+        $this->data['blocks']['rendered'][] = array(
+          'id' => $block->get('id'),
+          'region' => $block->getRegion(),
+          'status' => $block->get('status'),
+          'theme' => $block->getTheme(),
+          'plugin' => $block->get('plugin'),
+          'settings' => $block->get('settings'),
+        );
       }
     }
   }

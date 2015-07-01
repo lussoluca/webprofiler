@@ -1,16 +1,20 @@
 <?php
 
-namespace Drupal\webprofiler\Entity\Block;
+/**
+ * @file
+ * Contains \Drupal\webprofiler\Entity\EntityStorageDecorator.
+ */
+
+namespace Drupal\webprofiler\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\webprofiler\Decorator;
 
 /**
- * Class BlockStorageDecorator
+ * Class EntityStorageDecorator
  */
-class BlockStorageDecorator extends BlockDecorator implements ConfigEntityStorageInterface {
+class EntityStorageDecorator extends EntityDecorator implements ConfigEntityStorageInterface {
 
   /**
    * @param ConfigEntityStorageInterface $controller
@@ -18,7 +22,7 @@ class BlockStorageDecorator extends BlockDecorator implements ConfigEntityStorag
   public function __construct(ConfigEntityStorageInterface $controller) {
     parent::__construct($controller);
 
-    $this->blocks = array();
+    $this->entities = array();
   }
 
   /**
@@ -34,7 +38,7 @@ class BlockStorageDecorator extends BlockDecorator implements ConfigEntityStorag
   public function loadMultiple(array $ids = NULL) {
     $entities = $this->getOriginalObject()->loadMultiple($ids);
 
-    $this->blocks = array_merge($this->blocks, $entities);
+    $this->entities = array_merge($this->entities, $entities);
 
     return $entities;
   }
@@ -45,7 +49,7 @@ class BlockStorageDecorator extends BlockDecorator implements ConfigEntityStorag
   public function load($id) {
     $entity = $this->getOriginalObject()->load($id);
 
-    $this->blocks[] = $entity;
+    $this->entities[] = $entity;
 
     return $entity;
   }
@@ -77,7 +81,7 @@ class BlockStorageDecorator extends BlockDecorator implements ConfigEntityStorag
   public function loadByProperties(array $values = array()) {
     $entities = $this->getOriginalObject()->loadByProperties($values);
 
-    $this->blocks = array_merge($this->blocks, $entities);
+    $this->entities = array_merge($this->entities, $entities);
 
     return $entities;
   }

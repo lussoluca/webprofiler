@@ -96,5 +96,4 @@ class Decorator {
     }
     return NULL;
   }
-
 }

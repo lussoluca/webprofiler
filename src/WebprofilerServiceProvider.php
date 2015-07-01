@@ -9,13 +9,10 @@ namespace Drupal\webprofiler;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
-use Drupal\webprofiler\Compiler\BlockPass;
-use Drupal\webprofiler\Compiler\EntityPass;
 use Drupal\webprofiler\Compiler\EventPass;
 use Drupal\webprofiler\Compiler\ProfilerPass;
 use Drupal\webprofiler\Compiler\ServicePass;
 use Drupal\webprofiler\Compiler\StoragePass;
-use Drupal\webprofiler\Compiler\ViewsPass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\Reference;
@@ -36,17 +33,17 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
     $container->addCompilerPass(new EventPass(), PassConfig::TYPE_AFTER_REMOVING);
     $container->addCompilerPass(new ServicePass(), PassConfig::TYPE_AFTER_REMOVING);
 
+    // Replace the regular form_builder service with a traceable one.
+    $definition = $container->findDefinition('form_builder');
+    $definition->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
+
     // Add ViewsDataCollector only if Views module is enabled.
     if (FALSE !== $container->hasDefinition('views.executable')) {
-      $container->setDefinition('views.executable.default', $container->getDefinition('views.executable'));
-      $container->register('views.executable', 'Drupal\webprofiler\Views\ViewExecutableFactoryWrapper')
-        ->addArgument(new Reference('current_user'))
-        ->addArgument(new Reference('request_stack'))
-        ->addArgument(new Reference('views.views_data'))
-        ->addArgument(new Reference('router.route_provider'));
+      $container->getDefinition('views.executable')->setClass('Drupal\webprofiler\Views\ViewExecutableFactoryWrapper');
 
       $container->register('webprofiler.views', 'Drupal\webprofiler\DataCollector\ViewsDataCollector')
         ->addArgument(new Reference(('views.executable')))
+        ->addArgument(new Reference(('entity.manager')))
         ->addTag('data_collector', array(
           'template' => '@webprofiler/Collector/views.html.twig',
           'id' => 'views',

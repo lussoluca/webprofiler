@@ -1,6 +1,11 @@
 <?php
 
-namespace Drupal\webprofiler\Entity\Block;
+/**
+ * @file
+ * Contains \Drupal\webprofiler\Entity\EntityViewBuilderDecorator.
+ */
+
+namespace Drupal\webprofiler\Entity;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
@@ -8,9 +13,9 @@ use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 
 /**
- * Class BlockViewBuilderDecorator
+ * Class EntityViewBuilderDecorator
  */
-class BlockViewBuilderDecorator extends BlockDecorator implements EntityViewBuilderInterface {
+class EntityViewBuilderDecorator extends EntityDecorator implements EntityViewBuilderInterface {
 
   /**
    * @param EntityViewBuilderInterface $controller
@@ -18,7 +23,7 @@ class BlockViewBuilderDecorator extends BlockDecorator implements EntityViewBuil
   public function __construct(EntityViewBuilderInterface $controller) {
     parent::__construct($controller);
 
-    $this->blocks = array();
+    $this->entities = array();
   }
 
   /**
@@ -32,7 +37,7 @@ class BlockViewBuilderDecorator extends BlockDecorator implements EntityViewBuil
    * {@inheritdoc}
    */
   public function view(EntityInterface $entity, $view_mode = 'full', $langcode = NULL) {
-    $this->blocks[] = $entity;
+    $this->entities[] = $entity;
 
     return $this->getOriginalObject()->view($entity, $view_mode, $langcode);
   }
@@ -41,7 +46,7 @@ class BlockViewBuilderDecorator extends BlockDecorator implements EntityViewBuil
    * {@inheritdoc}
    */
   public function viewMultiple(array $entities = array(), $view_mode = 'full', $langcode = NULL) {
-    $this->blocks = array_merge($this->blocks, $entities);
+    $this->entities = array_merge($this->entities, $entities);
 
     return $this->getOriginalObject()->viewMultiple($entities, $view_mode, $langcode);
   }
@@ -73,5 +78,4 @@ class BlockViewBuilderDecorator extends BlockDecorator implements EntityViewBuil
   public function getCacheTags() {
     return $this->getOriginalObject()->getCacheTag();
   }
-
 }

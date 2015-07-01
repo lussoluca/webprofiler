@@ -7,18 +7,31 @@
 
 namespace Drupal\webprofiler\Entity;
 
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
-use Drupal\webprofiler\Entity\Block\BlockStorageDecorator;
-use Drupal\webprofiler\Entity\Block\BlockViewBuilderDecorator;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class EntityManagerWrapper
+ */
 class EntityManagerWrapper extends DefaultPluginManager implements EntityManagerInterface, ContainerAwareInterface {
+
+  /**
+   * @var array
+   */
+  private $loaded;
+
+  /**
+   * @var array
+   */
+  private $rendered;
 
   /**
    * @var \Drupal\Core\Entity\EntityManagerInterface
@@ -33,26 +46,31 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
   }
 
   /**
-   * @var array[EntityStorageInterface]
-   */
-  private $loaded;
-
-  /**
-   * @var array[EntityViewBuilderInterface]
-   */
-  private $rendered;
-
-  /**
    * {@inheritdoc}
    */
   public function getStorage($entity_type) {
+    /** @var ConfigEntityStorageInterface $controller */
     $controller = $this->getHandler($entity_type, 'storage');
 
-    if ('block' == $entity_type) {
-      $decorator = new BlockStorageDecorator($controller);
-      $this->loaded[] = $decorator;
-
-      return $decorator;
+    switch ($entity_type) {
+      case 'block':
+        if (!isset($this->loaded['block'])) {
+          $controller = new EntityStorageDecorator($controller);
+          $this->loaded['block'] = $controller;
+        }
+        else {
+          $controller = $this->loaded['block'];
+        }
+        break;
+      case 'view':
+        if (!isset($this->loaded['view'])) {
+          $controller = new EntityStorageDecorator($controller);
+          $this->loaded['view'] = $controller;
+        }
+        else {
+          $controller = $this->loaded['view'];
+        }
+        break;
     }
 
     return $controller;
@@ -62,30 +80,40 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
    * {@inheritdoc}
    */
   public function getViewBuilder($entity_type) {
+    /** @var EntityViewBuilderInterface $controller */
     $controller = $this->getHandler($entity_type, 'view_builder');
 
-    if ('block' == $entity_type) {
-      $decorator = new BlockViewBuilderDecorator($controller);
-      $this->rendered[] = $decorator;
-
-      return $decorator;
+    switch ($entity_type) {
+      case 'block':
+        if (!isset($this->rendered['block'])) {
+          $controller = new EntityViewBuilderDecorator($controller);
+          $this->rendered['block'] = $controller;
+        }
+        else {
+          $controller = $this->rendered['block'];
+        }
+        break;
     }
 
     return $controller;
   }
 
   /**
-   * @return array[EntityStorageInterface]
+   * @param $type
+   *
+   * @return array
    */
-  public function getLoaded() {
-    return $this->loaded;
+  public function getLoaded($type) {
+    return $this->loaded[$type];
   }
 
   /**
-   * @return array[EntityViewBuilderInterface]
+   * @param $type
+   *
+   * @return array
    */
-  public function getRendered() {
-    return $this->rendered;
+  public function getRendered($type) {
+    return $this->rendered[$type];
   }
 
   /**

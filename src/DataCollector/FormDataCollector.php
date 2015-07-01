@@ -17,23 +17,22 @@ class FormDataCollector extends DataCollector implements DrupalDataCollectorInte
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
   /**
-   * Constructs a FormDataCollector object.
+   * @var \Drupal\webprofiler\Form\FormBuilderWrapper
    */
-  public function __construct() {
-    $this->data['forms'] = array();
+  private $formBuilder;
+
+  /**
+   * @param \Drupal\webprofiler\Form\FormBuilderWrapper $formBuilder
+   */
+  public function __construct(FormBuilderWrapper $formBuilder) {
+    $this->formBuilder = $formBuilder;
   }
 
   /**
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-  }
-
-  /**
-   * @param $form
-   */
-  public function addForm($formId, $form) {
-    $this->data['forms'][$formId] = $form;
+    $this->data['forms'] = $this->formBuilder->getBuildForm();
   }
 
   /**

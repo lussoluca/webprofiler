@@ -1,8 +1,12 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\webprofiler\Compiler\StoragePass.
+ */
+
 namespace Drupal\webprofiler\Compiler;
 
-use Drupal\Core\StreamWrapper\PublicStream;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -13,9 +17,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class StoragePass implements CompilerPassInterface {
 
   /**
-   * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-   *
-   * @throws \InvalidArgumentException
+   * {@inheritdoc}
    */
   public function process(ContainerBuilder $container) {
     if (FALSE === $container->hasDefinition('profiler.storage_manager')) {
