@@ -2,15 +2,13 @@
 
 namespace Drupal\webprofiler\EventSubscriber;
 
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Twig_Environment;
-use Drupal\Core\Database\Database;
 
 class WebprofilerEventSubscriber implements EventSubscriberInterface {
 
@@ -25,12 +23,19 @@ class WebprofilerEventSubscriber implements EventSubscriberInterface {
   protected $urlGenerator;
 
   /**
-   * @param \Drupal\Core\Session\AccountInterface
-   * @param \Drupal\Core\Routing\UrlGeneratorInterface $urlGenerator
+   * @var \Drupal\Core\Render\RendererInterface
    */
-  public function __construct(AccountInterface $currentUser, UrlGeneratorInterface $urlGenerator) {
+  protected $renderer;
+
+  /**
+   * @param \Drupal\Core\Session\AccountInterface $currentUser
+   * @param \Drupal\Core\Routing\UrlGeneratorInterface $urlGenerator
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   */
+  public function __construct(AccountInterface $currentUser, UrlGeneratorInterface $urlGenerator, RendererInterface $renderer) {
     $this->currentUser = $currentUser;
     $this->urlGenerator = $urlGenerator;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -72,7 +77,7 @@ class WebprofilerEventSubscriber implements EventSubscriberInterface {
           '#profiler_url' => $this->urlGenerator->generate('webprofiler.toolbar', array('profile' => $token)),
         );
 
-        $content = mb_substr($content, 0, $pos) . render($toolbar) . mb_substr($content, $pos);
+        $content = mb_substr($content, 0, $pos) . $this->renderer->renderRoot($toolbar) . mb_substr($content, $pos);
         $response->setContent($content);
       }
     }
