@@ -53,7 +53,7 @@ services:
 
   webprofiler.webprofiler_event_subscriber:
       class: Drupal\webprofiler\EventSubscriber\WebprofilerEventSubscriber
-      arguments: ['@current_user', '@url_generator']
+      arguments: ['@current_user', '@url_generator', '@renderer']
       tags:
         - { name: event_subscriber }
 
