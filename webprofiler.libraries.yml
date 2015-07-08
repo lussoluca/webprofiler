@@ -20,9 +20,7 @@ highlight:
     component:
       /libraries/highlight/styles/idea.css: {}
 webprofiler:
-  version: 1.0
-  js:
-    js/webprofiler.js: {}
+  version: 2.0
   css:
     component:
       css/webprofiler.css: {}
@@ -31,7 +29,7 @@ webprofiler:
     - core/drupal
     - core/drupalSettings
 dashboard:
-  version: 1.0
+  version: 2.0
   js:
     js/app/main.js: {}
     js/app/helpers.js: {}
@@ -50,7 +48,7 @@ dashboard:
     - core/drupal
     - core/drupalSettings
 database:
-  version: 1.0
+  version: 2.0
   js:
     js/database.js: {}
   css:
@@ -62,7 +60,7 @@ database:
     - core/drupalSettings
     - webprofiler/highlight
 timeline:
-  version: 1.0
+  version: 2.0
   js:
     js/timeline.js: {}
   css:

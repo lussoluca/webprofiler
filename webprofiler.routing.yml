@@ -2,7 +2,7 @@
 webprofiler.toolbar:
   path: '/profiler/{profile}'
   defaults:
-    _controller: '\Drupal\webprofiler\Controller\WebprofilerController::toolbarAction'
+    _controller: '\Drupal\webprofiler\Controller\ToolbarController::toolbarAction'
   options:
     parameters:
       profile:
@@ -10,11 +10,25 @@ webprofiler.toolbar:
   requirements:
     _permission: 'view webprofiler toolbar'
 
+# save frontend data
+webprofiler.frontend.save:
+  path: '/admin/reports/profiler/frontend/{profile}/save'
+  defaults:
+    _controller: '\Drupal\webprofiler\Controller\ToolbarController::savePerformanceTimingAction'
+    _title: 'Save performance timing data'
+  options:
+    parameters:
+      profile:
+        type: 'webprofiler:token'
+  methods:  [POST]
+  requirements:
+    _permission: 'access webprofiler'
+
 # view profile
 webprofiler.dashboard:
   path: '/admin/reports/profiler/view/{profile}'
   defaults:
-    _controller: '\Drupal\webprofiler\Controller\WebprofilerController::dashboardAction'
+    _controller: '\Drupal\webprofiler\Controller\DashboardController::dashboardAction'
     _title: 'Webprofiler'
   options:
     parameters:
@@ -27,26 +41,20 @@ webprofiler.dashboard:
 webprofiler.admin_list:
   path: '/admin/reports/profiler/list'
   defaults:
-    _controller: '\Drupal\webprofiler\Controller\WebprofilerController::listAction'
+    _controller: '\Drupal\webprofiler\Controller\DashboardController::listAction'
     _title: 'Webprofiler'
   requirements:
     _permission: 'access webprofiler'
 
-# manage profiles (import/export/purge)
-webprofiler.admin_manage:
-  path: '/admin/config/development/profiler/manage'
+webprofiler.rest.collector:
+  path: '/admin/reports/profiler/view/{profile}/collectors/{collector}'
   defaults:
-    _form: 'Drupal\webprofiler\Form\ManageForm'
-    _title: 'Manage'
-  requirements:
-    _permission: 'access webprofiler'
-
-# configure webprofiler
-webprofiler.admin_configure:
-  path: '/admin/config/development/profiler/configure'
-  defaults:
-    _form: 'Drupal\webprofiler\Form\ConfigForm'
-    _title: 'Configure'
+    _controller: '\Drupal\webprofiler\Controller\DashboardController::restCollectorAction'
+    _title: 'Webprofiler'
+  options:
+    parameters:
+      profile:
+        type: 'webprofiler:token'
   requirements:
     _permission: 'access webprofiler'
 
@@ -76,28 +84,20 @@ webprofiler.database.arguments:
   requirements:
     _permission: 'access webprofiler'
 
-# save frontend data
-webprofiler.frontend.save:
-  path: '/admin/reports/profiler/frontend/{profile}/save'
+# manage profiles (import/export/purge)
+webprofiler.admin_manage:
+  path: '/admin/config/development/profiler/manage'
   defaults:
-    _controller: '\Drupal\webprofiler\Controller\FrontendController::saveAction'
-    _title: 'Save frontend data'
-  options:
-    parameters:
-      profile:
-        type: 'webprofiler:token'
-  methods:  [POST]
+    _form: 'Drupal\webprofiler\Form\ManageForm'
+    _title: 'Manage'
   requirements:
     _permission: 'access webprofiler'
 
-webprofiler.rest.collector:
-  path: '/admin/reports/profiler/view/{profile}/collectors/{collector}'
+# configure webprofiler
+webprofiler.admin_configure:
+  path: '/admin/config/development/profiler/configure'
   defaults:
-    _controller: '\Drupal\webprofiler\Controller\WebprofilerController::restCollectorAction'
-    _title: 'Webprofiler'
-  options:
-    parameters:
-      profile:
-        type: 'webprofiler:token'
+    _form: 'Drupal\webprofiler\Form\ConfigForm'
+    _title: 'Configure'
   requirements:
     _permission: 'access webprofiler'

@@ -9,7 +9,7 @@ active_toolbar_items:
   database: database
   drupal_extension: drupal_extension
   form: form
-  frontend: frontend
+  frontend: performance_timing
   php_config: php_config
   request: request
   time: time

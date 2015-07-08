@@ -3,9 +3,9 @@
 namespace Drupal\webprofiler\Frontend;
 
 /**
- * Class PerformanceData
+ * Class PerformanceTimingData
  */
-class PerformanceData {
+class PerformanceTimingData {
 
 	/**
 	 * @var array
@@ -73,5 +73,4 @@ class PerformanceData {
 			return 0;
 		}
 	}
-
 }

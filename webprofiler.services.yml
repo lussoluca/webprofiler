@@ -92,10 +92,10 @@ services:
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/time.html.twig', id:'time', title:'Timeline', priority: 40 }
 
-  webprofiler.frontend:
-    class: Drupal\webprofiler\DataCollector\FrontendDataCollector
+  webprofiler.performance_timing:
+    class: Drupal\webprofiler\DataCollector\PerformanceTimingDataCollector
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/frontend.html.twig', id:'frontend', title:'Frontend', priority: 50 }
+      - { name: data_collector, template:'@webprofiler/Collector/performance_timing.html.twig', id:'performanceTiming', title:'Performance Timing', priority: 50 }
 
   webprofiler.database:
     class: Drupal\webprofiler\DataCollector\DatabaseDataCollector

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\webprofiler\Controller\WebprofilerController.
- */
-
 namespace Drupal\webprofiler\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -17,16 +12,15 @@ use Drupal\webprofiler\Profiler\TemplateManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\webprofiler\Profiler\Profiler;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use Symfony\Component\Routing\RouterInterface;
 use Twig_Loader_Filesystem;
 
 /**
- * Class WebprofilerController
+ * Class DashboardController
  */
-class WebprofilerController extends ControllerBase {
+class DashboardController extends ControllerBase {
 
   /**
    * @var \Drupal\webprofiler\Profiler\Profiler
@@ -51,7 +45,7 @@ class WebprofilerController extends ControllerBase {
   /**
    * @var \Drupal\webprofiler\Profiler\ProfilerStorageManager
    */
-  private $profilerDownloadManager;
+  private $storageManager;
 
   /**
    * @var \Drupal\Core\Render\RendererInterface
@@ -79,15 +73,15 @@ class WebprofilerController extends ControllerBase {
    * @param \Symfony\Component\Routing\RouterInterface $router
    * @param \Drupal\webprofiler\Profiler\TemplateManager $templateManager
    * @param \Drupal\Core\Datetime\DateFormatter $date
-   * @param \Drupal\webprofiler\Profiler\ProfilerStorageManager $profilerDownloadManager
+   * @param \Drupal\webprofiler\Profiler\ProfilerStorageManager $storageManager
    * @param \Drupal\Core\Render\RendererInterface $renderer
    */
-  public function __construct(Profiler $profiler, RouterInterface $router, TemplateManager $templateManager, DateFormatter $date, ProfilerStorageManager $profilerDownloadManager, RendererInterface $renderer) {
+  public function __construct(Profiler $profiler, RouterInterface $router, TemplateManager $templateManager, DateFormatter $date, ProfilerStorageManager $storageManager, RendererInterface $renderer) {
     $this->profiler = $profiler;
     $this->router = $router;
     $this->templateManager = $templateManager;
     $this->date = $date;
-    $this->profilerDownloadManager = $profilerDownloadManager;
+    $this->storageManager = $storageManager;
     $this->renderer = $renderer;
   }
 
@@ -156,28 +150,6 @@ class WebprofilerController extends ControllerBase {
   }
 
   /**
-   * Generates the toolbar.
-   *
-   * @param Profile $profile
-   *
-   * @return array
-   */
-  public function toolbarAction(Profile $profile) {
-    $this->profiler->disable();
-
-    $templates = $this->templateManager->getTemplates($profile);
-
-    $toolbar = array(
-      '#theme' => 'webprofiler_toolbar',
-      '#token' => $profile->getToken(),
-      '#templates' => $templates,
-      '#profile' => $profile,
-    );
-
-    return new Response($this->renderer->render($toolbar));
-  }
-
-  /**
    * Generates the list page.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
@@ -219,7 +191,7 @@ class WebprofilerController extends ControllerBase {
     $build = array();
 
     $storage_id = $this->config('webprofiler.config')->get('storage');
-    $storage = $this->profilerDownloadManager->getStorage($storage_id);
+    $storage = $this->storageManager->getStorage($storage_id);
 
     $build['resume'] = array(
       '#type' => 'inline_template',
@@ -263,6 +235,8 @@ class WebprofilerController extends ControllerBase {
   }
 
   /**
+   * Exposes collector's data as JSON.
+   *
    * @param \Symfony\Component\HttpKernel\Profiler\Profile $profile
    * @param $collector
    *

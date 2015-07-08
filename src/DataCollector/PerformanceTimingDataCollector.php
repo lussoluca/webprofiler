@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Contains \Drupal\webprofiler\DataCollector\FrontendDataCollector.
+ * Contains \Drupal\webprofiler\DataCollector\PerformanceTimingDataCollector.
  */
 
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\webprofiler\Frontend\PerformanceData;
+use Drupal\webprofiler\Frontend\PerformanceTimingData;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 /**
  * Collects data about frontend performance.
  */
-class FrontendDataCollector extends DataCollector implements DrupalDataCollectorInterface {
+class PerformanceTimingDataCollector extends DataCollector implements DrupalDataCollectorInterface {
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
@@ -87,7 +87,7 @@ class FrontendDataCollector extends DataCollector implements DrupalDataCollector
 //      'value',
 //    );
 //
-//    $performanceData = new PerformanceData($this->data['performance']);
+//    $performanceData = new PerformanceTimingData($this->data['performance']);
 //
 //    $rows = [
 //      [$this->t('DNS lookup time'), $performanceData->getDNSTiming() . ' ms'],
