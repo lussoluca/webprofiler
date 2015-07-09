@@ -27,7 +27,7 @@ class StoragePass implements CompilerPassInterface {
     $definition = $container->getDefinition('profiler.storage_manager');
 
     foreach ($container->findTaggedServiceIds('webprofiler_storage') as $id => $attributes) {
-      $definition->addMethodCall('addStorage', array($id, $attributes[0]['title'], new Reference($id)));
+      $definition->addMethodCall('addStorage', [$id, $attributes[0]['title'], new Reference($id)]);
     }
   }
 }

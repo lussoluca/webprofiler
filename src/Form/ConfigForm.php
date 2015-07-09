@@ -74,44 +74,44 @@ class ConfigForm extends ConfigFormBase {
     $this->profiler->disable();
     $config = $this->config('webprofiler.config');
 
-    $form['purge_on_cache_clear'] = array(
+    $form['purge_on_cache_clear'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Purge on cache clear'),
       '#description' => $this->t('Deletes all profiler files during cache clear.'),
       '#default_value' => $config->get('purge_on_cache_clear'),
-    );
+    ];
 
     $storages = $this->storageManager->getStorages();
 
-    $form['storage'] = array(
+    $form['storage'] = [
       '#type' => 'select',
       '#title' => $this->t('Storage backend'),
       '#description' => $this->t('Choose were to store profiler data.'),
       '#options' => $storages,
       '#default_value' => $config->get('storage'),
-    );
+    ];
 
-    $form['exclude'] = array(
+    $form['exclude'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Exclude'),
       '#default_value' => $config->get('exclude'),
       '#description' => $this->t('Paths to exclude for profiling. One path per line.'),
-    );
+    ];
 
-    $form['active_toolbar_items'] = array(
+    $form['active_toolbar_items'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Active toolbar items'),
       '#options' => $this->getCollectors(),
       '#description' => $this->t('Choose which items to show into the toolbar.'),
       '#default_value' => $config->get('active_toolbar_items'),
-    );
+    ];
 
-    $form['ide_link'] = array(
+    $form['ide_link'] = [
       '#type' => 'textfield',
       '#title' => $this->t('IDE link'),
       '#description' => $this->t('IDE link for open files.'),
       '#default_value' => $config->get('ide_link'),
-    );
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -135,7 +135,7 @@ class ConfigForm extends ConfigFormBase {
    * @return array
    */
   private function getCollectors() {
-    $options = array();
+    $options = [];
     foreach ($this->templates as $template) {
       // drupal collector should not be disabled
       if ($template[0] != 'drupal') {

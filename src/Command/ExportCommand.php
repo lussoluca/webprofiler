@@ -106,7 +106,7 @@ class ExportCommand extends ContainerAwareCommand {
     $progress = new ProgressBar($output, count($profiles) + 2);
     $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
 
-    $files = array();
+    $files = [];
     $progress->start();
     $progress->setMessage($this->trans('commands.webprofiler.export.progress.exporting'));
     foreach ($profiles as $profile) {

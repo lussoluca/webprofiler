@@ -2,7 +2,6 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -20,6 +19,9 @@ class TwigDataCollector extends DataCollector implements DrupalDataCollectorInte
   private $profile;
   private $computed;
 
+  /**
+   * @param \Twig_Profiler_Profile $profile
+   */
   public function __construct(\Twig_Profiler_Profile $profile) {
     $this->profile = $profile;
   }
@@ -37,32 +39,53 @@ class TwigDataCollector extends DataCollector implements DrupalDataCollectorInte
     $this->data['profile'] = serialize($this->profile);
   }
 
+  /**
+   * @return int
+   */
   public function getTime() {
     return $this->getProfile()->getDuration() * 1000;
   }
 
+  /**
+   * @return mixed
+   */
   public function getTemplateCount() {
     return $this->getComputedData('template_count');
   }
 
+  /**
+   * @return mixed
+   */
   public function getTemplates() {
     return $this->getComputedData('templates');
   }
 
+  /**
+   * @return mixed
+   */
   public function getBlockCount() {
     return $this->getComputedData('block_count');
   }
 
+  /**
+   * @return mixed
+   */
   public function getMacroCount() {
     return $this->getComputedData('macro_count');
   }
 
+  /**
+   * @return \Twig_Markup
+   */
   public function getHtmlCallGraph() {
     $dumper = new \Twig_Profiler_Dumper_Html();
 
     return new \Twig_Markup($dumper->dump($this->getProfile()), 'UTF-8');
   }
 
+  /**
+   * @return mixed|\Twig_Profiler_Profile
+   */
   public function getProfile() {
     if (NULL === $this->profile) {
       $this->profile = unserialize($this->data['profile']);
@@ -71,6 +94,11 @@ class TwigDataCollector extends DataCollector implements DrupalDataCollectorInte
     return $this->profile;
   }
 
+  /**
+   * @param $index
+   *
+   * @return mixed
+   */
   private function getComputedData($index) {
     if (NULL === $this->computed) {
       $this->computed = $this->computeData($this->getProfile());
@@ -79,14 +107,19 @@ class TwigDataCollector extends DataCollector implements DrupalDataCollectorInte
     return $this->computed[$index];
   }
 
+  /**
+   * @param \Twig_Profiler_Profile $profile
+   *
+   * @return array
+   */
   private function computeData(\Twig_Profiler_Profile $profile) {
-    $data = array(
+    $data = [
       'template_count' => 0,
       'block_count' => 0,
       'macro_count' => 0,
-    );
+    ];
 
-    $templates = array();
+    $templates = [];
     foreach ($profile as $p) {
       $d = $this->computeData($p);
 

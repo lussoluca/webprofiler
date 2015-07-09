@@ -104,7 +104,7 @@ class TraceableViewExecutable extends ViewExecutable {
     $this->style_plugin->preRender($this->result);
 
     // Let each area handler have access to the result set.
-    $areas = array('header', 'footer');
+    $areas = ['header', 'footer'];
     // Only call preRender() on the empty handlers if the result is empty.
     if (empty($this->result)) {
       $areas[] = 'empty';
@@ -116,7 +116,7 @@ class TraceableViewExecutable extends ViewExecutable {
     }
 
     // Let modules modify the view just prior to rendering it.
-    $module_handler->invokeAll('views_pre_render', array($this));
+    $module_handler->invokeAll('views_pre_render', [$this]);
 
     // Let the themes play too, because pre render is a very themey thing.
     foreach ($themes as $theme_name) {
@@ -135,7 +135,11 @@ class TraceableViewExecutable extends ViewExecutable {
     }
 
     // Let modules modify the view output after it is rendered.
-    $module_handler->invokeAll('views_post_render', array($this, &$this->display_handler->output, $cache));
+    $module_handler->invokeAll('views_post_render', [
+      $this,
+      &$this->display_handler->output,
+      $cache
+    ]);
 
     // Let the themes play too, because post render is a very themey thing.
     foreach ($themes as $theme_name) {

@@ -21,7 +21,7 @@ class WebprofilerProviderCollector implements AuthenticationManagerInterface {
    *
    * @var array
    */
-  protected $providerOrders = array();
+  protected $providerOrders = [];
 
   /**
    * Sorted list of registered providers.
@@ -53,7 +53,7 @@ class WebprofilerProviderCollector implements AuthenticationManagerInterface {
       // Sort the builders according to priority.
       krsort($this->providerOrders);
       // Merge nested providers from $this->providers into $this->sortedProviders.
-      $this->sortedProviders = array();
+      $this->sortedProviders = [];
       foreach ($this->providerOrders as $providers) {
         $this->sortedProviders = array_merge($this->sortedProviders, $providers);
       }

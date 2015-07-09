@@ -60,8 +60,8 @@ class ProfilerExtension extends \Twig_Extension_Profiler {
    */
   public function getFunctions() {
     return [
-      new \Twig_SimpleFunction('abbr', array($this, 'getAbbr')),
-      new \Twig_SimpleFunction('idelink', array($this, 'getIdeLink')),
+      new \Twig_SimpleFunction('abbr', [$this, 'getAbbr']),
+      new \Twig_SimpleFunction('idelink', [$this, 'getIdeLink']),
     ];
   }
 

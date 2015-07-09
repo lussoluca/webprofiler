@@ -40,20 +40,20 @@ class BlocksDataCollector extends DataCollector implements DrupalDataCollectorIn
     $loaded = $this->entityManager->getLoaded('block');
     $rendered = $this->entityManager->getRendered('block');
 
-    $this->data['blocks'] = array();
+    $this->data['blocks'] = [];
 
     if ($loaded) {
       /** @var \Drupal\webprofiler\Entity\EntityStorageDecorator $loaded */
       /** @var \Drupal\block\BlockInterface $block */
       foreach ($loaded->getEntities() as $block) {
-        $this->data['blocks']['loaded'][] = array(
+        $this->data['blocks']['loaded'][] = [
           'id' => $block->get('id'),
           'region' => $block->getRegion(),
           'status' => $block->get('status'),
           'theme' => $block->getTheme(),
           'plugin' => $block->get('plugin'),
           'settings' => $block->get('settings'),
-        );
+        ];
       }
     }
 
@@ -61,14 +61,14 @@ class BlocksDataCollector extends DataCollector implements DrupalDataCollectorIn
       /** @var \Drupal\webprofiler\Entity\EntityStorageDecorator $rendered */
       /** @var \Drupal\block\BlockInterface $block */
       foreach ($rendered->getEntities() as $block) {
-        $this->data['blocks']['rendered'][] = array(
+        $this->data['blocks']['rendered'][] = [
           'id' => $block->get('id'),
           'region' => $block->getRegion(),
           'status' => $block->get('status'),
           'theme' => $block->getTheme(),
           'plugin' => $block->get('plugin'),
           'settings' => $block->get('settings'),
-        );
+        ];
       }
     }
   }
@@ -77,7 +77,7 @@ class BlocksDataCollector extends DataCollector implements DrupalDataCollectorIn
    * @return array
    */
   public function getRenderedBlocks() {
-    return (array_key_exists('rendered', $this->data['blocks'])) ? $this->data['blocks']['rendered'] : array();
+    return (array_key_exists('rendered', $this->data['blocks'])) ? $this->data['blocks']['rendered'] : [];
   }
 
   /**
@@ -91,7 +91,7 @@ class BlocksDataCollector extends DataCollector implements DrupalDataCollectorIn
    * @return array
    */
   public function getLoadedBlocks() {
-    return (array_key_exists('loaded', $this->data['blocks'])) ? $this->data['blocks']['loaded'] : array();
+    return (array_key_exists('loaded', $this->data['blocks'])) ? $this->data['blocks']['loaded'] : [];
   }
 
   /**
@@ -119,10 +119,10 @@ class BlocksDataCollector extends DataCollector implements DrupalDataCollectorIn
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Total loaded blocks: @loaded, total rendered blocks: @rendered', array(
+    return $this->t('Total loaded blocks: @loaded, total rendered blocks: @rendered', [
       '@loaded' => $this->getLoadedBlocksCount(),
       '@rendered' => $this->getRenderedBlocksCount()
-    ));
+    ]);
   }
 
 //  /**

@@ -53,7 +53,7 @@ class CacheDataCollectorTest extends UnitTestCase {
     $cache = new \StdClass();
     $cache->cid = 'cache_id';
     $cache->expire = 1;
-    $cache->tags = array('tag1', 'tag2');
+    $cache->tags = ['tag1', 'tag2'];
     $this->cacheBackendInterface->expects($this->once())
       ->method('get')
       ->will($this->returnValue($cache));

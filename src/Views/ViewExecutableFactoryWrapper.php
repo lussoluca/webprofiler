@@ -24,7 +24,7 @@ class ViewExecutableFactoryWrapper extends ViewExecutableFactory {
   public function __construct(AccountInterface $user, RequestStack $request_stack, ViewsData $views_data, RouteProviderInterface $route_provider) {
     parent::__construct($user, $request_stack, $views_data, $route_provider);
 
-    $this->views = array();
+    $this->views = [];
   }
 
   /**

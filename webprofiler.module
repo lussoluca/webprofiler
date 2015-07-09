@@ -9,36 +9,36 @@
  * Implements hook_theme().
  */
 function webprofiler_theme() {
-  return array(
-    'webprofiler_loader' => array(
+  return [
+    'webprofiler_loader' => [
       'template' => 'Profiler/webprofiler_loader',
-      'variables' => array('token' => NULL, 'profiler_url' => NULL),
-    ),
-    'webprofiler_toolbar' => array(
+      'variables' => ['token' => NULL, 'profiler_url' => NULL],
+    ],
+    'webprofiler_toolbar' => [
       'template' => 'Profiler/webprofiler_toolbar',
-      'variables' => array(
+      'variables' => [
         'token' => NULL,
-        'templates' => array(),
+        'templates' => [],
         'profile' => NULL,
-      ),
-    ),
-    'webprofiler_panel' => array(
+      ],
+    ],
+    'webprofiler_panel' => [
       'template' => 'Profiler/webprofiler_panel',
-      'variables' => array(
-        'template' => array(),
+      'variables' => [
+        'template' => [],
         'token' => NULL,
         'name' => NULL,
-      ),
-    ),
-    'webprofiler_dashboard' => array(
+      ],
+    ],
+    'webprofiler_dashboard' => [
       'template' => 'Profiler/webprofiler_dashboard',
-      'variables' => array(
-        'profile' => array(),
-        'panels' => array(),
+      'variables' => [
+        'profile' => [],
+        'panels' => [],
         'spinner_path' => NULL,
-      ),
-    ),
-  );
+      ],
+    ],
+  ];
 }
 
 /**

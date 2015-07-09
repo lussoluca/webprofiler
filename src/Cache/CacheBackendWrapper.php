@@ -101,7 +101,7 @@ class CacheBackendWrapper implements CacheBackendInterface {
   /**
    * {@inheritdoc}
    */
-  public function set($cid, $data, $expire = Cache::PERMANENT, array $tags = array()) {
+  public function set($cid, $data, $expire = Cache::PERMANENT, array $tags = []) {
     return $this->cacheBackend->set($cid, $data, $expire, $tags);
   }
 

@@ -38,7 +38,7 @@ class CacheFactoryWrapper implements CacheFactoryInterface, ContainerAwareInterf
    *
    * @var \Drupal\webprofiler\Cache\CacheBackendWrapper[]
    */
-  protected $cacheBackends = array();
+  protected $cacheBackends = [];
 
   /**
    * Creates a new CacheFactoryWrapper instance.

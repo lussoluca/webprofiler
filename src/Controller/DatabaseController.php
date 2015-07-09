@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DatabaseController
@@ -63,7 +62,7 @@ class DatabaseController extends ControllerBase {
   public function explainAction(Profile $profile, $qid) {
     $query = $this->getQuery($profile, $qid);
 
-    $data = array();
+    $data = [];
     $result = $this->database->query('EXPLAIN ' . $query['query'], (array) $query['args'])->fetchAllAssoc('table');
     $i = 1;
     foreach ($result as $row) {
@@ -73,7 +72,7 @@ class DatabaseController extends ControllerBase {
       $i++;
     }
 
-    return new JsonResponse(array('data' => $data));
+    return new JsonResponse(['data' => $data]);
   }
 
   /**
@@ -86,14 +85,14 @@ class DatabaseController extends ControllerBase {
     $query = $this->getQuery($profile, $qid);
 
     $conn = Database::getConnection();
-    $quoted = array();
+    $quoted = [];
     foreach ((array) $query['args'] as $key => $val) {
       $quoted[$key] = is_null($val) ? 'NULL' : $conn->quote($val);
     }
 
-    return array(
+    return [
       '#markup' => strtr($query['query'], $quoted),
-    );
+    ];
   }
 
   /**
@@ -107,7 +106,7 @@ class DatabaseController extends ControllerBase {
     $token = $profile->getToken();
 
     if (!$profile = $this->profiler->loadProfile($token)) {
-      throw new NotFoundHttpException($this->t('Token @token does not exist.', array('@token' => $token)));
+      throw new NotFoundHttpException($this->t('Token @token does not exist.', ['@token' => $token]));
     }
 
     /** @var DatabaseDataCollector $databaseCollector */

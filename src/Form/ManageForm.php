@@ -7,10 +7,8 @@
 
 namespace Drupal\webprofiler\Form;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Drupal\webprofiler\Profiler\ProfilerStorageManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
@@ -65,25 +63,25 @@ class ManageForm extends FormBase {
     $storageId = $this->config('webprofiler.config')->get('storage');
     $storage = $this->profilerDownloadManager->getStorage($storageId);
 
-    $form['purge'] = array(
+    $form['purge'] = [
       '#type' => 'details',
       '#title' => $this->t('Purge profiles'),
       '#open' => TRUE,
-    );
+    ];
 
-    $form['purge']['purge'] = array(
+    $form['purge']['purge'] = [
       '#type' => 'submit',
       '#value' => $this->t('Purge'),
-      '#submit' => array(array($this, 'purge')),
-    );
+      '#submit' => [[$this, 'purge']],
+    ];
 
-    $form['purge']['purge-help'] = array(
+    $form['purge']['purge-help'] = [
       '#type' => 'inline_template',
       '#template' => '<div class="form-item">{{ message }}</div>',
-      '#context' => array(
-        'message' =>  $this->t('Purge %storage profiles.', array('%storage' => $storage['title'])),
-      ),
-    );
+      '#context' => [
+        'message' =>  $this->t('Purge %storage profiles.', ['%storage' => $storage['title']]),
+      ],
+    ];
 
     return $form;
   }

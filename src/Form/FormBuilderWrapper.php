@@ -29,10 +29,10 @@ class FormBuilderWrapper extends FormBuilder {
     parent::prepareForm($form_id, $form, $form_state);
 
     if (!$this->buildForms) {
-      $this->buildForms = array();
+      $this->buildForms = [];
     }
 
-    $elements = array();
+    $elements = [];
     foreach ($form as $key => $value) {
       if (strpos($key, '#') !== 0) {
         $elements[$key]['#title'] = isset($value['#title']) ? $value['#title'] : NULL;
@@ -42,10 +42,10 @@ class FormBuilderWrapper extends FormBuilder {
     }
 
     $buildInfo = $form_state->getBuildInfo();
-    $this->buildForms[$buildInfo['form_id']] = array(
+    $this->buildForms[$buildInfo['form_id']] = [
       'class' => get_class($buildInfo['callback_object']),
       'form' => $elements,
-    );
+    ];
 
     return $form;
   }

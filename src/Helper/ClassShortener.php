@@ -25,6 +25,6 @@ class ClassShortener implements ClassShortenerInterface {
       }
     }
 
-    return SafeMarkup::format("<abbr title=\"@class\">@short</abbr>", array('@class' => $class, '@short' => implode('\\', $result)));
+    return SafeMarkup::format("<abbr title=\"@class\">@short</abbr>", ['@class' => $class, '@short' => implode('\\', $result)]);
   }
 }

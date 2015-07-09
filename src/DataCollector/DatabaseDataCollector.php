@@ -2,10 +2,8 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Url;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,10 +33,10 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
     $queries = $this->database->getLogger()->get('webprofiler');
-    usort($queries, array(
+    usort($queries, [
       "Drupal\\webprofiler\\DataCollector\\DatabaseDataCollector",
       "orderQuery",
-    ));
+    ]);
 
     foreach ($queries as &$query) {
       // Remove caller.
@@ -137,16 +135,16 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Executed queries: @count', array('@count' => $this->getQueryCount()));
+    return $this->t('Executed queries: @count', ['@count' => $this->getQueryCount()]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getLibraries() {
-    return array(
+    return [
       'webprofiler/database',
-    );
+    ];
   }
 
   /**

@@ -5,7 +5,6 @@ namespace Drupal\webprofiler\Controller;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\webprofiler\DataCollector\FrontendDataCollector;
 use Drupal\webprofiler\Profiler\Profiler;
 use Drupal\webprofiler\Profiler\TemplateManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -70,12 +69,12 @@ class ToolbarController extends ControllerBase {
 
     $templates = $this->templateManager->getTemplates($profile);
 
-    $toolbar = array(
+    $toolbar = [
       '#theme' => 'webprofiler_toolbar',
       '#token' => $profile->getToken(),
       '#templates' => $templates,
       '#profile' => $profile,
-    );
+    ];
 
     return new Response($this->renderer->render($toolbar));
   }
@@ -91,11 +90,11 @@ class ToolbarController extends ControllerBase {
 
     $data = Json::decode($request->getContent());
 
-    /** @var FrontendDataCollector $collector */
+    /** @var  $collector */
     $collector = $profile->getCollector('frontend');
     $collector->setData($data);
     $this->profiler->updateProfile($profile);
 
-    return new JsonResponse(array('success' => TRUE));
+    return new JsonResponse(['success' => TRUE]);
   }
 }

@@ -60,7 +60,7 @@ class FormsDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Rendered forms: @forms', array('@forms' => count($this->data['forms'])));
+    return $this->t('Rendered forms: @forms', ['@forms' => count($this->data['forms'])]);
   }
 
 //  /**

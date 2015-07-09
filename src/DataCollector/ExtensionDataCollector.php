@@ -70,15 +70,15 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    */
   public function moduleInfo() {
     if (!isset($this->data['drupal_extension']['modules'])) {
-      return array();
+      return [];
     }
 
-    $data = array();
+    $data = [];
     foreach ($this->data['drupal_extension']['modules'] as $module => $info) {
       /** @var \Drupal\Core\Extension\Extension $info */
-      $data[$module] = implode(' | ', array(
-        $this->t('Path: @path', array('@path' => $info->getPathname())),
-      ));
+      $data[$module] = implode(' | ', [
+        $this->t('Path: @path', ['@path' => $info->getPathname()]),
+      ]);
     }
     return $data;
   }
@@ -88,16 +88,16 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    */
   public function themeInfo() {
     if (!isset($this->data['drupal_extension']['themes'])) {
-      return array();
+      return [];
     }
-    $data = array();
+    $data = [];
     foreach ($this->data['drupal_extension']['themes'] as $name => $info) {
       /** @var \Drupal\Core\Extension\Extension $info */
-      $data[$name] = implode(' | ', array(
-        $this->t('Path: @path', array('@path' => $info->getPathname())),
-        $this->t('Status: @status', array('@status' => ($info->status) ? $this->t('enabled') : $this->t('disabled'))),
-        $this->t('Engine: @engine', array('@engine' => $info->engine)),
-      ));
+      $data[$name] = implode(' | ', [
+        $this->t('Path: @path', ['@path' => $info->getPathname()]),
+        $this->t('Status: @status', ['@status' => ($info->status) ? $this->t('enabled') : $this->t('disabled')]),
+        $this->t('Engine: @engine', ['@engine' => $info->engine]),
+      ]);
     }
     return $data;
   }
@@ -120,7 +120,7 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Total active extensions: @extensions', array('@extensions' => $this->getExtensionsCount()));
+    return $this->t('Total active extensions: @extensions', ['@extensions' => $this->getExtensionsCount()]);
   }
 
 //  /**

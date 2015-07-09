@@ -59,13 +59,13 @@ class ListCommand extends ContainerAwareCommand {
 
     $table = new Table($output);
     $table
-      ->setHeaders(array(
+      ->setHeaders([
         $this->trans('commands.webprofiler.list.header.token'),
         $this->trans('commands.webprofiler.list.header.ip'),
         $this->trans('commands.webprofiler.list.header.method'),
         $this->trans('commands.webprofiler.list.header.url'),
         $this->trans('commands.webprofiler.list.header.time'),
-      ))
+      ])
       ->setRows($rows);
     $table->render();
   }

@@ -4,7 +4,6 @@ namespace Drupal\webprofiler\Profiler;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Profiler\ProfilerStorageInterface;
 
 /**
  * Class ProfilerStorageFactory

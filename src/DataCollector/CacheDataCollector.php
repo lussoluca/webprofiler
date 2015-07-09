@@ -35,7 +35,7 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
   public function __construct() {
     $this->data['total'][CacheDataCollector::WEBPROFILER_CACHE_HIT] = 0;
     $this->data['total'][CacheDataCollector::WEBPROFILER_CACHE_MISS] = 0;
-    $this->data['cache'] = array();
+    $this->data['cache'] = [];
   }
 
   /**
@@ -115,7 +115,7 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
    * @return array
    */
   public function cacheCids($type) {
-    $hits = array();
+    $hits = [];
     foreach ($this->data['cache'] as $bin => $caches) {
       $hits[$bin] = 0;
       foreach($caches as $cid => $cache) {
@@ -162,10 +162,10 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Total cache hit: @cache_hit, total cache miss: @cache_miss', array(
+    return $this->t('Total cache hit: @cache_hit, total cache miss: @cache_miss', [
       '@cache_hit' => $this->countCacheCids(CacheDataCollector::WEBPROFILER_CACHE_HIT),
       '@cache_miss' => $this->countCacheCids(CacheDataCollector::WEBPROFILER_CACHE_MISS),
-    ));
+    ]);
   }
 
 //  /**

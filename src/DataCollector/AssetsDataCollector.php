@@ -8,8 +8,6 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Asset\AssetCollectionRendererInterface;
-use Drupal\Core\Asset\AssetResolver;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,8 +25,8 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
    * Constructs a AssetDataCollector object.
    */
   public function __construct() {
-    $this->data['js'] = array();
-    $this->data['css'] = array();
+    $this->data['js'] = [];
+    $this->data['css'] = [];
   }
 
   /**
@@ -41,14 +39,14 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
    * @param $jsAsset
    */
   public function addJsAsset($jsAsset) {
-    $this->data['js'] = NestedArray::mergeDeepArray(array($jsAsset, $this->data['js']));
+    $this->data['js'] = NestedArray::mergeDeepArray([$jsAsset, $this->data['js']]);
   }
 
   /**
    * @param $cssAsset
    */
   public function addCssAsset($cssAsset) {
-    $this->data['css'] = NestedArray::mergeDeepArray(array($cssAsset, $this->data['css']));
+    $this->data['css'] = NestedArray::mergeDeepArray([$cssAsset, $this->data['css']]);
   }
 
   /**
@@ -62,11 +60,11 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
    * Twig callback to return the CSS files.
    */
   public function getCssFiles() {
-    $result = array();
+    $result = [];
     foreach ($this->data['css'] as $option) {
       $result[] = $option;
     }
-    uasort($result, array($this, 'sortByWeight'));
+    uasort($result, [$this, 'sortByWeight']);
     return $result;
   }
 
@@ -81,13 +79,13 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
    * Twig callback to return the JS files.
    */
   public function getJsFiles() {
-    $result = array();
+    $result = [];
     foreach ($this->data['js'] as $option) {
       if ($option['type'] != 'setting') {
         $result[] = $option;
       }
     }
-    uasort($result, array($this, 'sortByWeight'));
+    uasort($result, [$this, 'sortByWeight']);
     return $result;
   }
 
@@ -109,7 +107,7 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Total assets: @count', array('@count' => ($this->getCssCount() + $this->getJsCount())));
+    return $this->t('Total assets: @count', ['@count' => ($this->getCssCount() + $this->getJsCount())]);
   }
 
 //  /**

@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Class WebprofilerEventSubscriber
+ */
 class WebprofilerEventSubscriber implements EventSubscriberInterface {
 
   /**
@@ -48,7 +51,7 @@ class WebprofilerEventSubscriber implements EventSubscriberInterface {
     if ($response->headers->has('X-Debug-Token') && null !== $this->urlGenerator) {
       $response->headers->set(
         'X-Debug-Token-Link',
-        $this->urlGenerator->generate('webprofiler.dashboard', array('profile' => $response->headers->get('X-Debug-Token')))
+        $this->urlGenerator->generate('webprofiler.dashboard', ['profile' => $response->headers->get('X-Debug-Token')])
       );
     }
 
@@ -71,11 +74,11 @@ class WebprofilerEventSubscriber implements EventSubscriberInterface {
 
     if (FALSE !== $pos) {
       if ($token = $response->headers->get('X-Debug-Token')) {
-        $toolbar = array(
+        $toolbar = [
           '#theme' => 'webprofiler_loader',
           '#token' => $token,
-          '#profiler_url' => $this->urlGenerator->generate('webprofiler.toolbar', array('profile' => $token)),
-        );
+          '#profiler_url' => $this->urlGenerator->generate('webprofiler.toolbar', ['profile' => $token]),
+        ];
 
         $content = mb_substr($content, 0, $pos) . $this->renderer->renderRoot($toolbar) . mb_substr($content, $pos);
         $response->setContent($content);
@@ -87,8 +90,8 @@ class WebprofilerEventSubscriber implements EventSubscriberInterface {
    * @return array
    */
   public static function getSubscribedEvents() {
-    return array(
-      KernelEvents::RESPONSE => array('onKernelResponse', -128),
-    );
+    return [
+      KernelEvents::RESPONSE => ['onKernelResponse', -128],
+    ];
   }
 }

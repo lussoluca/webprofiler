@@ -2,8 +2,6 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
-use Drupal\Component\Utility\String;
-
 /**
  * Class DrupalDataCollectorTrait
  */
@@ -27,14 +25,14 @@ trait DrupalDataCollectorTrait {
    * {@inheritdoc}
    */
   public function getLibraries() {
-    return array();
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDrupalSettings() {
-    return array();
+    return [];
   }
 
   /**

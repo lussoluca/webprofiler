@@ -7,6 +7,9 @@
 
 namespace Drupal\webprofiler {
 
+  /**
+   * Class Stopwatch
+   */
   class Stopwatch extends \Symfony\Component\Stopwatch\Stopwatch {
 
   }
@@ -15,6 +18,9 @@ namespace Drupal\webprofiler {
 
 namespace Symfony\Component\Stopwatch {
 
+  /**
+   * Class Stopwatch
+   */
   class Stopwatch {
     /**
      * @var Section[]
@@ -26,8 +32,11 @@ namespace Symfony\Component\Stopwatch {
      */
     private $activeSections;
 
+    /**
+     *
+     */
     public function __construct() {
-      $this->sections = $this->activeSections = array('__root__' => new Section('__root__'));
+      $this->sections = $this->activeSections = ['__root__' => new Section('__root__')];
     }
 
     /**
@@ -124,7 +133,7 @@ namespace Symfony\Component\Stopwatch {
      * @return StopwatchEvent[] An array of StopwatchEvent instances
      */
     public function getSectionEvents($id) {
-      return isset($this->sections[$id]) ? $this->sections[$id]->getEvents() : array();
+      return isset($this->sections[$id]) ? $this->sections[$id]->getEvents() : [];
     }
   }
 
@@ -138,7 +147,7 @@ namespace Symfony\Component\Stopwatch {
     /**
      * @var StopwatchEvent[]
      */
-    private $events = array();
+    private $events = [];
 
     /**
      * @var null|float
@@ -153,7 +162,7 @@ namespace Symfony\Component\Stopwatch {
     /**
      * @var Section[]
      */
-    private $children = array();
+    private $children = [];
 
     /**
      * Constructor.
@@ -283,11 +292,14 @@ namespace Symfony\Component\Stopwatch {
     }
   }
 
+  /**
+   * Class StopwatchEvent
+   */
   class StopwatchEvent {
     /**
      * @var StopwatchPeriod[]
      */
-    private $periods = array();
+    private $periods = [];
 
     /**
      * @var float
@@ -302,7 +314,7 @@ namespace Symfony\Component\Stopwatch {
     /**
      * @var float[]
      */
-    private $started = array();
+    private $started = [];
 
     /**
      * Constructor.
@@ -476,6 +488,9 @@ namespace Symfony\Component\Stopwatch {
     }
   }
 
+  /**
+   * Class StopwatchPeriod
+   */
   class StopwatchPeriod {
     private $start;
     private $end;

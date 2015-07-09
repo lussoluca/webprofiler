@@ -98,53 +98,53 @@ class DashboardController extends ControllerBase {
     $templateManager = $this->templateManager;
     $templates = $templateManager->getTemplates($profile);
 
-    $panels = array();
-    $libraries = array('webprofiler/dashboard');
-    $drupalSettings = array(
-      'webprofiler' => array(
+    $panels = [];
+    $libraries = ['webprofiler/dashboard'];
+    $drupalSettings = [
+      'webprofiler' => [
         'token' => $profile->getToken(),
         'idelink' => $this->config('webprofiler.config')->get('ide_link'),
-        'collectors' => array(),
-      ),
-    );
+        'collectors' => [],
+      ],
+    ];
 
     foreach ($templates as $name => $template) {
       /** @var DrupalDataCollectorInterface $collector */
       $collector = $profile->getCollector($name);
 
       if ($collector->hasPanel()) {
-        $panels[] = array(
+        $panels[] = [
           '#theme' => 'webprofiler_panel',
           '#name' => $name,
           '#template' => $template,
           '#token' => $profile->getToken(),
-        );
+        ];
 
-        $drupalSettings['webprofiler']['collectors'][] = array(
+        $drupalSettings['webprofiler']['collectors'][] = [
           'id' => $name,
           'name' => $name,
           'label' => $collector->getTitle(),
           'summary' => $collector->getPanelSummary(),
-        );
+        ];
 
         $libraries = array_merge($libraries, $collector->getLibraries());
         $drupalSettings['webprofiler'] += $collector->getDrupalSettings();
       }
     }
 
-    $build = array();
-    $build['panels'] = array(
+    $build = [];
+    $build['panels'] = [
       '#theme' => 'webprofiler_dashboard',
       '#profile' => $profile,
       '#panels' => render($panels),
       '#spinner_path' => '/' . $this->moduleHandler()
           ->getModule('webprofiler')
           ->getPath() . '/images/searching.gif',
-      '#attached' => array(
+      '#attached' => [
         'drupalSettings' => $drupalSettings,
         'library' => $libraries,
-      ),
-    );
+      ],
+    ];
 
     return $build;
   }
@@ -166,11 +166,11 @@ class DashboardController extends ControllerBase {
 
     $profiles = $this->profiler->find($ip, $url, $limit, $method, '', '');
 
-    $rows = array();
+    $rows = [];
     if (count($profiles)) {
       foreach ($profiles as $profile) {
-        $row = array();
-        $row[] = $this->l($profile['token'], new Url('webprofiler.dashboard', array('profile' => $profile['token'])));
+        $row = [];
+        $row[] = $this->l($profile['token'], new Url('webprofiler.dashboard', ['profile' => $profile['token']]));
         $row[] = $profile['ip'];
         $row[] = $profile['method'];
         $row[] = $profile['url'];
@@ -180,56 +180,56 @@ class DashboardController extends ControllerBase {
       }
     }
     else {
-      $rows[] = array(
-        array(
+      $rows[] = [
+        [
           'data' => $this->t('No profiles found'),
           'colspan' => 6,
-        ),
-      );
+        ],
+      ];
     }
 
-    $build = array();
+    $build = [];
 
     $storage_id = $this->config('webprofiler.config')->get('storage');
     $storage = $this->storageManager->getStorage($storage_id);
 
-    $build['resume'] = array(
+    $build['resume'] = [
       '#type' => 'inline_template',
       '#template' => '<p>{{ message }}</p>',
-      '#context' => array(
-        'message' => $this->t('Profiles stored with %storage service.', array('%storage' => $storage['title'])),
-      ),
-    );
+      '#context' => [
+        'message' => $this->t('Profiles stored with %storage service.', ['%storage' => $storage['title']]),
+      ],
+    ];
 
     $build['filters'] = $this->formBuilder()
       ->getForm('Drupal\\webprofiler\\Form\\ProfilesFilterForm');
 
-    $build['table'] = array(
+    $build['table'] = [
       '#type' => 'table',
       '#rows' => $rows,
-      '#header' => array(
+      '#header' => [
         $this->t('Token'),
-        array(
+        [
           'data' => $this->t('Ip'),
-          'class' => array(RESPONSIVE_PRIORITY_LOW),
-        ),
-        array(
+          'class' => [RESPONSIVE_PRIORITY_LOW],
+        ],
+        [
           'data' => $this->t('Method'),
-          'class' => array(RESPONSIVE_PRIORITY_LOW),
-        ),
+          'class' => [RESPONSIVE_PRIORITY_LOW],
+        ],
         $this->t('Url'),
-        array(
+        [
           'data' => $this->t('Time'),
-          'class' => array(RESPONSIVE_PRIORITY_MEDIUM),
-        ),
-      ),
+          'class' => [RESPONSIVE_PRIORITY_MEDIUM],
+        ],
+      ],
       '#sticky' => TRUE,
-      '#attached' => array(
-        'library' => array(
+      '#attached' => [
+        'library' => [
           'webprofiler/webprofiler',
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
 
     return $build;
   }

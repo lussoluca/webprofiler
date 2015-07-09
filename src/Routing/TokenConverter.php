@@ -4,9 +4,11 @@ namespace Drupal\webprofiler\Routing;
 
 use Drupal\Core\ParamConverter\ParamConverterInterface;
 use Drupal\webprofiler\Profiler\Profiler;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
+/**
+ * Class TokenConverter
+ */
 class TokenConverter implements ParamConverterInterface {
 
   /**

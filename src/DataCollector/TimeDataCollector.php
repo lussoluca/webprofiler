@@ -8,7 +8,6 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,9 +87,9 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
    * {@inheritdoc}
    */
   public function getLibraries() {
-    return array(
+    return [
       'webprofiler/timeline',
-    );
+    ];
   }
 
   /**
@@ -101,19 +100,19 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
     $collectedEvents = $this->getEvents();
     $sectionPeriods = $collectedEvents['__section__']->getPeriods();
     $endTime = end($sectionPeriods)->getEndTime();
-    $events = array();
+    $events = [];
 
     foreach ($collectedEvents as $key => $collectedEvent) {
       if ('__section__' != $key) {
-        $periods = array();
+        $periods = [];
         foreach ($collectedEvent->getPeriods() as $period) {
-          $periods[] = array(
+          $periods[] = [
             'start' => sprintf("%F", $period->getStartTime()),
             'end' => sprintf("%F", $period->getEndTime()),
-          );
+          ];
         }
 
-        $events[] = array(
+        $events[] = [
           "name" => $key,
           "category" => $collectedEvent->getCategory(),
           "origin" => sprintf("%F", $collectedEvent->getOrigin()),
@@ -122,10 +121,10 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
           "duration" => sprintf("%F", $collectedEvent->getDuration()),
           "memory" => sprintf("%.1F", $collectedEvent->getMemory() / 1024 / 1024),
           "periods" => $periods,
-        );
+        ];
       }
     }
 
-    return array('time' => array('events' => $events, 'endtime' => $endTime));
+    return ['time' => ['events' => $events, 'endtime' => $endTime]];
   }
 }

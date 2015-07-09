@@ -101,7 +101,7 @@ class TemplateManager {
    * @throws \UnexpectedValueException
    */
   protected function getNames(Profile $profile) {
-    $templates = array();
+    $templates = [];
 
     foreach ($this->templates as $arguments) {
       if (NULL === $arguments) {

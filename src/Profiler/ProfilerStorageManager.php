@@ -4,6 +4,9 @@ namespace Drupal\webprofiler\Profiler;
 
 use Symfony\Component\HttpKernel\Profiler\ProfilerStorageInterface;
 
+/**
+ * Class ProfilerStorageManager
+ */
 class ProfilerStorageManager {
 
   /**
@@ -15,7 +18,7 @@ class ProfilerStorageManager {
    * @return array
    */
   public function getStorages() {
-    $output = array();
+    $output = [];
 
     /** @var \Symfony\Component\HttpKernel\Profiler\ProfilerStorageInterface $storage */
     foreach ($this->storages as $id => $storage) {
@@ -40,10 +43,10 @@ class ProfilerStorageManager {
    * @param \Symfony\Component\HttpKernel\Profiler\ProfilerStorageInterface $storage
    */
   public function addStorage($id, $title, ProfilerStorageInterface $storage) {
-    $this->storages[$id] = array(
+    $this->storages[$id] = [
       'title' => $title,
       'class' => $storage,
-    );
+    ];
   }
 
 }

@@ -53,13 +53,13 @@ class Decorator {
   public function isCallable($method, $checkSelf = FALSE) {
     //Check the original object
     $object = $this->getOriginalObject();
-    if (is_callable(array($object, $method))) {
+    if (is_callable([$object, $method])) {
       return $object;
     }
     // Check Decorators.
     $object = $checkSelf ? $this : $this->object;
     while ($object instanceof Decorator) {
-      if (is_callable(array($object, $method))) {
+      if (is_callable([$object, $method])) {
         return $object;
       }
       $object = $this->object;
@@ -77,7 +77,7 @@ class Decorator {
    */
   public function __call($method, $args) {
     if ($object = $this->isCallable($method)) {
-      return call_user_func_array(array($object, $method), $args);
+      return call_user_func_array([$object, $method], $args);
     }
     throw new \Exception(
       'Undefined method - ' . get_class($this->getOriginalObject()) . '::' . $method

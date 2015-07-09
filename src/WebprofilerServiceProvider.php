@@ -43,24 +43,24 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
       $container->register('webprofiler.views', 'Drupal\webprofiler\DataCollector\ViewsDataCollector')
         ->addArgument(new Reference(('views.executable')))
         ->addArgument(new Reference(('entity.manager')))
-        ->addTag('data_collector', array(
+        ->addTag('data_collector', [
           'template' => '@webprofiler/Collector/views.html.twig',
           'id' => 'views',
           'title' => 'Views',
           'priority' => 75,
-        ));
+        ]);
     }
 
     // Add BlockDataCollector only if Block module is enabled.
     if (FALSE !== $container->hasDefinition('plugin.manager.block')) {
       $container->register('webprofiler.blocks', 'Drupal\webprofiler\DataCollector\BlocksDataCollector')
         ->addArgument(new Reference(('entity.manager')))
-        ->addTag('data_collector', array(
+        ->addTag('data_collector', [
           'template' => '@webprofiler/Collector/blocks.html.twig',
           'id' => 'blocks',
           'title' => 'Blocks',
           'priority' => 78,
-        ));
+        ]);
     }
   }
 }

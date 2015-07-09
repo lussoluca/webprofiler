@@ -294,7 +294,7 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
   /**
    * {@inheritdoc}
    */
-  public function getTranslationFromContext(EntityInterface $entity, $langcode = NULL, $context = array()) {
+  public function getTranslationFromContext(EntityInterface $entity, $langcode = NULL, $context = []) {
     return $this->entityManager->getTranslationFromContext($entity, $langcode, $context);
   }
 
@@ -406,7 +406,7 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
   /**
    * {@inheritdoc}
    */
-  public function createInstance($plugin_id, array $configuration = array()) {
+  public function createInstance($plugin_id, array $configuration = []) {
     return $this->entityManager->createInstance($plugin_id, $configuration);
   }
 

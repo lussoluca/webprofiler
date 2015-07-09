@@ -7,10 +7,8 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\webprofiler\Helper\IdeLinkGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\DataCollector\EventDataCollector as BaseEventDataCollector;
 
@@ -32,7 +30,7 @@ class EventsDataCollector extends BaseEventDataCollector implements DrupalDataCo
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Called listeners: @listeners', array('@listeners' => count($this->getCalledListeners())));
+    return $this->t('Called listeners: @listeners', ['@listeners' => count($this->getCalledListeners())]);
   }
 
   /**

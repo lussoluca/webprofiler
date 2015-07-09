@@ -8,7 +8,6 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\Component\Utility\String;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,13 +42,13 @@ class RoutingDataCollector extends DataCollector implements DrupalDataCollectorI
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-    $this->data['routing'] = array();
+    $this->data['routing'] = [];
     foreach ($this->routeProvider->getAllRoutes() as $route_name => $route) {
       // @TODO Find a better visual representation.
-      $this->data['routing'][] = array(
+      $this->data['routing'][] = [
         'name' => $route_name,
         'path' => $route->getPath(),
-      );
+      ];
     }
   }
 
@@ -85,7 +84,7 @@ class RoutingDataCollector extends DataCollector implements DrupalDataCollectorI
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Defined routes: @route', array('@route' => count($this->routing())));
+    return $this->t('Defined routes: @route', ['@route' => count($this->routing())]);
   }
 
 //  /**

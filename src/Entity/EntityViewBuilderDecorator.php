@@ -23,7 +23,7 @@ class EntityViewBuilderDecorator extends EntityDecorator implements EntityViewBu
   public function __construct(EntityViewBuilderInterface $controller) {
     parent::__construct($controller);
 
-    $this->entities = array();
+    $this->entities = [];
   }
 
   /**
@@ -45,7 +45,7 @@ class EntityViewBuilderDecorator extends EntityDecorator implements EntityViewBu
   /**
    * {@inheritdoc}
    */
-  public function viewMultiple(array $entities = array(), $view_mode = 'full', $langcode = NULL) {
+  public function viewMultiple(array $entities = [], $view_mode = 'full', $langcode = NULL) {
     $this->entities = array_merge($this->entities, $entities);
 
     return $this->getOriginalObject()->viewMultiple($entities, $view_mode, $langcode);
@@ -61,14 +61,14 @@ class EntityViewBuilderDecorator extends EntityDecorator implements EntityViewBu
   /**
    * {@inheritdoc}
    */
-  public function viewField(FieldItemListInterface $items, $display_options = array()) {
+  public function viewField(FieldItemListInterface $items, $display_options = []) {
     return $this->getOriginalObject()->viewField($items, $display_options);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function viewFieldItem(FieldItemInterface $item, $display_options = array()) {
+  public function viewFieldItem(FieldItemInterface $item, $display_options = []) {
     return $this->getOriginalObject()->viewFieldItem($item, $display_options);
   }
 

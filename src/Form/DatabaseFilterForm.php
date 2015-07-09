@@ -50,20 +50,20 @@ class DatabaseFilterForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $types = array(
+    $types = [
       '' => $this->t('Any'),
       'select' => 'SELECT',
       'update' => 'UPDATE',
       'insert' => 'INSERT',
       'delete' => 'DELETE',
-    );
+    ];
 
-    $form['query-type'] = array(
+    $form['query-type'] = [
       '#type' => 'select',
       '#title' => $this->t('Type'),
       '#options' => $types,
       '#default_value' => $this->getRequest()->query->get('query-type'),
-    );
+    ];
 
     $profile = $this->getRequest()->attributes->get('profile');
 
@@ -72,7 +72,7 @@ class DatabaseFilterForm extends FormBase {
 
     $queries = $databaseCollector->getQueries();
 
-    $callers = array('' => $this->t('Any'));
+    $callers = ['' => $this->t('Any')];
     foreach ($queries as $query) {
       if ($query['caller']['class']) {
         $class = str_replace('\\', '_', $query['caller']['class']);
@@ -80,21 +80,21 @@ class DatabaseFilterForm extends FormBase {
       }
     }
 
-    $form['query-caller'] = array(
+    $form['query-caller'] = [
       '#type' => 'select',
       '#title' => $this->t('Caller'),
       '#options' => $callers,
-    );
+    ];
 
-    $form['query-filter'] = array(
+    $form['query-filter'] = [
       '#type' => 'submit',
       '#value' => $this->t('Filter'),
       '#prefix' => '<div id="filter-query-wrapper">',
       '#suffix' => '</div>',
-      '#attributes' => array('class' => array('button--primary')),
-    );
+      '#attributes' => ['class' => ['button--primary']],
+    ];
 
-    $form['#attributes'] = array('id' => array('database-filter-form'));
+    $form['#attributes'] = ['id' => ['database-filter-form']];
 
     return $form;
   }

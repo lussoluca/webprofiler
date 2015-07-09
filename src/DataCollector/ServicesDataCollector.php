@@ -38,7 +38,7 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-    $this->data['initialized_services'] = array();
+    $this->data['initialized_services'] = [];
     if ($this->getServicesCount()) {
       foreach (array_keys($this->getServices()) as $id) {
         if ($this->container->initialized($id)) {
@@ -111,11 +111,11 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Initialized: @count, initialized without Webprofiler: @count_without_webprofiler, available: @available', array(
+    return $this->t('Initialized: @count, initialized without Webprofiler: @count_without_webprofiler, available: @available', [
       '@count' => $this->getInitializedServicesCount(),
       '@count_without_webprofiler' => $this->getInitializedServicesWithoutWebprofilerCount(),
       '@available' => $this->getServicesCount()
-    ));
+    ]);
   }
 
 //  /**

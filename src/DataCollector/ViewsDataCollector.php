@@ -7,9 +7,7 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
-use Drupal\Core\Entity\EntityManager;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\views\ViewExecutable;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\webprofiler\Entity\EntityManagerWrapper;
 use Drupal\webprofiler\Views\TraceableViewExecutable;
@@ -43,7 +41,7 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
     $this->entityManager = $entityManager;
     $this->view_executable_factory = $view_executable_factory;
 
-    $this->data['views'] = array();
+    $this->data['views'] = [];
   }
 
   /**
@@ -55,13 +53,13 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
     /** @var TraceableViewExecutable $view */
     foreach ($views as $view) {
       if ($view->executed) {
-        $data = array(
+        $data = [
           'id' => $view->storage->id(),
           'current_display' => $view->current_display,
           'build_time' => $view->getBuildTime(),
           'execute_time' => $view->getExecuteTime(),
           'render_time' => $view->getRenderTime(),
-        );
+        ];
 
         $this->data['views'][] = $data;
       }
@@ -112,7 +110,7 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Total views: @count', array('@count' => $this->getViewsCount()));
+    return $this->t('Total views: @count', ['@count' => $this->getViewsCount()]);
   }
 
 //  /**

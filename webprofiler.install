@@ -11,66 +11,66 @@ use Drupal\Core\Url;
  * Implements hook_schema().
  */
 function webprofiler_schema() {
-  $schema['webprofiler'] = array(
+  $schema['webprofiler'] = [
     'description' => 'Webprofiler profiles storage.',
-    'fields' => array(
-      'token' => array(
+    'fields' => [
+      'token' => [
         'description' => 'Profile token.',
         'type' => 'varchar',
         'length' => 6,
         'not null' => TRUE,
-      ),
-      'data' => array(
+      ],
+      'data' => [
         'description' => 'Profile data.',
         'type' => 'text',
         'size' => 'big',
         'not null' => TRUE,
-      ),
-      'ip' => array(
+      ],
+      'ip' => [
         'description' => 'Request IP.',
         'type' => 'varchar',
         'length' => 64,
         'not null' => TRUE,
-      ),
-      'method' => array(
+      ],
+      'method' => [
         'description' => 'Request method.',
         'type' => 'varchar',
         'length' => 6,
         'not null' => TRUE,
-      ),
-      'url' => array(
+      ],
+      'url' => [
         'description' => 'Requested URL.',
         'type' => 'varchar',
         'length' => 2048,
         'not null' => TRUE,
-      ),
-      'time' => array(
+      ],
+      'time' => [
         'description' => 'Request time.',
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
-      ),
-      'parent' => array(
+      ],
+      'parent' => [
         'description' => 'Profile parent.',
         'type' => 'varchar',
         'length' => 6,
         'not null' => FALSE,
-      ),
-      'created_at' => array(
+      ],
+      'created_at' => [
         'description' => 'Profile created time.',
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
-      ),
-    ),
-    'indexes' => array(
-      'created_at' => array('created_at'),
-      'ip' => array('ip'),
-      'method' => array('method'),
-      'parent' => array('parent'),
-    ),
-    'primary key' => array('token'),
-  );
+      ],
+    ],
+    'indexes' => [
+      'created_at' => ['created_at'],
+      'ip' => ['ip'],
+      'method' => ['method'],
+      'parent' => ['parent'],
+    ],
+    'primary key' => ['token'],
+  ];
 
   return $schema;
 }
@@ -79,36 +79,36 @@ function webprofiler_schema() {
  * Implements hook_requirements().
  */
 function webprofiler_requirements($phase) {
-  $requirements = array();
+  $requirements = [];
 
   if ('runtime' == $phase) {
     $has_d3 = _webprofiler_verify_library('webprofiler', 'd3');
-    $requirements['d3js'] = array(
+    $requirements['d3js'] = [
       'title' => t('D3.js library'),
       'value' => $has_d3 ? t('Enabled') : t('Not found'),
-    );
+    ];
 
     if (!$has_d3) {
       $requirements['d3js']['severity'] = REQUIREMENT_WARNING;
-      $d3_url = Url::fromUri('https://github.com/mbostock/d3', array('attributes' => array('target' => '_blank')));
+      $d3_url = Url::fromUri('https://github.com/mbostock/d3', ['attributes' => ['target' => '_blank']]);
       $requirements['d3js']['description'] = t(
         'Webprofiler module requires D3.js library to properly render data. !d3_link into /libraries/d3/d3.min.js.',
-        array('!d3_link' => Drupal::l(t('Download D3.js'), $d3_url))
+        ['!d3_link' => Drupal::l(t('Download D3.js'), $d3_url)]
       );
     }
 
     $has_highlight = _webprofiler_verify_library('webprofiler', 'highlight');
-    $requirements['highlightjs'] = array(
+    $requirements['highlightjs'] = [
       'title' => t('highlight.js library'),
       'value' => $has_highlight ? t('Enabled') : t('Not found'),
-    );
+    ];
 
     if (!$has_highlight) {
       $requirements['highlightjs']['severity'] = REQUIREMENT_WARNING;
-      $highlight_url = Url::fromUri('http://highlightjs.org', array('attributes' => array('target' => '_blank')));
+      $highlight_url = Url::fromUri('http://highlightjs.org', ['attributes' => ['target' => '_blank']]);
       $requirements['highlightjs']['description'] = t(
         'Webprofiler module requires highlight.js library to syntax highlight collected queries. !highlight_link assets into /libraries/highlight.',
-        array('!highlight_link' => Drupal::l(t('Download highlight.js'), $highlight_url))
+        ['!highlight_link' => Drupal::l(t('Download highlight.js'), $highlight_url)]
       );
     }
   }

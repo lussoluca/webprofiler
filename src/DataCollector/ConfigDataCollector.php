@@ -61,7 +61,7 @@ class ConfigDataCollector extends DataCollector implements DrupalDataCollectorIn
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Total config: @count', array('@count' => count($this->configNames())));
+    return $this->t('Total config: @count', ['@count' => count($this->configNames())]);
   }
 
 //  /**

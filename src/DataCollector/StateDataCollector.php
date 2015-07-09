@@ -8,7 +8,6 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,7 +58,7 @@ class StateDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('State variables: @variables', array('@variables' => count($this->stateKeys())));
+    return $this->t('State variables: @variables', ['@variables' => count($this->stateKeys())]);
   }
 
 //  /**

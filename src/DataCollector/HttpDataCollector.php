@@ -35,8 +35,8 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
     $this->client = $client;
     $this->client->attach(new HttpSubscriber($this));
 
-    $this->data['completed'] = array();
-    $this->data['error'] = array();
+    $this->data['completed'] = [];
+    $this->data['error'] = [];
   }
 
   /**
@@ -105,10 +105,10 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Completed @completed, error @error', array(
+    return $this->t('Completed @completed, error @error', [
       '@completed' => $this->getCompletedCount(),
       '@error' => $this->getErrorCount()
-    ));
+    ]);
   }
 
 //  /**

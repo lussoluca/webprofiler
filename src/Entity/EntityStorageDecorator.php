@@ -22,7 +22,7 @@ class EntityStorageDecorator extends EntityDecorator implements ConfigEntityStor
   public function __construct(ConfigEntityStorageInterface $controller) {
     parent::__construct($controller);
 
-    $this->entities = array();
+    $this->entities = [];
   }
 
   /**
@@ -78,7 +78,7 @@ class EntityStorageDecorator extends EntityDecorator implements ConfigEntityStor
   /**
    * {@inheritdoc}
    */
-  public function loadByProperties(array $values = array()) {
+  public function loadByProperties(array $values = []) {
     $entities = $this->getOriginalObject()->loadByProperties($values);
 
     $this->entities = array_merge($this->entities, $entities);
@@ -89,7 +89,7 @@ class EntityStorageDecorator extends EntityDecorator implements ConfigEntityStor
   /**
    * {@inheritdoc}
    */
-  public function create(array $values = array()) {
+  public function create(array $values = []) {
     return $this->getOriginalObject()->create($values);
   }
 
