@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -10,7 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
-class ServiceDataCollector extends DataCollector implements DrupalDataCollectorInterface {
+/**
+ * Class ServicesDataCollector
+ */
+class ServicesDataCollector extends DataCollector implements DrupalDataCollectorInterface {
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
@@ -90,14 +97,14 @@ class ServiceDataCollector extends DataCollector implements DrupalDataCollectorI
    * {@inheritdoc}
    */
   public function getName() {
-    return 'service';
+    return 'services';
   }
 
   /**
    * {@inheritdoc}
    */
   public function getTitle() {
-    return $this->t('Service');
+    return $this->t('Services');
   }
 
   /**

@@ -1,6 +1,6 @@
 {% block toolbar %}
     {% set icon %}
-    <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'service'}) }}" title="{{ 'Service'|t }}">
+    <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'services'}) }}" title="{{ 'Services'|t }}">
         <img width="20" height="28" alt="State"
              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNrkVe0NgjAQBeMAdYO6AWxQNtANGEFHcALZANyADegGsIFsIBvgu6Q/LtWmxdTEjyYvd6Hw8t5de6TzPCex1yp5w/pz0rVrQymVIXSAACqt9TGG0p0hpHWIZb9lebWENOXn1FgWbL8GJHACNHs+ohyjlxSEZPEcKGYC6SbEvljgUHzEOR3IXiiB6YOTlLqdo1Y54tZHDLIauCHtETtn962P6EUVqhhi0gelIJEEk1MjMg9Py9xol/0SuBqFva/DULY3ZSqQF767v8TyZKv83tFXWVaEufsUG+DCr2nwQLGOlGQNizZPy3fMU16K5uV5+qQEpFTC+hCN9Pd/0XcBBgBxwVqjDkAznAAAAABJRU5ErkJggg=="/>
         <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.initializedServicesCount }}</span>
@@ -25,6 +25,6 @@
 
 {% block panel %}
     <script id="service" type="text/template">
-        Service dashboard
+        Services dashboard
     </script>
 {% endblock %}

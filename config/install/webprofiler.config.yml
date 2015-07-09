@@ -3,13 +3,13 @@ storage: profiler.database_storage
 exclude: "/contextual/*\r\n/toolbar/*\r\n/edit/*\r\n*.js\r\n*.css"
 ide_link: "txmt://open?url=file://@file&line=@line"
 active_toolbar_items:
-  asset: asset
-  block: block
+  assets: assets
+  blocks: blocks
   cache: cache
   database: database
   drupal_extension: drupal_extension
-  form: form
-  frontend: performance_timing
+  forms: forms
+  performance_timing: performance_timing
   php_config: php_config
   request: request
   time: time
@@ -19,5 +19,5 @@ active_toolbar_items:
   events: '0'
   http: '0'
   routing: '0'
-  service: '0'
+  services: '0'
   state: '0'

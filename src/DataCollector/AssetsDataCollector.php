@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\webprofiler\DataCollector\AssetDataCollector.
+ * Contains \Drupal\webprofiler\DataCollector\AssetsDataCollector.
  */
 
 namespace Drupal\webprofiler\DataCollector;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 /**
  * Collects data about the used assets (CSS/JS).
  */
-class AssetDataCollector extends DataCollector implements DrupalDataCollectorInterface {
+class AssetsDataCollector extends DataCollector implements DrupalDataCollectorInterface {
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
@@ -95,7 +95,7 @@ class AssetDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getName() {
-    return 'asset';
+    return 'assets';
   }
 
   /**

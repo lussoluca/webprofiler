@@ -8,7 +8,7 @@
 namespace Drupal\webprofiler\Asset;
 
 use Drupal\Core\Asset\AssetCollectionRendererInterface;
-use Drupal\webprofiler\DataCollector\AssetDataCollector;
+use Drupal\webprofiler\DataCollector\AssetsDataCollector;
 
 /**
  * Class CssCollectionRendererWrapper.
@@ -21,15 +21,15 @@ class CssCollectionRendererWrapper implements AssetCollectionRendererInterface {
   private $assetCollectionRenderer;
 
   /**
-   * @var \Drupal\webprofiler\DataCollector\AssetDataCollector
+   * @var \Drupal\webprofiler\DataCollector\AssetsDataCollector
    */
   private $dataCollector;
 
   /**
    * @param \Drupal\Core\Asset\AssetCollectionRendererInterface $assetCollectionRenderer
-   * @param \Drupal\webprofiler\DataCollector\AssetDataCollector $dataCollector
+   * @param \Drupal\webprofiler\DataCollector\AssetsDataCollector $dataCollector
    */
-  public function __construct(AssetCollectionRendererInterface $assetCollectionRenderer, AssetDataCollector $dataCollector) {
+  public function __construct(AssetCollectionRendererInterface $assetCollectionRenderer, AssetsDataCollector $dataCollector) {
     $this->assetCollectionRenderer = $assetCollectionRenderer;
     $this->dataCollector = $dataCollector;
   }

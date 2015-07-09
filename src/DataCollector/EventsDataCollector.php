@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\webprofiler\DataCollector\EventDataCollector.
+ * Contains \Drupal\webprofiler\DataCollector\EventsDataCollector.
  */
 
 namespace Drupal\webprofiler\DataCollector;
@@ -15,9 +15,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\DataCollector\EventDataCollector as BaseEventDataCollector;
 
 /**
- * Class EventDataCollector
+ * Class EventsDataCollector
  */
-class EventDataCollector extends BaseEventDataCollector implements DrupalDataCollectorInterface {
+class EventsDataCollector extends BaseEventDataCollector implements DrupalDataCollectorInterface {
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
 

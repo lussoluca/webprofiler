@@ -2,14 +2,11 @@
 
 /**
  * @file
- * Contains \Drupal\webprofiler\DataCollector\ViewsDataCollector.
+ * Contains \Drupal\webprofiler\DataCollector\BlocksDataCollector.
  */
 
 namespace Drupal\webprofiler\DataCollector;
 
-use Drupal\block\Entity\Block;
-use Drupal\Core\Entity\EntityManager;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\webprofiler\Entity\EntityManagerWrapper;
@@ -18,9 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
- * Collects data about rendered views.
+ * Class BlocksDataCollector
  */
-class BlockDataCollector extends DataCollector implements DrupalDataCollectorInterface {
+class BlocksDataCollector extends DataCollector implements DrupalDataCollectorInterface {
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
@@ -108,14 +105,14 @@ class BlockDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getName() {
-    return 'block';
+    return 'blocks';
   }
 
   /**
    * {@inheritdoc}
    */
   public function getTitle() {
-    return $this->t('Block');
+    return $this->t('Blocks');
   }
 
   /**

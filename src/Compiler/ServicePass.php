@@ -21,11 +21,11 @@ class ServicePass implements CompilerPassInterface {
    * {@inheritdoc}
    */
   public function process(ContainerBuilder $container) {
-    if (FALSE === $container->hasDefinition('webprofiler.service')) {
+    if (FALSE === $container->hasDefinition('webprofiler.services')) {
       return;
     }
 
-    $definition = $container->getDefinition('webprofiler.service');
+    $definition = $container->getDefinition('webprofiler.services');
     $graph = $container->getCompiler()->getServiceReferenceGraph();
 
     $definition->addMethodCall('setServicesGraph', array($this->extractData($graph)));

@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
- * Class FormDataCollector
+ * Class FormsDataCollector
  */
-class FormDataCollector extends DataCollector implements DrupalDataCollectorInterface {
+class FormsDataCollector extends DataCollector implements DrupalDataCollectorInterface {
 
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
@@ -46,7 +46,7 @@ class FormDataCollector extends DataCollector implements DrupalDataCollectorInte
    * {@inheritdoc}
    */
   public function getName() {
-    return 'form';
+    return 'forms';
   }
 
   /**

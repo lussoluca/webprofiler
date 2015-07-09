@@ -39,14 +39,14 @@ class PerformanceTimingDataCollector extends DataCollector implements DrupalData
    * {@inheritdoc}
    */
   public function getName() {
-    return 'frontend';
+    return 'performance_timing';
   }
 
   /**
    * {@inheritdoc}
    */
   public function getTitle() {
-    return $this->t('Frontend');
+    return $this->t('performanceTiming');
   }
 
   /**
