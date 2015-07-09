@@ -3,6 +3,7 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\webprofiler\DependencyInjection\TraceableContainer;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,10 @@ class ServiceDataCollector extends DataCollector implements DrupalDataCollectorI
           $this->data['initialized_services'][] = $id;
         }
       }
+    }
+
+    if ($this->container instanceof TraceableContainer) {
+      $this->data['times'] = $this->container->getTracedData();
     }
   }
 
@@ -100,10 +105,10 @@ class ServiceDataCollector extends DataCollector implements DrupalDataCollectorI
    */
   public function getPanelSummary() {
     return $this->t('Initialized: @count, initialized without Webprofiler: @count_without_webprofiler, available: @available', array(
-        '@count' => $this->getInitializedServicesCount(),
-        '@count_without_webprofiler' => $this->getInitializedServicesWithoutWebprofilerCount(),
-        '@available' => $this->getServicesCount()
-      ));
+      '@count' => $this->getInitializedServicesCount(),
+      '@count_without_webprofiler' => $this->getInitializedServicesWithoutWebprofilerCount(),
+      '@available' => $this->getServicesCount()
+    ));
   }
 
 //  /**
@@ -188,5 +193,4 @@ class ServiceDataCollector extends DataCollector implements DrupalDataCollectorI
 //
 //    return $build;
 //  }
-
 }
