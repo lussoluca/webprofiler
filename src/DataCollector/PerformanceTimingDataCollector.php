@@ -45,7 +45,7 @@ class PerformanceTimingDataCollector extends DataCollector implements DrupalData
    * {@inheritdoc}
    */
   public function getTitle() {
-    return $this->t('performanceTiming');
+    return $this->t('Performance Timing');
   }
 
   /**
