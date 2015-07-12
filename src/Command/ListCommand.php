@@ -73,6 +73,6 @@ class ListCommand extends ContainerAwareCommand {
   /**
    * {@inheritdoc}
    */
-  public function showMessage($output, $message, $type='info') {
+  public function showMessage($output, $message, $type = 'info') {
   }
 }

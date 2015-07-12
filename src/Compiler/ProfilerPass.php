@@ -39,7 +39,11 @@ class ProfilerPass implements CompilerPassInterface {
           throw new \InvalidArgumentException(sprintf('Data collector service "%s" must have a title attribute', $id));
         }
 
-        $template = [$attributes[0]['id'], $attributes[0]['template'], $attributes[0]['title']];
+        $template = [
+          $attributes[0]['id'],
+          $attributes[0]['template'],
+          $attributes[0]['title']
+        ];
       }
 
       $collectors->insert([$id, $template], [-$priority, --$order]);

@@ -235,7 +235,7 @@ namespace Symfony\Component\Stopwatch {
      */
     public function startEvent($name, $category) {
       if (!isset($this->events[$name])) {
-        $this->events[$name] = new StopwatchEvent($this->origin ? : microtime(TRUE) * 1000, $category);
+        $this->events[$name] = new StopwatchEvent($this->origin ?: microtime(TRUE) * 1000, $category);
       }
 
       return $this->events[$name]->start();

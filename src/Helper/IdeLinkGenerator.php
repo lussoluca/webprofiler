@@ -31,7 +31,8 @@ class IdeLinkGenerator implements IdeLinkGeneratorInterface {
    * {@inheritdoc}
    */
   public function generateLink($file, $line) {
-    $ide_link = $this->config_factory->get('webprofiler.config')->get('ide_link');
+    $ide_link = $this->config_factory->get('webprofiler.config')
+      ->get('ide_link');
 
     return SafeMarkup::format($ide_link, ['@file' => $file, '@line' => $line]);
   }

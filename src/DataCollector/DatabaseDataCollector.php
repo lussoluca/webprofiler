@@ -54,22 +54,6 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
   }
 
   /**
-   * @param $a
-   * @param $b
-   *
-   * @return int
-   */
-  private function orderQuery($a, $b) {
-    $at = $a['time'];
-    $bt = $b['time'];
-
-    if ($at == $bt) {
-      return 0;
-    }
-    return ($at < $bt) ? 1 : -1;
-  }
-
-  /**
    * @return array
    */
   public function getDatabase() {
@@ -81,13 +65,6 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
    */
   public function getQueryCount() {
     return count($this->data['queries']);
-  }
-
-  /**
-   * @return array
-   */
-  public function getQueries() {
-    return $this->data['queries'];
   }
 
   /**
@@ -148,8 +125,24 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
   }
 
   /**
-   * {@inheritdoc}
+   * @param $a
+   * @param $b
+   *
+   * @return int
    */
+  private function orderQuery($a, $b) {
+    $at = $a['time'];
+    $bt = $b['time'];
+
+    if ($at == $bt) {
+      return 0;
+    }
+    return ($at < $bt) ? 1 : -1;
+  }
+
+//  /**
+//   * {@inheritdoc}
+//   */
 //  public function getPanel() {
 //    $build = array();
 //
@@ -221,6 +214,4 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
 //
 //    return $build;
 //  }
-
-
 }

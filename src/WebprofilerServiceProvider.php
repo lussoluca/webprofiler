@@ -34,11 +34,13 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
     $container->addCompilerPass(new ServicePass(), PassConfig::TYPE_AFTER_REMOVING);
 
     // Replace the regular form_builder service with a traceable one.
-    $container->getDefinition('form_builder')->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
+    $container->getDefinition('form_builder')
+      ->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
 
     // Add ViewsDataCollector only if Views module is enabled.
     if (FALSE !== $container->hasDefinition('views.executable')) {
-      $container->getDefinition('views.executable')->setClass('Drupal\webprofiler\Views\ViewExecutableFactoryWrapper');
+      $container->getDefinition('views.executable')
+        ->setClass('Drupal\webprofiler\Views\ViewExecutableFactoryWrapper');
 
       $container->register('webprofiler.views', 'Drupal\webprofiler\DataCollector\ViewsDataCollector')
         ->addArgument(new Reference(('views.executable')))

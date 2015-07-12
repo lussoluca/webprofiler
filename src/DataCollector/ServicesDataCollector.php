@@ -39,7 +39,7 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
     $this->data['initialized_services'] = [];
-    if ($this->getServicesCount()) {
+    if ($this->countServices()) {
       foreach (array_keys($this->getServices()) as $id) {
         if ($this->container->initialized($id)) {
           $this->data['initialized_services'][] = $id;
@@ -62,21 +62,21 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
   /**
    * @return int
    */
-  public function getServicesCount() {
+  public function countServices() {
     return count($this->data['graph']);
   }
 
   /**
    * @return int
    */
-  public function getInitializedServicesCount() {
+  public function countInitializedServices() {
     return count($this->data['initialized_services']);
   }
 
   /**
    * @return int
    */
-  public function getInitializedServicesWithoutWebprofilerCount() {
+  public function countInitializedServicesWithoutWebprofiler() {
     $countWithoutWebprofiler = 0;
     foreach ($this->data['initialized_services'] as $service) {
       if (strpos($service, 'webprofiler') !== 0) {
@@ -112,92 +112,18 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
    */
   public function getPanelSummary() {
     return $this->t('Initialized: @count, initialized without Webprofiler: @count_without_webprofiler, available: @available', [
-      '@count' => $this->getInitializedServicesCount(),
-      '@count_without_webprofiler' => $this->getInitializedServicesWithoutWebprofilerCount(),
-      '@available' => $this->getServicesCount()
+      '@count' => $this->countInitializedServices(),
+      '@count_without_webprofiler' => $this->countInitializedServicesWithoutWebprofiler(),
+      '@available' => $this->countServices()
     ]);
   }
 
-//  /**
-//   * {@inheritdoc}
-//   */
-//  public function getPanel() {
-//    $build = array();
-//
-//    $build['filters'] = \Drupal::formBuilder()
-//      ->getForm('Drupal\\webprofiler\\Form\\ServiceFilterForm');
-//
-//    $build['container'] = array(
-//      '#type' => 'container',
-//      '#attributes' => array('id' => array('wp-service-wrapper')),
-//    );
-//
-//    if ($this->getServicesCount()) {
-//      $rows = array();
-//      $services = $this->getServices();
-//      ksort($services);
-//
-//      foreach ($services as $id => $service) {
-//        $row = array();
-//
-//        $row[] = $id;
-//
-//        $class = $service['value']['class'];
-//        $row[] = $class;
-//
-//        $edges = array();
-//        foreach ($service['outEdges'] AS $edge) {
-//          $edges[] = $edge['id'];
-//        }
-//
-//        $initialized = in_array($id, $this->data['initialized_services']);
-//        $row[] = ($initialized) ? $this->t('Yes') : $this->t('No');
-//
-//        $dependsOn = implode(', ', $edges);
-//        $row[] = $dependsOn;
-//
-//        $tags = array();
-//        foreach ($service['value']['tags'] AS $tag => $value) {
-//          $tags[] = $tag;
-//        }
-//
-//        $implodedTags = implode(', ', $tags);
-//        $row[] = $implodedTags;
-//
-//        $rows[] = array(
-//          'data' => $row,
-//          'data-wp-service-id' => $id,
-//          'data-wp-service-class' => $class,
-//          'data-wp-service-initialized' => ($initialized) ? 1 : 0,
-//          'data-wp-service-depends-on' => $dependsOn,
-//          'data-wp-service-tags' => $implodedTags,
-//        );
-//      }
-//
-//      $header = array(
-//        $this->t('Id'),
-//        $this->t('Class'),
-//        $this->t('Initialized'),
-//        $this->t('Depends on'),
-//        $this->t('Tags'),
-//      );
-//
-//      $build['container']['table'] = array(
-//        '#type' => 'table',
-//        '#rows' => $rows,
-//        '#header' => $header,
-//        '#sticky' => TRUE,
-//        '#attached' => array(
-//          'library' => array(
-//            'webprofiler/service',
-//          ),
-//        ),
-//        '#attributes' => array(
-//          'class' => array('wp-service-table'),
-//        ),
-//      );
-//    }
-//
-//    return $build;
-//  }
+  /**
+   * {@inheritdoc}
+   */
+  public function getLibraries() {
+    return [
+      'webprofiler/service',
+    ];
+  }
 }

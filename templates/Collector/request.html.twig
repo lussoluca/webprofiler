@@ -1,6 +1,7 @@
 {% block toolbar %}
     {% set request_handler %}
-    <a href="{{ idelink(collector.controller.file, collector.controller.line)|raw }}">{{ abbr(collector.controller.class)|raw }}::{{ collector.controller.method }}</a>
+    <a href="{{ idelink(collector.controller.file, collector.controller.line)|raw }}">{{ abbr(collector.controller.class)|raw }}
+        ::{{ collector.controller.method }}</a>
     {% endset %}
 
     {% set request_status_code_color = (400 > collector.statuscode) ? ((200 == collector.statuscode) ? 'green' : 'yellow') : 'red' %}
@@ -49,7 +50,8 @@
         <table>
             <% _.each( data.request_query, function( item, key ){ %>
             <tr>
-                <td><%- key %></td><td><%- item %></td>
+                <td><%- key %></td>
+                <td><%- item %></td>
             </tr>
             <% }); %>
         </table>
@@ -60,7 +62,8 @@
         <table>
             <% _.each( data.request_request, function( item, key ){ %>
             <tr>
-                <td><%- key %></td><td><%- item %></td>
+                <td><%- key %></td>
+                <td><%- item %></td>
             </tr>
             <% }); %>
         </table>
@@ -69,8 +72,15 @@
         <h3>{{ 'Request Attributes'|t }}</h3>
         <table>
             <% _.each( data.request_attributes, function( item, key ){ %>
+
             <tr>
-                <td><%- key %></td><td><%- item %></td>
+                <td><%- key %></td>
+
+                <% if(key == '_controller') { %>
+                <td><%= Drupal.webprofiler.helpers.classLink(data.controller) %></td>
+                <% } else { %>
+                <td><%- item %></td>
+                <% } %>
             </tr>
             <% }); %>
         </table>
@@ -80,7 +90,8 @@
         <table>
             <% _.each( data.request_cookies, function( item, key ){ %>
             <tr>
-                <td><%- key %></td><td><%- item %></td>
+                <td><%- key %></td>
+                <td><%- item %></td>
             </tr>
             <% }); %>
         </table>
@@ -90,7 +101,8 @@
         <table>
             <% _.each( data.request_headers, function( item, key ){ %>
             <tr>
-                <td><%- key %></td><td><%- item %></td>
+                <td><%- key %></td>
+                <td><%- item %></td>
             </tr>
             <% }); %>
         </table>
@@ -103,7 +115,8 @@
         <table>
             <% _.each( data.request_server, function( item, key ){ %>
             <tr>
-                <td><%- key %></td><td><%- item %></td>
+                <td><%- key %></td>
+                <td><%- item %></td>
             </tr>
             <% }); %>
         </table>
@@ -113,7 +126,8 @@
         <table>
             <% _.each( data.response_headers, function( item, key ){ %>
             <tr>
-                <td><%- key %></td><td><%- item %></td>
+                <td><%- key %></td>
+                <td><%- item %></td>
             </tr>
             <% }); %>
         </table>

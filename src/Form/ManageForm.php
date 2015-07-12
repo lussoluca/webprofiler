@@ -79,7 +79,7 @@ class ManageForm extends FormBase {
       '#type' => 'inline_template',
       '#template' => '<div class="form-item">{{ message }}</div>',
       '#context' => [
-        'message' =>  $this->t('Purge %storage profiles.', ['%storage' => $storage['title']]),
+        'message' => $this->t('Purge %storage profiles.', ['%storage' => $storage['title']]),
       ],
     ];
 

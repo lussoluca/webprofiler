@@ -61,46 +61,68 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    *
    * @return int
    */
-  public function getExtensionsCount() {
+  public function countExtensions() {
     return isset($this->data['drupal_extension']['count']) ? $this->data['drupal_extension']['count'] : 0;
   }
 
   /**
-   * @return array
+   * @return int
    */
-  public function moduleInfo() {
+  public function countModules() {
     if (!isset($this->data['drupal_extension']['modules'])) {
-      return [];
+      return 0;
     }
 
-    $data = [];
-    foreach ($this->data['drupal_extension']['modules'] as $module => $info) {
-      /** @var \Drupal\Core\Extension\Extension $info */
-      $data[$module] = implode(' | ', [
-        $this->t('Path: @path', ['@path' => $info->getPathname()]),
-      ]);
-    }
-    return $data;
+    return count($this->data['drupal_extension']['modules']);
   }
 
   /**
-   * @return array
+   * @return int
    */
-  public function themeInfo() {
+  public function countThemes() {
     if (!isset($this->data['drupal_extension']['themes'])) {
-      return [];
+      return 0;
     }
-    $data = [];
-    foreach ($this->data['drupal_extension']['themes'] as $name => $info) {
-      /** @var \Drupal\Core\Extension\Extension $info */
-      $data[$name] = implode(' | ', [
-        $this->t('Path: @path', ['@path' => $info->getPathname()]),
-        $this->t('Status: @status', ['@status' => ($info->status) ? $this->t('enabled') : $this->t('disabled')]),
-        $this->t('Engine: @engine', ['@engine' => $info->engine]),
-      ]);
-    }
-    return $data;
+
+    return count($this->data['drupal_extension']['themes']);
   }
+
+//  /**
+//   * @return array
+//   */
+//  public function moduleInfo() {
+//    if (!isset($this->data['drupal_extension']['modules'])) {
+//      return [];
+//    }
+//
+//    $data = [];
+//    foreach ($this->data['drupal_extension']['modules'] as $module => $info) {
+//      /** @var \Drupal\Core\Extension\Extension $info */
+//      $data[$module] = implode(' | ', [
+//        $this->t('Path: @path', ['@path' => $info->getPathname()]),
+//      ]);
+//    }
+//    return $data;
+//  }
+//
+//  /**
+//   * @return array
+//   */
+//  public function themeInfo() {
+//    if (!isset($this->data['drupal_extension']['themes'])) {
+//      return [];
+//    }
+//    $data = [];
+//    foreach ($this->data['drupal_extension']['themes'] as $name => $info) {
+//      /** @var \Drupal\Core\Extension\Extension $info */
+//      $data[$name] = implode(' | ', [
+//        $this->t('Path: @path', ['@path' => $info->getPathname()]),
+//        $this->t('Status: @status', ['@status' => ($info->status) ? $this->t('enabled') : $this->t('disabled')]),
+//        $this->t('Engine: @engine', ['@engine' => $info->engine]),
+//      ]);
+//    }
+//    return $data;
+//  }
 
   /**
    * {@inheritdoc}
@@ -120,7 +142,7 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Total active extensions: @extensions', ['@extensions' => $this->getExtensionsCount()]);
+    return $this->t('Total active extensions: @extensions', ['@extensions' => $this->countExtensions()]);
   }
 
 //  /**

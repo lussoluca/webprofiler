@@ -86,7 +86,7 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
    * @return int
    */
   public function countCacheCids($type) {
-   return $this->data['total'][$type];
+    return $this->data['total'][$type];
   }
 
   /**
@@ -118,7 +118,7 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
     $hits = [];
     foreach ($this->data['cache'] as $bin => $caches) {
       $hits[$bin] = 0;
-      foreach($caches as $cid => $cache) {
+      foreach ($caches as $cid => $cache) {
         $hits[$bin] += $cache->{$type};
       }
     }

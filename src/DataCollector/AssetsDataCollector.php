@@ -39,14 +39,20 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
    * @param $jsAsset
    */
   public function addJsAsset($jsAsset) {
-    $this->data['js'] = NestedArray::mergeDeepArray([$jsAsset, $this->data['js']]);
+    $this->data['js'] = NestedArray::mergeDeepArray([
+      $jsAsset,
+      $this->data['js']
+    ]);
   }
 
   /**
    * @param $cssAsset
    */
   public function addCssAsset($cssAsset) {
-    $this->data['css'] = NestedArray::mergeDeepArray([$cssAsset, $this->data['css']]);
+    $this->data['css'] = NestedArray::mergeDeepArray([
+      $cssAsset,
+      $this->data['css']
+    ]);
   }
 
   /**
@@ -57,36 +63,10 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
   }
 
   /**
-   * Twig callback to return the CSS files.
-   */
-  public function getCssFiles() {
-    $result = [];
-    foreach ($this->data['css'] as $option) {
-      $result[] = $option;
-    }
-    uasort($result, [$this, 'sortByWeight']);
-    return $result;
-  }
-
-  /**
    * Twig callback to return the amount of JS files.
    */
   public function getJsCount() {
     return count($this->data['js']) - 1;
-  }
-
-  /**
-   * Twig callback to return the JS files.
-   */
-  public function getJsFiles() {
-    $result = [];
-    foreach ($this->data['js'] as $option) {
-      if ($option['type'] != 'setting') {
-        $result[] = $option;
-      }
-    }
-    uasort($result, [$this, 'sortByWeight']);
-    return $result;
   }
 
   /**
@@ -214,29 +194,5 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
 //
 //    return $build;
 //  }
-
-  /**
-   * Sorts an assets collection array by weight.
-   *
-   * @param array $a
-   *   The first element.
-   * @param array $b
-   *   The second element.
-   *
-   * @return int
-   *   0 if weight are equals, -1 if first is lesser that second, 1 otherwise.
-   */
-  private function sortByWeight(array $a, array $b) {
-    if ($a['weight'] === $b['weight']) {
-      return 0;
-    }
-
-    if ($a['weight'] < $b['weight']) {
-      return -1;
-    }
-    else {
-      return 1;
-    }
-  }
 
 }

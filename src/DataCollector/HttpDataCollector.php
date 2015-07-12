@@ -62,29 +62,15 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
   /**
    * @return int
    */
-  public function getCompletedCount() {
+  public function countCompleted() {
     return count($this->data['completed']);
-  }
-
-  /**
-   * @return HttpEvent[]
-   */
-  public function getCompleted() {
-    return $this->data['completed'];
   }
 
   /**
    * @return int
    */
-  public function getErrorCount() {
+  public function countError() {
     return count($this->data['error']);
-  }
-
-  /**
-   * @return HttpEvent[]
-   */
-  public function getError() {
-    return $this->data['error'];
   }
 
   /**
@@ -106,8 +92,8 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
    */
   public function getPanelSummary() {
     return $this->t('Completed @completed, error @error', [
-      '@completed' => $this->getCompletedCount(),
-      '@error' => $this->getErrorCount()
+      '@completed' => $this->countCompleted(),
+      '@error' => $this->countError()
     ]);
   }
 

@@ -55,7 +55,7 @@ class RoutingDataCollector extends DataCollector implements DrupalDataCollectorI
   /**
    * @return int
    */
-  public function getRoutingCount() {
+  public function countRoutes() {
     return count($this->routing());
   }
 
@@ -84,7 +84,7 @@ class RoutingDataCollector extends DataCollector implements DrupalDataCollectorI
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Defined routes: @route', ['@route' => count($this->routing())]);
+    return $this->t('Defined routes: @route', ['@route' => $this->countRoutes()]);
   }
 
 //  /**

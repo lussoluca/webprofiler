@@ -1,6 +1,6 @@
 webprofiler.admin_configure:
   title: 'Webprofiler'
-  description: 'Import/export profiles and manage configuration.'
+  description: 'Choose active datacollectors and manage configuration.'
   route_name: webprofiler.admin_configure
   parent: system.admin_config_development
 

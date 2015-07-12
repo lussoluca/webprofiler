@@ -36,69 +36,14 @@ class EventsDataCollector extends BaseEventDataCollector implements DrupalDataCo
   /**
    * @return int
    */
-  public function getCalledListenersCount() {
+  public function countCalledListeners() {
     return count($this->getCalledListeners());
   }
 
   /**
    * @return int
    */
-  public function getNotCalledListenersCount() {
+  public function countNotCalledListeners() {
     return count($this->getNotCalledListeners());
   }
-
-//  /**
-//   * @param $title
-//   * @param $listeners
-//   *
-//   * @return mixed
-//   */
-//  private function getTable($title, $listeners) {
-//    $build = array();
-//
-//    $rows = array();
-//    foreach ($listeners as $listener) {
-//      $row = array();
-//      $row[] = $listener['event'];
-//
-//      if ($listener['type'] == 'Method') {
-//        $data = array(
-//          '#type' => 'inline_template',
-//          '#template' => '{{ class }}::<a href="{{ link }}">{{ method }}</a>',
-//          '#context' => array(
-//            'class' => $this->abbrClass($listener['class']),
-//            'link' => \Drupal::service('webprofiler.ide_link_generator')->generateLink($listener['file'], $listener['line']),
-//            'method' => $listener['method']
-//          ),
-//        );
-//
-//        $row[] = render($data);
-//      }
-//      else {
-//        $row[] = 'Closure';
-//      }
-//
-//      $rows[] = $row;
-//    }
-//
-//    $build['title'] = array(
-//      '#type' => 'inline_template',
-//      '#template' => '<h3>{{ title }}</h3>',
-//      '#context' => array(
-//        'title' => $title,
-//      ),
-//    );
-//
-//    $build['table'] = array(
-//      '#type' => 'table',
-//      '#rows' => $rows,
-//      '#header' => array(
-//        $this->t('Event name'),
-//        $this->t('Listener'),
-//      ),
-//      '#sticky' => TRUE,
-//    );
-//
-//    return $build;
-//  }
 }

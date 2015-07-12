@@ -1,25 +1,25 @@
 {% block toolbar %}
-  {% set icon %}
-  <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'routing'}) }}" title="{{ 'Routing'|t }}">
-    <img width="20" height="28" alt="Asset"
-         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPxJREFUeNrkVsERREAQ7D0koXwlIAISkIGXvwAkoJSfHITg5SMUVR4eMuCxZ1xxV+5uuTL30lV8bPX09PSuFVJKcOOGP+DipLrrusoFdV1Lz/NgmiaKosC0XrAopYT0fc/f/jAMa41Pj23bkrpi9bRpGmRZ9lRKFSzLkl9UHMI4jijLcuaaSZMkQdd1fNMn5r0EHIFhGEjTlDenYRjCcZyHUnqRwXEcz77sYepM+Z1yTOEXZEFVVYcUba2iItsNcbr9IAiw5HMd1CJZtU1VpG3bIooi3gPF933keY43pb9gb1Bskdrap58luMjvRNO04wcK18RfIa59mbgLMAASuWsKAyoEhgAAAABJRU5ErkJggg=="
-         alt="Routing">
-    <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.routingCount }}</span>
-  </a>
+    {% set icon %}
+    <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'routing'}) }}" title="{{ 'Routing'|t }}">
+        <img width="20" height="28" alt="Asset"
+             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPxJREFUeNrkVsERREAQ7D0koXwlIAISkIGXvwAkoJSfHITg5SMUVR4eMuCxZ1xxV+5uuTL30lV8bPX09PSuFVJKcOOGP+DipLrrusoFdV1Lz/NgmiaKosC0XrAopYT0fc/f/jAMa41Pj23bkrpi9bRpGmRZ9lRKFSzLkl9UHMI4jijLcuaaSZMkQdd1fNMn5r0EHIFhGEjTlDenYRjCcZyHUnqRwXEcz77sYepM+Z1yTOEXZEFVVYcUba2iItsNcbr9IAiw5HMd1CJZtU1VpG3bIooi3gPF933keY43pb9gb1Bskdrap58luMjvRNO04wcK18RfIa59mbgLMAASuWsKAyoEhgAAAABJRU5ErkJggg=="
+             alt="Routing">
+        <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.countRoutes }}</span>
+    </a>
 
-  {% endset %}
+    {% endset %}
 
-  {% set text %}
-  <div class="sf-toolbar-info-piece">
-    <b>{{ 'Routes'|t }}</b>
-    <span>{{ collector.routingCount }}</span>
-  </div>
-  {% endset %}
+    {% set text %}
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'Routes'|t }}</b>
+        <span>{{ collector.countRoutes }}</span>
+    </div>
+    {% endset %}
 
-  <div class="sf-toolbar-block">
-    <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
-    <div class="sf-toolbar-info">{{ text|default('') }}</div>
-  </div>
+    <div class="sf-toolbar-block">
+        <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
+        <div class="sf-toolbar-info">{{ text|default('') }}</div>
+    </div>
 {% endblock %}
 
 {% block panel %}

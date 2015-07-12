@@ -49,13 +49,15 @@
                 <div class="wp-query-arguments">
                     <table>
                         <% _.each( item.args, function( item, key ){ %>
-                        <tr><td><%- key %></td><td><%- item %></td></tr>
+                        <tr>
+                            <td><%- key %></td>
+                            <td><%- item %></td>
+                        </tr>
                         <% }); %>
                     </table>
                 </div>
-
                 <span><b>{{ 'Time'|t }}</b>: <%- item.time * 1000 %></span><br/>
-                <span><b>{{ 'Caller'|t }}</b>: <%- item.caller.file %>:<%- item.caller.line %></span><br/>
+                <span><b>{{ 'Caller'|t }}</b>: <%= Drupal.webprofiler.helpers.classLink({"file" : item.caller.file, "class" : item.caller.class, "line" : item.caller.line, "method" : item.caller.function}) %></span><br/>
                 <span><b>{{ 'Target'|t }}</b>: <%- item.target %></span><br/>
             </div>
 

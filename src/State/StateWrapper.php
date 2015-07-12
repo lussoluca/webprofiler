@@ -65,7 +65,7 @@ class StateWrapper implements StateInterface {
    * {@inheritdoc}
    */
   public function setMultiple(array $data) {
-     $this->state->setMultiple($data);
+    $this->state->setMultiple($data);
   }
 
   /**

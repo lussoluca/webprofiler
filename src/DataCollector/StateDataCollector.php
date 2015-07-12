@@ -36,8 +36,8 @@ class StateDataCollector extends DataCollector implements DrupalDataCollectorInt
   /**
    * Twig callback to show all requested state keys.
    */
-  public function stateKeys() {
-    return $this->data['state_get'];
+  public function countStateKeys() {
+    return count($this->data['state_get']);
   }
 
   /**
@@ -58,7 +58,7 @@ class StateDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('State variables: @variables', ['@variables' => count($this->stateKeys())]);
+    return $this->t('State variables: @variables', ['@variables' => $this->countStateKeys()]);
   }
 
 //  /**

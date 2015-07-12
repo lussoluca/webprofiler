@@ -1,6 +1,7 @@
 {% block toolbar %}
     {% set icon %}
-    <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'performance_timing'}) }}" title="{{ 'Performance Timing'|t }}">
+    <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'performance_timing'}) }}"
+       title="{{ 'Performance Timing'|t }}">
         <img width="20" height="28" alt="Performance Timing"
              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpi/P//PwO1ARMDDcCooUPEUEYi1AgAcQIQ+0P5H4B4IxAvwKaYmCSqAMT7gbgBajhMrB8qLkCsoQFQQ0CuOw/EBjgsLIAajmEouvdBhukD8UQgdkASwwXuA7EhNEhwuvQ8iXHSj2Q53FBY7BtADVxIoqEfoQYnYJPEF3bEROZ6WDDBvO+ALcCxJCsBAmpA4SuA7P2PBDQUEOGTDTA1TNCYs6dCRgIlxQswQ0GMB0A8nwgv4gqa+VCXgpMWC1QiEerF9WgaDmJJp/OhkUNIHUHQgJ4ecQHkiMKXXALQIowqpdR8pJi/AA0qvC4lFsyHYqK8zzhaRQ8NQwECDABNaU12xhTp2QAAAABJRU5ErkJggg=="/>
         <span id="wp--frontend__toolbar"></span>
@@ -37,11 +38,11 @@
 
     <script>
         var perf = performance.timing,
-            dns = parseInt(perf.domainLookupEnd - perf.domainLookupStart),
-            tcp = parseInt(perf.connectEnd - perf.connectStart),
-            ttfb = parseInt(perf.responseStart - perf.connectEnd),
-            data = parseInt(perf.responseEnd - perf.responseStart),
-            dom = parseInt(perf.loadEventStart - perf.responseEnd);
+                dns = parseInt(perf.domainLookupEnd - perf.domainLookupStart),
+                tcp = parseInt(perf.connectEnd - perf.connectStart),
+                ttfb = parseInt(perf.responseStart - perf.connectEnd),
+                data = parseInt(perf.responseEnd - perf.responseStart),
+                dom = parseInt(perf.loadEventStart - perf.responseEnd);
 
         Webprofiler.ajax('{{ url("webprofiler.frontend.save", {profile: token}) }}', false, JSON.stringify(perf));
 

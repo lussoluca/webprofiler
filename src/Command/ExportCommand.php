@@ -141,8 +141,8 @@ class ExportCommand extends ContainerAwareCommand {
   /**
    * {@inheritdoc}
    */
-  public function showMessage($output, $message, $type='info') {
-    if(!$this->filename) {
+  public function showMessage($output, $message, $type = 'info') {
+    if (!$this->filename) {
       return;
     }
 

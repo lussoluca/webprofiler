@@ -12,25 +12,25 @@
         $(this).on('click', function (event) {
           var sid = $('#edit-sid').val(),
             initialized = $('#edit-initialized').val(),
-            claz = $('#edit-class').val(),
+            clazz = $('#edit-class').val(),
             tags = $('#edit-tags').val();
 
-          $('table.wp-service-table tr').show();
+          $('table#wp-service-table tr').show();
 
           if(sid) {
-            $('table.wp-service-table tbody tr:not([data-wp-service-id^="' + sid + '"])').hide();
+            $('table#wp-service-table tbody tr:not([data-wp-service-id^="' + sid + '"])').hide();
           }
 
-          if(claz) {
-            $('table.wp-service-table tbody tr:not([data-wp-service-class^="' + claz + '"])').hide();
+          if(clazz) {
+            $('table#wp-service-table tbody tr:not([data-wp-service-class^="' + clazz + '"])').hide();
           }
 
           if(tags) {
-            $('table.wp-service-table tbody tr:not([data-wp-service-tags^="' + tags + '"])').hide();
+            $('table#wp-service-table tbody tr:not([data-wp-service-tags^="' + tags + '"])').hide();
           }
 
-          if(initialized) {
-            $('table.wp-service-table tbody tr:not([data-wp-service-initialized^="' + initialized + '"])').hide();
+          if(initialized && initialized != -1) {
+            $('table#wp-service-table tbody tr:not([data-wp-service-initialized^="' + initialized + '"])').hide();
           }
 
           return false;

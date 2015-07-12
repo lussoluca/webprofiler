@@ -54,41 +54,6 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
   }
 
   /**
-   * @return \Drupal\Core\Session\AccountInterface
-   */
-  public function name() {
-    return SafeMarkup::checkPlain($this->data['name']);
-  }
-
-  /**
-   * @return bool
-   */
-  public function authenticated() {
-    return $this->data['authenticated'];
-  }
-
-  /**
-   * @return array
-   */
-  public function roles() {
-    return $this->data['roles'];
-  }
-
-  /**
-   * @return string
-   */
-  public function provider() {
-    return $this->data['provider'];
-  }
-
-  /**
-   * @return string
-   */
-  public function anonymous() {
-    return $this->data['anonymous'];
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
@@ -103,7 +68,43 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
     }
 
     $this->data['provider'] = $this->providerCollector->getProvider($request);
-    $this->data['anonymous'] = $this->configFactory->get('user.settings')->get('anonymous');
+    $this->data['anonymous'] = $this->configFactory->get('user.settings')
+      ->get('anonymous');
+  }
+
+  /**
+   * @return \Drupal\Core\Session\AccountInterface
+   */
+  public function getUserName() {
+    return SafeMarkup::checkPlain($this->data['name']);
+  }
+
+  /**
+   * @return bool
+   */
+  public function getAuthenticated() {
+    return $this->data['authenticated'];
+  }
+
+  /**
+   * @return array
+   */
+  public function getRoles() {
+    return $this->data['roles'];
+  }
+
+  /**
+   * @return string
+   */
+  public function getProvider() {
+    return $this->data['provider'];
+  }
+
+  /**
+   * @return string
+   */
+  public function getAnonymous() {
+    return $this->data['anonymous'];
   }
 
   /**
@@ -118,12 +119,5 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
    */
   public function getTitle() {
     return $this->t('User');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function hasPanel() {
-    return FALSE;
   }
 }

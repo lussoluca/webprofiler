@@ -63,7 +63,8 @@ class DatabaseController extends ControllerBase {
     $query = $this->getQuery($profile, $qid);
 
     $data = [];
-    $result = $this->database->query('EXPLAIN ' . $query['query'], (array) $query['args'])->fetchAllAssoc('table');
+    $result = $this->database->query('EXPLAIN ' . $query['query'], (array) $query['args'])
+      ->fetchAllAssoc('table');
     $i = 1;
     foreach ($result as $row) {
       foreach ($row as $key => $value) {
@@ -96,7 +97,7 @@ class DatabaseController extends ControllerBase {
   }
 
   /**
-   * @param $profile->getToken()
+   * @param $profile ->getToken()
    * @param int $qid
    *
    * @return array

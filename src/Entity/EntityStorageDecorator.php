@@ -160,7 +160,8 @@ class EntityStorageDecorator extends EntityDecorator implements ConfigEntityStor
    * {@inheritdoc}
    */
   public function updateFromStorageRecord(ConfigEntityInterface $entity, array $values) {
-    return $this->getOriginalObject()->updateFromStorageRecord($entity, $values);
+    return $this->getOriginalObject()
+      ->updateFromStorageRecord($entity, $values);
   }
 
   /**

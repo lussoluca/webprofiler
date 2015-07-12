@@ -17,14 +17,18 @@ class ClassShortener implements ClassShortenerInterface {
     $result = [];
     $size = count($parts) - 1;
 
-    foreach($parts as $key => $part) {
+    foreach ($parts as $key => $part) {
       if ($key < $size) {
-        $result[] = substr($part, 0 ,1);
-      } else {
+        $result[] = substr($part, 0, 1);
+      }
+      else {
         $result[] = $part;
       }
     }
 
-    return SafeMarkup::format("<abbr title=\"@class\">@short</abbr>", ['@class' => $class, '@short' => implode('\\', $result)]);
+    return SafeMarkup::format("<abbr title=\"@class\">@short</abbr>", [
+      '@class' => $class,
+      '@short' => implode('\\', $result)
+    ]);
   }
 }

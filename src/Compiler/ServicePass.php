@@ -38,17 +38,27 @@ class ServicePass implements CompilerPassInterface {
    */
   private function extractData(ServiceReferenceGraph $graph) {
     $data = [];
-    foreach($graph->getNodes() as $node) {
+    foreach ($graph->getNodes() as $node) {
       $nodeValue = $node->getValue();
-      if($nodeValue instanceof Definition) {
+      if ($nodeValue instanceof Definition) {
         $class = $nodeValue->getClass();
+
+        try {
+          $reflectedClass = new \ReflectionClass($class);
+          $file = $reflectedClass->getFileName();
+        } catch (\ReflectionException $e) {
+          $file = NULL;
+        }
+
         $id = NULL;
         $tags = $nodeValue->getTags();
         $public = $nodeValue->isPublic();
         $synthetic = $nodeValue->isSynthetic();
-      } else {
+      }
+      else {
         $id = $nodeValue->__toString();
         $class = NULL;
+        $file = NULL;
         $tags = [];
         $public = NULL;
         $synthetic = NULL;
@@ -56,7 +66,7 @@ class ServicePass implements CompilerPassInterface {
 
       $inEdges = [];
       /** @var \Symfony\Component\DependencyInjection\Compiler\ServiceReferenceGraphEdge $edge */
-      foreach($node->getInEdges() as $edge) {
+      foreach ($node->getInEdges() as $edge) {
         /** @var \Symfony\Component\DependencyInjection\Reference $edgeValue */
         $edgeValue = $edge->getValue();
 
@@ -69,7 +79,7 @@ class ServicePass implements CompilerPassInterface {
 
       $outEdges = [];
       /** @var \Symfony\Component\DependencyInjection\Compiler\ServiceReferenceGraphEdge $edge */
-      foreach($node->getOutEdges() as $edge) {
+      foreach ($node->getOutEdges() as $edge) {
         /** @var \Symfony\Component\DependencyInjection\Reference $edgeValue */
         $edgeValue = $edge->getValue();
 
@@ -85,6 +95,7 @@ class ServicePass implements CompilerPassInterface {
         'outEdges' => $outEdges,
         'value' => [
           'class' => $class,
+          'file' => $file,
           'id' => $id,
           'tags' => $tags,
           'public' => $public,

@@ -72,7 +72,7 @@ class BenchmarkCommand extends ContainerAwareCommand {
       $progress->advance();
     }
 
-    if($login) {
+    if ($login) {
       $progress->setMessage($this->trans('commands.webprofiler.benchmark.progress.login'));
       $login_url = "{$url_components['scheme']}://{$url_components['host']}/user/login";
 
@@ -83,7 +83,8 @@ class BenchmarkCommand extends ContainerAwareCommand {
       // Retrieve a form_build_id using the DomCrawler component.
       $response = $client->get($login_url)->getBody()->getContents();
       $crawler = new Crawler($response);
-      $form_build_id = $crawler->filter('#user-login-form input[name=form_build_id]')->attr('value');
+      $form_build_id = $crawler->filter('#user-login-form input[name=form_build_id]')
+        ->attr('value');
       $op = $crawler->filter('#user-login-form input[name=op]')->attr('value');
 
       // Login a user.
@@ -98,7 +99,7 @@ class BenchmarkCommand extends ContainerAwareCommand {
       ]);
       $progress->advance();
 
-      if($response->getStatusCode() != 200) {
+      if ($response->getStatusCode() != 200) {
         throw new \Exception($this->trans('commands.webprofiler.benchmark.messages.error_login'));
       }
     }
@@ -258,8 +259,8 @@ class BenchmarkCommand extends ContainerAwareCommand {
   protected function RebuildCache() {
     require_once DRUPAL_ROOT . '/core/includes/utility.inc';
     $kernelHelper = $this->getHelper('kernel');
-    $classLoader  = $kernelHelper->getClassLoader();
-    $request      = $kernelHelper->getRequest();
+    $classLoader = $kernelHelper->getClassLoader();
+    $request = $kernelHelper->getRequest();
     drupal_rebuild($classLoader, $request);
   }
 
@@ -300,7 +301,7 @@ class BenchmarkCommand extends ContainerAwareCommand {
   /**
    * {@inheritdoc}
    */
-  public function showMessage($output, $message, $type='info') {
+  public function showMessage($output, $message, $type = 'info') {
   }
 
 }

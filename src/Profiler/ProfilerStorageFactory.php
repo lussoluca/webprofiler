@@ -17,7 +17,8 @@ class ProfilerStorageFactory {
    * @return \Symfony\Component\HttpKernel\Profiler\ProfilerStorageInterface
    */
   final public static function getProfilerStorage(ConfigFactoryInterface $config, ContainerInterface $container) {
-    $storage = $config->get('webprofiler.config')->get('storage') ? : 'profiler.database_storage';
+    $storage = $config->get('webprofiler.config')
+      ->get('storage') ?: 'profiler.database_storage';
 
     return $container->get($storage);
   }

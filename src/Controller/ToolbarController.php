@@ -91,7 +91,7 @@ class ToolbarController extends ControllerBase {
     $data = Json::decode($request->getContent());
 
     /** @var  $collector */
-    $collector = $profile->getCollector('frontend');
+    $collector = $profile->getCollector('performance_timing');
     $collector->setData($data);
     $this->profiler->updateProfile($profile);
 

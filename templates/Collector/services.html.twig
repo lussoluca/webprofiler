@@ -3,17 +3,18 @@
     <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'services'}) }}" title="{{ 'Services'|t }}">
         <img width="20" height="28" alt="State"
              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNrkVe0NgjAQBeMAdYO6AWxQNtANGEFHcALZANyADegGsIFsIBvgu6Q/LtWmxdTEjyYvd6Hw8t5de6TzPCex1yp5w/pz0rVrQymVIXSAACqt9TGG0p0hpHWIZb9lebWENOXn1FgWbL8GJHACNHs+ohyjlxSEZPEcKGYC6SbEvljgUHzEOR3IXiiB6YOTlLqdo1Y54tZHDLIauCHtETtn962P6EUVqhhi0gelIJEEk1MjMg9Py9xol/0SuBqFva/DULY3ZSqQF767v8TyZKv83tFXWVaEufsUG+DCr2nwQLGOlGQNizZPy3fMU16K5uV5+qQEpFTC+hCN9Pd/0XcBBgBxwVqjDkAznAAAAABJRU5ErkJggg=="/>
-        <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.initializedServicesCount }}</span>
+        <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.countInitializedServices }}</span>
     </a>
     {% endset %}
     {% set text %}
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Initialized'|t }}</b>
-        <span>{{ collector.initializedServicesCount }} ({{ collector.initializedServicesWithoutWebprofilerCount }})</span>
+        <span>{{ collector.countInitializedServices }} ({{ collector.countInitializedServicesWithoutWebprofiler }}
+            )</span>
     </div>
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Available'|t }}</b>
-        <span>{{ collector.servicesCount }}</span>
+        <span>{{ collector.countServices }}</span>
     </div>
     {% endset %}
 
@@ -25,6 +26,51 @@
 
 {% block panel %}
     <script id="services" type="text/template">
-        Services dashboard
+
+        <h2>{{ 'Services'|t }}</h2>
+
+        <form>
+            <label for="edit-sid">{{ 'Id'|t }}</label> <input id="edit-sid" type="text"/>
+            <label for="edit-class">{{ 'Class'|t }}</label><input id="edit-class" type="text"/>
+            <label for="edit-tags">{{ 'tags'|t }}</label><input id="edit-tags" type="text"/>
+            <label for="edit-initialized">{{ 'Initialized'|t }}</label><select id="edit-initialized">
+                <option value="-1">{{ 'Any'|t }}</option>
+                <option value="1">{{ 'Yes'|t }}</option>
+                <option value="0">{{ 'No'|t }}</option>
+            </select>
+            <input id="edit-service-filter" type="submit" value="{{ 'Filter'|t }}">
+        </form>
+
+        <table id="wp-service-table">
+            <thead>
+            <tr>
+                <th>{{ 'Id'|t }}</th>
+                <th>{{ 'Class'|t }}</th>
+                <th>{{ 'Initialized'|t }}</th>
+                <th>{{ 'Depends on'|t }}</th>
+                <th>{{ 'Tags'|t }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <% _.each( data.graph, function( item, key ){ %>
+
+            <% clazz = Drupal.webprofiler.helpers.classLink({"file" : item.value.file, "class" : item.value.class}) %>
+            <% initialized_value = (_.indexOf(data.initialized_services, key) == -1) ? 0 : 1 %>
+            <% initialized = (initialized_value) ? "{{ 'Yes'|t }}" : "{{ 'No'|t }}" %>
+            <% tags = _.map(item.outEdges, function(el) { return el.id; }).join(', ') %>
+            <% depends = _.map(item.value.tags, function(el, key) { return key; }).join(', ') %>
+
+            <tr data-wp-service-id="<%- key %>" data-wp-service-class="<%- item.value.class %>"
+                data-wp-service-tags="<%- tags %>" data-wp-service-initialized="<%- initialized_value %>">
+                <td><%- key %></td>
+                <td><%= clazz%></td>
+                <td><%- initialized %></td>
+                <td><%= tags %></td>
+                <td><%- depends %></td>
+            </tr>
+            <% }); %>
+            </tbody>
+        </table>
     </script>
 {% endblock %}

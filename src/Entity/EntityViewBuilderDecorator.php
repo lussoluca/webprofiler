@@ -30,7 +30,8 @@ class EntityViewBuilderDecorator extends EntityDecorator implements EntityViewBu
    * {@inheritdoc}
    */
   public function buildComponents(array &$build, array $entities, array $displays, $view_mode, $langcode = NULL) {
-    $this->getOriginalObject()->buildComponents($build, $entities, $displays, $view_mode, $langcode);
+    $this->getOriginalObject()
+      ->buildComponents($build, $entities, $displays, $view_mode, $langcode);
   }
 
   /**
@@ -48,7 +49,8 @@ class EntityViewBuilderDecorator extends EntityDecorator implements EntityViewBu
   public function viewMultiple(array $entities = [], $view_mode = 'full', $langcode = NULL) {
     $this->entities = array_merge($this->entities, $entities);
 
-    return $this->getOriginalObject()->viewMultiple($entities, $view_mode, $langcode);
+    return $this->getOriginalObject()
+      ->viewMultiple($entities, $view_mode, $langcode);
   }
 
   /**

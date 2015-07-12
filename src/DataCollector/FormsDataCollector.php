@@ -38,8 +38,8 @@ class FormsDataCollector extends DataCollector implements DrupalDataCollectorInt
   /**
    * @return array
    */
-  public function getForms() {
-    return $this->data['forms'];
+  public function countForms() {
+    return count($this->data['forms']);
   }
 
   /**
@@ -60,7 +60,7 @@ class FormsDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Rendered forms: @forms', ['@forms' => count($this->data['forms'])]);
+    return $this->t('Rendered forms: @forms', ['@forms' => $this->countForms()]);
   }
 
 //  /**
