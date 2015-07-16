@@ -126,4 +126,32 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
       'webprofiler/service',
     ];
   }
+
+  /**
+   * @return array
+   */
+  public function getData() {
+    $data = $this->data;
+
+    $http_middleware = [];
+    foreach($data['graph'] as $key => $service) {
+      if(isset($service['value']['tags']['http_middleware'])) {
+        $http_middleware[$key] = $service;
+      }
+    }
+
+    uasort($http_middleware, function($a, $b) {
+      $va = $a['value']['tags']['http_middleware'][0]['priority'];
+      $vb = $b['value']['tags']['http_middleware'][0]['priority'];
+
+      if ($va == $vb) {
+        return 0;
+      }
+      return ($va > $vb) ? -1 : 1;
+    });
+
+    $data['http_middleware'] = $http_middleware;
+
+    return $data;
+  }
 }

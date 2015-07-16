@@ -32,7 +32,7 @@
         <form>
             <label for="edit-sid">{{ 'Id'|t }}</label> <input id="edit-sid" type="text"/>
             <label for="edit-class">{{ 'Class'|t }}</label><input id="edit-class" type="text"/>
-            <label for="edit-tags">{{ 'tags'|t }}</label><input id="edit-tags" type="text"/>
+            <label for="edit-tags">{{ 'Tags'|t }}</label><input id="edit-tags" type="text"/>
             <label for="edit-initialized">{{ 'Initialized'|t }}</label><select id="edit-initialized">
                 <option value="-1">{{ 'Any'|t }}</option>
                 <option value="1">{{ 'Yes'|t }}</option>
@@ -47,8 +47,8 @@
                 <th>{{ 'Id'|t }}</th>
                 <th>{{ 'Class'|t }}</th>
                 <th>{{ 'Initialized'|t }}</th>
-                <th>{{ 'Depends on'|t }}</th>
                 <th>{{ 'Tags'|t }}</th>
+                <th>{{ 'Depends on'|t }}</th>
             </tr>
             </thead>
 
@@ -56,10 +56,10 @@
             <% _.each( data.graph, function( item, key ){ %>
 
             <% clazz = Drupal.webprofiler.helpers.classLink({"file" : item.value.file, "class" : item.value.class}) %>
-            <% initialized_value = (_.indexOf(data.initialized_services, key) == -1) ? 0 : 1 %>
+            <% initialized_value = (_.contains(data.initialized_services, key)) ? 0 : 1 %>
             <% initialized = (initialized_value) ? "{{ 'Yes'|t }}" : "{{ 'No'|t }}" %>
-            <% tags = _.map(item.outEdges, function(el) { return el.id; }).join(', ') %>
-            <% depends = _.map(item.value.tags, function(el, key) { return key; }).join(', ') %>
+            <% depends = _.map(item.outEdges, function(el) { return el.id; }).join(', ') %>
+            <% tags = _.map(item.value.tags, function(el, key) { return key; }).join(', ') %>
 
             <tr data-wp-service-id="<%- key %>" data-wp-service-class="<%- item.value.class %>"
                 data-wp-service-tags="<%- tags %>" data-wp-service-initialized="<%- initialized_value %>">
@@ -69,8 +69,18 @@
                 <td><%= tags %></td>
                 <td><%- depends %></td>
             </tr>
+
             <% }); %>
             </tbody>
         </table>
+
+        <ul>
+        <% _.each( data.http_middleware, function( item, key ){ %>
+            <li><%- key %> (priority: <%- item.value.tags.http_middleware[0].priority %>)</li>
+        <% }); %>
+        </ul>
+
+        <% console.log(data.http_middleware) %>
+
     </script>
 {% endblock %}
