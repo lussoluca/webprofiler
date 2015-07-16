@@ -111,4 +111,11 @@ class ConfigFactoryWrapper implements ConfigFactoryInterface {
   public function getEditable($name) {
     return $this->configFactory->getEditable($name);
   }
+
+  /**
+   * @return array
+   */
+  public function __sleep() {
+    return [];
+  }
 }

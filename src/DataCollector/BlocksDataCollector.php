@@ -7,9 +7,9 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\webprofiler\Entity\EntityManagerWrapper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -22,14 +22,14 @@ class BlocksDataCollector extends DataCollector implements DrupalDataCollectorIn
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
   /**
-   * @var \Drupal\webprofiler\Entity\EntityManagerWrapper
+   * @var
    */
   private $entityManager;
 
   /**
-   * @param EntityManagerWrapper $entityManager
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    */
-  public function __construct(EntityManagerWrapper $entityManager) {
+  public function __construct(EntityManagerInterface $entityManager) {
     $this->entityManager = $entityManager;
   }
 

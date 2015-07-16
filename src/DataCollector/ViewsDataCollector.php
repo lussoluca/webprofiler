@@ -7,6 +7,7 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\webprofiler\Entity\EntityManagerWrapper;
@@ -29,15 +30,15 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
   private $view_executable_factory;
 
   /**
-   * @var \Drupal\webprofiler\Entity\EntityManagerWrapper
+   * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   private $entityManager;
 
   /**
    * @param ViewExecutableFactoryWrapper $view_executable_factory
-   * @param \Drupal\webprofiler\Entity\EntityManagerWrapper $entityManager
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    */
-  public function __construct(ViewExecutableFactoryWrapper $view_executable_factory, EntityManagerWrapper $entityManager) {
+  public function __construct(ViewExecutableFactoryWrapper $view_executable_factory, EntityManagerInterface $entityManager) {
     $this->entityManager = $entityManager;
     $this->view_executable_factory = $view_executable_factory;
 
