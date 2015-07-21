@@ -2,7 +2,6 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
-use Drupal\Component\Utility\String;
 use Symfony\Component\HttpKernel\DataCollector\Util\ValueExporter;
 
 /**
