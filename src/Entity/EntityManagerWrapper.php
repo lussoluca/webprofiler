@@ -465,11 +465,4 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
   public function setContainer(ContainerInterface $container = NULL) {
     $this->entityManager->setContainer($container = NULL);
   }
-
-  /**
-   * @return array
-   */
-  public function __sleep() {
-    return [];
-  }
 }

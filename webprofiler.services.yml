@@ -192,36 +192,48 @@ services:
     public: false
     decorates: cache_factory
     arguments: ['@webprofiler.debug.cache_factory.inner', '@webprofiler.cache']
+    properties:
+      _serviceId: 'cache_factory'
 
   webprofiler.debug.config.factory:
     class: Drupal\webprofiler\Config\ConfigFactoryWrapper
     public: false
     decorates: config.factory
     arguments: ['@webprofiler.debug.config.factory.inner', '@webprofiler.config']
+    properties:
+      _serviceId: 'config.factory'
 
   webprofiler.debug.asset.css.collection_renderer:
     class: Drupal\webprofiler\Asset\CssCollectionRendererWrapper
     public: false
     decorates: asset.css.collection_renderer
     arguments: ['@webprofiler.debug.asset.css.collection_renderer.inner', '@webprofiler.assets']
+    properties:
+      _serviceId: 'asset.css.collection_renderer'
 
   webprofiler.debug.asset.js.collection_renderer:
     class: Drupal\webprofiler\Asset\JsCollectionRendererWrapper
     public: false
     decorates: asset.js.collection_renderer
     arguments: ['@webprofiler.debug.asset.js.collection_renderer.inner', '@webprofiler.assets']
+    properties:
+      _serviceId: 'asset.js.collection_renderer'
 
   webprofiler.debug.entity.manager:
     class: Drupal\webprofiler\Entity\EntityManagerWrapper
     public: false
     decorates: entity.manager
     arguments: ['@webprofiler.debug.entity.manager.inner']
+    properties:
+      _serviceId: 'entity.manager'
 
   webprofiler.debug.state:
     class: Drupal\webprofiler\State\StateWrapper
     public: false
     decorates: state
     arguments: ['@webprofiler.debug.state.inner', '@webprofiler.state']
+    properties:
+      _serviceId: 'state'
 
 # webprofiler authentication provider collector
   webprofiler.providercollector:
