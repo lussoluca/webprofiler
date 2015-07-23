@@ -157,7 +157,7 @@ services:
 
   webprofiler.http:
     class: Drupal\webprofiler\DataCollector\HttpDataCollector
-    arguments: ['@http_client']
+    arguments: ['@http_client_middleware.webprofiler']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/http.html.twig', id:'http', title:'Http', priority: 160 }
 
@@ -183,10 +183,16 @@ services:
     class: Symfony\Component\HttpKernel\Controller\TraceableControllerResolver
     arguments: ['@controller_resolver', '@stopwatch']
 
+# middlewares
   http_middleware.webprofiler:
     class: Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware
     tags:
       - { name: http_middleware, priority: 350 }
+
+  http_client_middleware.webprofiler:
+    class: Drupal\webprofiler\Http\HttpClientMiddleware
+    tags:
+      - { name: http_client_middleware }
 
 # parameter converter service for profile token
   webprofiler.token_converter:
