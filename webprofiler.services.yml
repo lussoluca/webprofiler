@@ -161,7 +161,7 @@ services:
 
   webprofiler.http:
     class: Drupal\webprofiler\DataCollector\HttpDataCollector
-    arguments: ['@http_client']
+    arguments: ['@http_client_middleware.webprofiler']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/http.html.twig', id:'http', title:'Http', priority: 170 }
 
@@ -229,11 +229,16 @@ services:
     tags:
     - { name: service_collector, tag: authentication_provider, call: addProvider }
 
-# webprofiler middleware
+# middlewares
   http_middleware.webprofiler:
     class: Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware
     tags:
       - { name: http_middleware, priority: 350 }
+
+  http_client_middleware.webprofiler:
+    class: Drupal\webprofiler\Http\HttpClientMiddleware
+    tags:
+      - { name: http_client_middleware }
 
 # parameter converter service for profile token
   webprofiler.token_converter:

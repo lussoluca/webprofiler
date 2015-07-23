@@ -9,11 +9,11 @@
     {% set text %}
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Completed'|t }}</b>
-        <span>{{ collector.countCompleted }}</span>
+        <span>{{ collector.completedRequestsCount }}</span>
     </div>
     <div class="sf-toolbar-info-piece">
-        <b>{{ 'Error'|t }}</b>
-        <span>{{ collector.countError }}</span>
+      <b>{{ 'Error'|t }}</b>
+      <span>{{ collector.failedRequestsCount }}</span>
     </div>
     {% endset %}
 
