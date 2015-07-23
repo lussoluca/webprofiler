@@ -116,10 +116,10 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
     $rows = array();
 
     foreach ($calls as $call) {
-      /** @var \GuzzleHttp\Psr7\Request $request */
+      /** @var \Psr\Http\Message\RequestInterface $request */
       $request = $call['request'];
 
-      /** @var \GuzzleHttp\Psr7\Response $response */
+      /** @var \Psr\Http\Message\ResponseInterface $response */
       $response = isset($call['response']) ? $call['response'] : NULL;
 
       $row = array();
@@ -131,6 +131,8 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
         $row[] = $response->getStatusCode();
         $row[] = $this->varToString($request->getHeaders());
         $row[] = $this->varToString($response->getHeaders(), TRUE);
+      } else {
+        $row[] = $call['message'];
       }
 
       $rows[] = $row;
@@ -149,6 +151,11 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
       );
       $header[] = array(
         'data' => $this->t('Response headers'),
+        'class' => array(RESPONSIVE_PRIORITY_LOW),
+      );
+    } else {
+      $header[] = array(
+        'data' => $this->t('Message'),
         'class' => array(RESPONSIVE_PRIORITY_LOW),
       );
     }
