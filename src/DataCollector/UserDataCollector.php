@@ -2,12 +2,12 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal\Core\Authentication\AuthenticationCollectorInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Component\Utility\SafeMarkup;
-use Drupal\webprofiler\Authentication\WebprofilerProviderCollector;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +36,7 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
   private $configFactory;
 
   /**
-   * @var \Drupal\webprofiler\Authentication\WebprofilerProviderCollector
+   * @var \Drupal\Core\Authentication\AuthenticationCollectorInterface
    */
   private $providerCollector;
 
@@ -44,9 +44,9 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   * @param \Drupal\webprofiler\Authentication\WebprofilerProviderCollector $providerCollector
+   * @param \Drupal\Core\Authentication\AuthenticationCollectorInterface $providerCollector
    */
-  public function __construct(AccountInterface $currentUser, EntityManagerInterface $entityManager, ConfigFactoryInterface $configFactory, WebprofilerProviderCollector $providerCollector) {
+  public function __construct(AccountInterface $currentUser, EntityManagerInterface $entityManager, ConfigFactoryInterface $configFactory, AuthenticationCollectorInterface $providerCollector) {
     $this->currentUser = $currentUser;
     $this->entityManager = $entityManager;
     $this->configFactory = $configFactory;
@@ -67,7 +67,12 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
       $this->data['roles'][] = $entity->label();
     }
 
-    $this->data['provider'] = $this->providerCollector->getProvider($request);
+    foreach ($this->providerCollector->getSortedProviders() as $provider_id => $provider) {
+      if ($provider->applies($request)) {
+        $this->data['provider'] = $provider_id;
+      }
+    }
+
     $this->data['anonymous'] = $this->configFactory->get('user.settings')
       ->get('anonymous');
   }

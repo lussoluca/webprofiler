@@ -70,7 +70,7 @@ services:
 # datacollector services
   webprofiler.drupal:
     class: Drupal\webprofiler\DataCollector\DrupalDataCollector
-    arguments: ['@redirect.destination']
+    arguments: ['@redirect.destination', '@url_generator']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/drupal.html.twig', id:'drupal', title:'Drupal', priority: 10 }
 
@@ -105,7 +105,7 @@ services:
 
   webprofiler.user:
     class: Drupal\webprofiler\DataCollector\UserDataCollector
-    arguments: ['@current_user', '@entity.manager', '@config.factory', '@webprofiler.providercollector']
+    arguments: ['@current_user', '@entity.manager', '@config.factory', '@authentication_collector']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/user.html.twig', id:'user', title:'User', priority: 70 }
 
@@ -234,12 +234,6 @@ services:
     arguments: ['@webprofiler.debug.state.inner', '@webprofiler.state']
     properties:
       _serviceId: 'state'
-
-# webprofiler authentication provider collector
-  webprofiler.providercollector:
-    class: Drupal\webprofiler\Authentication\WebprofilerProviderCollector
-    tags:
-    - { name: service_collector, tag: authentication_provider, call: addProvider }
 
 # middlewares
   http_middleware.webprofiler:
