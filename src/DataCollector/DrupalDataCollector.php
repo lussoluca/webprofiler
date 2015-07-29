@@ -2,7 +2,9 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal;
 use Drupal\Core\Routing\RedirectDestinationInterface;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,19 +24,26 @@ class DrupalDataCollector extends DataCollector implements DrupalDataCollectorIn
   private $redirectDestination;
 
   /**
-   * @param \Drupal\Core\Routing\RedirectDestinationInterface $redirectDestination
+   * @var \Drupal\Core\Routing\UrlGeneratorInterface
    */
-  public function __construct(RedirectDestinationInterface $redirectDestination) {
+  private $urlGenerator;
+
+  /**
+   * @param \Drupal\Core\Routing\RedirectDestinationInterface $redirectDestination
+   * @param \Drupal\Core\Routing\UrlGeneratorInterface $urlGenerator
+   */
+  public function __construct(RedirectDestinationInterface $redirectDestination, UrlGeneratorInterface $urlGenerator) {
     $this->redirectDestination = $redirectDestination;
+    $this->urlGenerator = $urlGenerator;
   }
 
   /**
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-    $this->data['version'] = \Drupal::VERSION;
+    $this->data['version'] = Drupal::VERSION;
     $this->data['profile'] = drupal_get_profile();
-    $this->data['destination'] = $this->redirectDestination->getAsArray();
+    $this->data['config_url'] = $this->urlGenerator->generateFromRoute('webprofiler.admin_configure', [], ['query' => $this->redirectDestination->getAsArray()]);
   }
 
   /**
@@ -55,8 +64,7 @@ class DrupalDataCollector extends DataCollector implements DrupalDataCollectorIn
    * @return string
    */
   public function getConfigUrl() {
-    $destination = $this->data['destination'];
-    return \Drupal::url('webprofiler.admin_configure', [], ['query' => $destination]);
+    return $this->data['config_url'];
   }
 
   /**

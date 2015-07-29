@@ -10,7 +10,6 @@ namespace Drupal\webprofiler\DataCollector;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
-use Drupal\webprofiler\Entity\EntityManagerWrapper;
 use Drupal\webprofiler\Views\TraceableViewExecutable;
 use Drupal\webprofiler\Views\ViewExecutableFactoryWrapper;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,6 +49,7 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
     $views = $this->view_executable_factory->getViews();
+    $storage = $this->entityManager->getStorage('view');
 
     /** @var TraceableViewExecutable $view */
     foreach ($views as $view) {
@@ -61,6 +61,13 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
           'execute_time' => $view->getExecuteTime(),
           'render_time' => $view->getRenderTime(),
         ];
+
+        $entity = $storage->load($view->storage->id());
+        if ($entity->access('update') && $entity->hasLinkTemplate('edit-display-form')) {
+          $route = $entity->urlInfo('edit-display-form');
+          $route->setRouteParameter('display_id', $view->current_display);
+          $data['route'] = $route->toString();
+        }
 
         $this->data['views'][] = $data;
       }
@@ -105,27 +112,5 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
    */
   public function getPanelSummary() {
     return $this->t('Total views: @count', ['@count' => $this->countViews()]);
-  }
-
-  /**
-   * @return array
-   */
-  public function getData() {
-    $data = $this->data;
-
-    /** @var \Drupal\Core\Entity\EntityManager $entity_manager */
-    $entity_manager = \Drupal::service('entity.manager');
-    $storage = $entity_manager->getStorage('view');
-
-    foreach ($data['views'] as &$view) {
-      $entity = $storage->load($view['id']);
-      if ($entity->access('update') && $entity->hasLinkTemplate('edit-display-form')) {
-        $route = $entity->urlInfo('edit-display-form');
-        $route->setRouteParameter('display_id', $view['current_display']);
-        $view['route'] = $route->toString();
-      }
-    }
-
-    return $data;
   }
 }
