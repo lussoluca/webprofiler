@@ -171,6 +171,11 @@ services:
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/twig.html.twig', id:'twig', title:'Twig', priority: 180 }
 
+  webprofiler.mail:
+    class: Drupal\webprofiler\DataCollector\MailDataCollector
+    tags:
+      - { name: data_collector, template:'@webprofiler/Collector/mail.html.twig', id:'mail', title:'Mail', priority: 190 }
+
 # debug services
   stopwatch:
     class: Drupal\webprofiler\Stopwatch

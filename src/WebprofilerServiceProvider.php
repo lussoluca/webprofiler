@@ -37,6 +37,11 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
     $container->getDefinition('form_builder')
       ->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
 
+    // Replace the regular plugin.manager.mail service with a traceable one.
+    $container->getDefinition('plugin.manager.mail')
+      ->setClass('Drupal\webprofiler\Mail\MailManagerWrapper')
+      ->addMethodCall('setDataCollector', [new Reference('webprofiler.mail')]);
+
     // Add ViewsDataCollector only if Views module is enabled.
     if (FALSE !== $container->hasDefinition('views.executable')) {
       $container->getDefinition('views.executable')
