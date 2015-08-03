@@ -105,7 +105,7 @@ services:
 
   webprofiler.user:
     class: Drupal\webprofiler\DataCollector\UserDataCollector
-    arguments: ['@current_user', '@authentication', '@entity.manager', '@config.factory']
+    arguments: ['@current_user', '@entity.manager', '@config.factory', '@authentication_collector']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/user.html.twig', id:'user', title:'User', priority: 70 }
 
