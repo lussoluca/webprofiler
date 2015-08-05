@@ -45,9 +45,9 @@ services:
     arguments: ['@config.factory', '@path.matcher']
 
 # event subscribers
-  webprofiler.profiler_istener:
+  webprofiler.profiler_listener:
     class: Symfony\Component\HttpKernel\EventListener\ProfilerListener
-    arguments: ['@profiler', '@?webprofiler.matcher', '%webprofiler.only_exceptions%', '%webprofiler.only_master_requests%', @request_stack]
+    arguments: ['@profiler', '@?webprofiler.matcher', '%webprofiler.only_exceptions%', '%webprofiler.only_master_requests%', '@request_stack']
     tags:
       - { name: event_subscriber }
 
