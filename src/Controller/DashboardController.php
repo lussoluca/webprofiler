@@ -4,7 +4,6 @@ namespace Drupal\webprofiler\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateFormatter;
-use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\webprofiler\Profiler\ProfilerStorageManager;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use Symfony\Component\Routing\RouterInterface;
-use Twig_Loader_Filesystem;
 
 /**
  * Class DashboardController
@@ -48,11 +46,6 @@ class DashboardController extends ControllerBase {
   private $storageManager;
 
   /**
-   * @var \Drupal\Core\Render\RendererInterface
-   */
-  private $renderer;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -61,8 +54,7 @@ class DashboardController extends ControllerBase {
       $container->get('router'),
       $container->get('template_manager'),
       $container->get('date.formatter'),
-      $container->get('profiler.storage_manager'),
-      $container->get('renderer')
+      $container->get('profiler.storage_manager')
     );
   }
 
@@ -74,15 +66,13 @@ class DashboardController extends ControllerBase {
    * @param \Drupal\webprofiler\Profiler\TemplateManager $templateManager
    * @param \Drupal\Core\Datetime\DateFormatter $date
    * @param \Drupal\webprofiler\Profiler\ProfilerStorageManager $storageManager
-   * @param \Drupal\Core\Render\RendererInterface $renderer
    */
-  public function __construct(Profiler $profiler, RouterInterface $router, TemplateManager $templateManager, DateFormatter $date, ProfilerStorageManager $storageManager, RendererInterface $renderer) {
+  public function __construct(Profiler $profiler, RouterInterface $router, TemplateManager $templateManager, DateFormatter $date, ProfilerStorageManager $storageManager) {
     $this->profiler = $profiler;
     $this->router = $router;
     $this->templateManager = $templateManager;
     $this->date = $date;
     $this->storageManager = $storageManager;
-    $this->renderer = $renderer;
   }
 
   /**

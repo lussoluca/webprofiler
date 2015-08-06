@@ -27,12 +27,18 @@ class RequestDataCollector extends BaseRequestDataCollector implements DrupalDat
   private $controllerResolver;
 
   /**
+   * @var array
+   */
+  private $accessCheck;
+
+  /**
    * @param \Drupal\Core\Controller\ControllerResolverInterface $controllerResolver
    */
   public function __construct(ControllerResolverInterface $controllerResolver) {
     parent::__construct();
 
     $this->controllerResolver = $controllerResolver;
+    $this->accessCheck = [];
   }
 
   /**
@@ -43,19 +49,20 @@ class RequestDataCollector extends BaseRequestDataCollector implements DrupalDat
 
     $controller = $this->controllerResolver->getController($request);
 
-    try {
-      $class = get_class($controller[0]);
-      $method = new \ReflectionMethod($class, $controller[1]);
+    $this->data['controller'] = $this->getMethodData($controller[0], $controller[1]);
+    $this->data['access_check'] = $this->accessCheck;
+  }
 
-      $this->data['controller'] = [
-        'class' => is_object($controller[0]) ? $class : $controller[0],
-        'method' => $controller[1],
-        'file' => $method->getFilename(),
-        'line' => $method->getStartLine(),
-      ];
-    } catch (\ReflectionException $re) {
-      // TODO: handle the exception.
-    }
+  /**
+   * @param $service_id
+   * @param $callable
+   * @param $request
+   */
+  public function addAccessCheck($service_id, $callable, Request $request) {
+    $this->accessCheck[$request->getPathInfo()][] = [
+      'service_id' => $service_id,
+      'callable' => $this->getMethodData($callable[0], $callable[1]),
+    ];
   }
 
   /**

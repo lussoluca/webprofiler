@@ -28,20 +28,53 @@ class ServicePass implements CompilerPassInterface {
     $definition = $container->getDefinition('webprofiler.services');
     $graph = $container->getCompiler()->getServiceReferenceGraph();
 
-    $definition->addMethodCall('setServicesGraph', [$this->extractData($graph)]);
+    $definition->addMethodCall('setServices', [$this->extractData($container, $graph)]);
   }
 
   /**
+   * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
    * @param \Symfony\Component\DependencyInjection\Compiler\ServiceReferenceGraph $graph
    *
    * @return array
    */
-  private function extractData(ServiceReferenceGraph $graph) {
+  private function extractData(ContainerBuilder $container, ServiceReferenceGraph $graph) {
     $data = [];
-    foreach ($graph->getNodes() as $node) {
-      $nodeValue = $node->getValue();
-      if ($nodeValue instanceof Definition) {
-        $class = $nodeValue->getClass();
+
+    foreach ($container->getDefinitions() as $id => $definition) {
+      $inEdges = [];
+      $outEdges = [];
+
+      if ($graph->hasNode($id)) {
+        $node = $graph->getNode($id);
+
+        /** @var \Symfony\Component\DependencyInjection\Compiler\ServiceReferenceGraphEdge $edge */
+        foreach ($node->getInEdges() as $edge) {
+          /** @var \Symfony\Component\DependencyInjection\Reference $edgeValue */
+          $edgeValue = $edge->getValue();
+
+          $inEdges[] = [
+            'id' => $edge->getSourceNode()->getId(),
+            'invalidBehavior' => $edgeValue ? $edgeValue->getInvalidBehavior() : NULL,
+            'strict' => $edgeValue ? $edgeValue->isStrict() : NULL,
+          ];
+        }
+
+
+        /** @var \Symfony\Component\DependencyInjection\Compiler\ServiceReferenceGraphEdge $edge */
+        foreach ($node->getOutEdges() as $edge) {
+          /** @var \Symfony\Component\DependencyInjection\Reference $edgeValue */
+          $edgeValue = $edge->getValue();
+
+          $outEdges[] = [
+            'id' => $edge->getDestNode()->getId(),
+            'invalidBehavior' => $edgeValue ? $edgeValue->getInvalidBehavior() : NULL,
+            'strict' => $edgeValue ? $edgeValue->isStrict() : NULL,
+          ];
+        }
+      }
+
+      if ($definition instanceof Definition) {
+        $class = $definition->getClass();
 
         try {
           $reflectedClass = new \ReflectionClass($class);
@@ -50,13 +83,12 @@ class ServicePass implements CompilerPassInterface {
           $file = NULL;
         }
 
-        $id = NULL;
-        $tags = $nodeValue->getTags();
-        $public = $nodeValue->isPublic();
-        $synthetic = $nodeValue->isSynthetic();
+        $tags = $definition->getTags();
+        $public = $definition->isPublic();
+        $synthetic = $definition->isSynthetic();
       }
       else {
-        $id = $nodeValue->__toString();
+        $id = $definition->__toString();
         $class = NULL;
         $file = NULL;
         $tags = [];
@@ -64,33 +96,7 @@ class ServicePass implements CompilerPassInterface {
         $synthetic = NULL;
       }
 
-      $inEdges = [];
-      /** @var \Symfony\Component\DependencyInjection\Compiler\ServiceReferenceGraphEdge $edge */
-      foreach ($node->getInEdges() as $edge) {
-        /** @var \Symfony\Component\DependencyInjection\Reference $edgeValue */
-        $edgeValue = $edge->getValue();
-
-        $inEdges[] = [
-          'id' => $edge->getSourceNode()->getId(),
-          'invalidBehavior' => $edgeValue ? $edgeValue->getInvalidBehavior() : NULL,
-          'strict' => $edgeValue ? $edgeValue->isStrict() : NULL,
-        ];
-      }
-
-      $outEdges = [];
-      /** @var \Symfony\Component\DependencyInjection\Compiler\ServiceReferenceGraphEdge $edge */
-      foreach ($node->getOutEdges() as $edge) {
-        /** @var \Symfony\Component\DependencyInjection\Reference $edgeValue */
-        $edgeValue = $edge->getValue();
-
-        $outEdges[] = [
-          'id' => $edge->getDestNode()->getId(),
-          'invalidBehavior' => $edgeValue ? $edgeValue->getInvalidBehavior() : NULL,
-          'strict' => $edgeValue ? $edgeValue->isStrict() : NULL,
-        ];
-      }
-
-      $data[$node->getId()] = [
+      $data[$id] = [
         'inEdges' => $inEdges,
         'outEdges' => $outEdges,
         'value' => [

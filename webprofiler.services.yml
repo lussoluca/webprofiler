@@ -119,7 +119,7 @@ services:
     class: Drupal\webprofiler\DataCollector\ExtensionDataCollector
     arguments: ['@module_handler', '@theme_handler']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/extensions.html.twig', id:'drupal_extension', title:'Extensions (modules/themes)', priority: 90 }
+      - { name: data_collector, template:'@webprofiler/Collector/extensions.html.twig', id:'drupal_extension', title:'Extensions', priority: 90 }
 
   webprofiler.routing:
     class: Drupal\webprofiler\DataCollector\RoutingDataCollector
@@ -176,17 +176,23 @@ services:
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/mail.html.twig', id:'mail', title:'Mail', priority: 190 }
 
+  webprofiler.theme:
+    class: Drupal\webprofiler\DataCollector\ThemeDataCollector
+    arguments: ['@theme.manager', '@theme.negotiator']
+    tags:
+      - { name: data_collector, template:'@webprofiler/Collector/theme.html.twig', id:'theme', title:'Theme', priority: 200 }
+
 # debug services
   stopwatch:
     class: Drupal\webprofiler\Stopwatch
 
-  webprofiler.debug.event_dispatcher:
-    class: Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher
-    arguments: ['@webprofiler.debug.event_dispatcher.default', '@stopwatch']
-
   webprofiler.debug.event_dispatcher.default:
     class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
     arguments: ['@service_container']
+
+  webprofiler.debug.event_dispatcher:
+    class: Drupal\webprofiler\TraceableEventDispatcher
+    arguments: ['@webprofiler.debug.event_dispatcher.default', '@stopwatch']
 
   webprofiler.debug.controller_resolver:
     class: Symfony\Component\HttpKernel\Controller\TraceableControllerResolver
@@ -199,14 +205,6 @@ services:
     arguments: ['@webprofiler.debug.cache_factory.inner', '@webprofiler.cache']
     properties:
       _serviceId: 'cache_factory'
-
-  webprofiler.debug.config.factory:
-    class: Drupal\webprofiler\Config\ConfigFactoryWrapper
-    public: false
-    decorates: config.factory
-    arguments: ['@webprofiler.debug.config.factory.inner', '@webprofiler.config']
-    properties:
-      _serviceId: 'config.factory'
 
   webprofiler.debug.asset.css.collection_renderer:
     class: Drupal\webprofiler\Asset\CssCollectionRendererWrapper

@@ -30,15 +30,15 @@
     <script id="time" type="text/template">
         <h2>{{ 'Time'|t }}</h2>
 
-        <p><span>{{ 'Total time'|t }}:</span> {{ collector.duration }}ms</p>
-        <p><span>{{ 'Initialization time'|t }}:</span> {{ collector.initTime }}m</p>
+        <p><span>{{ 'Total time'|t }}:</span> <%- data.duration %> ms</p>
+        <p><span>{{ 'Initialization time'|t }}:</span> <%- data.initTime %> ms</p>
 
-        <h3>
-            {{ "Main Request"|t }}
-            <small>
-                - {{ collector.events.__section__.duration }} ms
-            </small>
-        </h3>
+        {#<h3>#}
+            {#{{ "Main Request"|t }}#}
+            {#<small>#}
+                {#- {{ collector.events.__section__.duration }} ms#}
+            {#</small>#}
+        {#</h3>#}
 
         <div class="sf-profiler-timeline">
             <div class="legends">
@@ -47,6 +47,7 @@
                 <span class="event_listener">event_listener</span>
                 <span class="event_listener_loading">event_listener_loading</span>
                 <span class="template">template</span>
+                <span class="service">service</span>
             </div>
 
             <div id="timeline" style="margin-top: 20px"></div>

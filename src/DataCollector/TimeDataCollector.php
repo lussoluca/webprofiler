@@ -127,4 +127,16 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
 
     return ['time' => ['events' => $events, 'endtime' => $endTime]];
   }
+
+  /**
+   * @return array
+   */
+  public function getData() {
+    $data = $this->data;
+
+    $data['duration'] = $this->getDuration();
+    $data['initTime'] = $this->getInitTime();
+
+    return $data;
+  }
 }

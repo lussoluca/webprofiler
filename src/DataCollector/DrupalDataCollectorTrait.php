@@ -43,6 +43,34 @@ trait DrupalDataCollectorTrait {
   }
 
   /**
+   * @param $class
+   * @param $method
+   *
+   * @return array
+   *
+   * @throws \ReflectionException
+   */
+  public function getMethodData($class, $method) {
+    $class = is_object($class) ? get_class($class) : $class;
+    $data = [];
+
+    try {
+      $reflectedMethod = new \ReflectionMethod($class, $method);
+
+      $data = [
+        'class' => $class,
+        'method' => $method,
+        'file' => $reflectedMethod->getFilename(),
+        'line' => $reflectedMethod->getStartLine(),
+      ];
+    } catch (\ReflectionException $re) {
+      // TODO: handle the exception.
+    } finally {
+      return $data;
+    }
+  }
+
+  /**
    * @param $value
    *
    * @return int|string

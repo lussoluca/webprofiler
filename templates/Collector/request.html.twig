@@ -110,6 +110,23 @@
         <% if (!_.isEmpty(data.content)) { %>
         <h3>{{ 'Request Content'|t }}</h3>
         <div><%- data.content %></div>
+        <% } %>
+
+        <% if (!_.isEmpty(data.access_check)) { %>
+        <h3>{{ 'Access Check'|t }}</h3>
+        <table>
+            <% _.each( data.access_check, function( items, key ){ %>
+            <tr>
+                <td><%- key %></td>
+                <td>
+                    <% _.each(items, function(item){ %>
+                    <div><%= Drupal.webprofiler.helpers.classLink(item.callable) %> (<%- item.service_id %>)</div>
+                    <% }); %>
+                </td>
+            </tr>
+            <% }); %>
+        </table>
+        <% } %>
 
         <h3>{{ 'Request Server Parameters'|t }}</h3>
         <table>
@@ -120,7 +137,7 @@
             </tr>
             <% }); %>
         </table>
-        <% } %>
+
 
         <h3>{{ 'Response Headers'|t }}</h3>
         <table>

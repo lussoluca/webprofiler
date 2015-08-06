@@ -38,59 +38,71 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-    $this->data['initialized_services'] = [];
     if ($this->countServices()) {
+
+      $tracedData = [];
+      if ($this->container instanceof TraceableContainer) {
+        $tracedData = $this->container->getTracedData();
+      }
+
       foreach (array_keys($this->getServices()) as $id) {
-        if ($this->container->initialized($id)) {
-          $this->data['initialized_services'][] = $id;
-        }
+        $this->data['services'][$id]['initialized'] = ($this->container->initialized($id)) ? TRUE : FALSE;
+        $this->data['services'][$id]['time'] = isset($tracedData[$id]) ? $tracedData[$id] : NULL;
       }
     }
-
-    if ($this->container instanceof TraceableContainer) {
-      $this->data['times'] = $this->container->getTracedData();
-    }
   }
 
   /**
-   * @param $graph
+   * @param $services
    */
-  public function setServicesGraph($graph) {
-    $this->data['graph'] = $graph;
-  }
-
-  /**
-   * @return int
-   */
-  public function countServices() {
-    return count($this->data['graph']);
-  }
-
-  /**
-   * @return int
-   */
-  public function countInitializedServices() {
-    return count($this->data['initialized_services']);
-  }
-
-  /**
-   * @return int
-   */
-  public function countInitializedServicesWithoutWebprofiler() {
-    $countWithoutWebprofiler = 0;
-    foreach ($this->data['initialized_services'] as $service) {
-      if (strpos($service, 'webprofiler') !== 0) {
-        $countWithoutWebprofiler++;
-      }
-    }
-    return $countWithoutWebprofiler;
+  public function setServices($services) {
+    $this->data['services'] = $services;
   }
 
   /**
    * @return array
    */
   public function getServices() {
-    return $this->data['graph'];
+    return $this->data['services'];
+  }
+
+  /**
+   * @return int
+   */
+  public function countServices() {
+    return count($this->getServices());
+  }
+
+  /**
+   * @return array
+   */
+  public function getInitializedServices() {
+    return array_filter($this->getServices(), function($item) {
+      return $item['initialized'];
+    });
+  }
+
+  /**
+   * @return int
+   */
+  public function countInitializedServices() {
+    return count($this->getInitializedServices());
+  }
+
+  /**
+   * @return array
+   */
+  public function getInitializedServicesWithoutWebprofiler() {
+    return array_filter($this->getInitializedServices(), function($item) {
+      return strpos($item['value']['id'], 'webprofiler') !== 0;
+    });
+  }
+
+  /**
+   * @return int
+   */
+  public function countInitializedServicesWithoutWebprofiler() {
+    return count($this->getInitializedServicesWithoutWebprofiler());
   }
 
   /**
@@ -134,13 +146,13 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
     $data = $this->data;
 
     $http_middleware = [];
-    foreach($data['graph'] as $key => $service) {
-      if(isset($service['value']['tags']['http_middleware'])) {
+    foreach ($data['services'] as $key => $service) {
+      if (isset($service['value']['tags']['http_middleware'])) {
         $http_middleware[$key] = $service;
       }
     }
 
-    uasort($http_middleware, function($a, $b) {
+    uasort($http_middleware, function ($a, $b) {
       $va = $a['value']['tags']['http_middleware'][0]['priority'];
       $vb = $b['value']['tags']['http_middleware'][0]['priority'];
 

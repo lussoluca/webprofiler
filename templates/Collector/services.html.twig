@@ -49,14 +49,16 @@
                 <th>{{ 'Initialized'|t }}</th>
                 <th>{{ 'Tags'|t }}</th>
                 <th>{{ 'Depends on'|t }}</th>
+                <th>{{ 'Count'|t }}</th>
+                <th>{{ 'Time'|t }}</th>
             </tr>
             </thead>
 
             <tbody>
-            <% _.each( data.graph, function( item, key ){ %>
+            <% _.each( data.services, function( item, key ){ %>
 
             <% clazz = Drupal.webprofiler.helpers.classLink({"file" : item.value.file, "class" : item.value.class}) %>
-            <% initialized_value = (_.contains(data.initialized_services, key)) ? 0 : 1 %>
+            <% initialized_value = item.initialized %>
             <% initialized = (initialized_value) ? "{{ 'Yes'|t }}" : "{{ 'No'|t }}" %>
             <% depends = _.map(item.outEdges, function(el) { return el.id; }).join(', ') %>
             <% tags = _.map(item.value.tags, function(el, key) { return key; }).join(', ') %>
@@ -68,6 +70,12 @@
                 <td><%- initialized %></td>
                 <td><%= tags %></td>
                 <td><%- depends %></td>
+
+                <% if(item.time){ %>
+                <td><%- item.time.count %></td>
+                <td><%- item.time.time %></td>
+                <% } %>
+
             </tr>
 
             <% }); %>
@@ -75,12 +83,10 @@
         </table>
 
         <ul>
-        <% _.each( data.http_middleware, function( item, key ){ %>
+            <% _.each( data.http_middleware, function( item, key ){ %>
             <li><%- key %> (priority: <%- item.value.tags.http_middleware[0].priority %>)</li>
-        <% }); %>
+            <% }); %>
         </ul>
-
-        <% console.log(data.http_middleware) %>
 
     </script>
 {% endblock %}

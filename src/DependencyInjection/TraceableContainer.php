@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\Core\DependencyInjection\TraceableContainer.
+ * Contains \Drupal\webprofiler\DependencyInjection\TraceableContainer.
  */
 
 namespace Drupal\webprofiler\DependencyInjection;
@@ -21,15 +21,35 @@ class TraceableContainer extends Container {
   protected $tracedData;
 
   /**
+   * @var \Symfony\Component\Stopwatch\Stopwatch
+   */
+  private $stopwatch = NULL;
+
+  /**
    * @param string $id
    * @param int $invalidBehavior
    *
    * @return object
    */
   public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE) {
+    if(!$this->stopwatch) {
+      $this->stopwatch = call_user_func([$this, $this->methodMap['stopwatch']]);
+      $this->stopwatch->openSection();
+    }
+
+    if('stopwatch' === $id) {
+      return $this->stopwatch;
+    }
+
     Timer::start($id);
+    $e = $this->stopwatch->start($id, 'service');
+
     $service = parent::get($id, $invalidBehavior);
+
     $this->tracedData[$id] = Timer::stop($id);
+    if($e->isStarted()) {
+      $e->stop();
+    }
 
     return $service;
   }

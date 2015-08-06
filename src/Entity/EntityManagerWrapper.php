@@ -49,53 +49,53 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
    * {@inheritdoc}
    */
   public function getStorage($entity_type) {
-    /** @var ConfigEntityStorageInterface $controller */
-    $controller = $this->getHandler($entity_type, 'storage');
+    /** @var ConfigEntityStorageInterface $handler */
+    $handler = $this->getHandler($entity_type, 'storage');
 
     switch ($entity_type) {
       case 'block':
         if (!isset($this->loaded['block'])) {
-          $controller = new EntityStorageDecorator($controller);
-          $this->loaded['block'] = $controller;
+          $handler = new EntityStorageDecorator($handler);
+          $this->loaded['block'] = $handler;
         }
         else {
-          $controller = $this->loaded['block'];
+          $handler = $this->loaded['block'];
         }
         break;
       case 'view':
         if (!isset($this->loaded['view'])) {
-          $controller = new EntityStorageDecorator($controller);
-          $this->loaded['view'] = $controller;
+          $handler = new EntityStorageDecorator($handler);
+          $this->loaded['view'] = $handler;
         }
         else {
-          $controller = $this->loaded['view'];
+          $handler = $this->loaded['view'];
         }
         break;
     }
 
-    return $controller;
+    return $handler;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getViewBuilder($entity_type) {
-    /** @var EntityViewBuilderInterface $controller */
-    $controller = $this->getHandler($entity_type, 'view_builder');
+    /** @var EntityViewBuilderInterface $handler */
+    $handler = $this->getHandler($entity_type, 'view_builder');
 
     switch ($entity_type) {
       case 'block':
         if (!isset($this->rendered['block'])) {
-          $controller = new EntityViewBuilderDecorator($controller);
-          $this->rendered['block'] = $controller;
+          $handler = new EntityViewBuilderDecorator($handler);
+          $this->rendered['block'] = $handler;
         }
         else {
-          $controller = $this->rendered['block'];
+          $handler = $this->rendered['block'];
         }
         break;
     }
 
-    return $controller;
+    return $handler;
   }
 
   /**
@@ -104,7 +104,7 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
    * @return array
    */
   public function getLoaded($type) {
-    return $this->loaded[$type];
+    return isset($this->loaded[$type]) ? $this->loaded[$type] : NULL;
   }
 
   /**
@@ -113,7 +113,7 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
    * @return array
    */
   public function getRendered($type) {
-    return $this->rendered[$type];
+    return isset($this->rendered[$type]) ? $this->rendered[$type]: NULL;
   }
 
   /**

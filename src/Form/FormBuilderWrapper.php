@@ -42,8 +42,17 @@ class FormBuilderWrapper extends FormBuilder {
     }
 
     $buildInfo = $form_state->getBuildInfo();
+
+    $class = get_class($buildInfo['callback_object']);
+    $method = new \ReflectionMethod($class, 'buildForm');
+
     $this->buildForms[$buildInfo['form_id']] = [
-      'class' => get_class($buildInfo['callback_object']),
+      'class' => [
+        'class' => $class,
+        'method' => 'buildForm',
+        'file' => $method->getFilename(),
+        'line' => $method->getStartLine(),
+      ],
       'form' => $elements,
     ];
 

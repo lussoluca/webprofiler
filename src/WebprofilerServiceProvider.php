@@ -29,24 +29,16 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
     // Add a compiler pass to discover all data collector services.
     $container->addCompilerPass(new ProfilerPass());
 
+    // Add a compiler pass to discover all available storage backend.
     $container->addCompilerPass(new StoragePass());
-    $container->addCompilerPass(new EventPass(), PassConfig::TYPE_AFTER_REMOVING);
+
     $container->addCompilerPass(new ServicePass(), PassConfig::TYPE_AFTER_REMOVING);
+    $container->addCompilerPass(new EventPass(), PassConfig::TYPE_AFTER_REMOVING);
 
-    // Replace the regular form_builder service with a traceable one.
-    $container->getDefinition('form_builder')
-      ->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
-
-    // Replace the regular plugin.manager.mail service with a traceable one.
-    $container->getDefinition('plugin.manager.mail')
-      ->setClass('Drupal\webprofiler\Mail\MailManagerWrapper')
-      ->addMethodCall('setDataCollector', [new Reference('webprofiler.mail')]);
+    $modules = $container->getParameter('container.modules');
 
     // Add ViewsDataCollector only if Views module is enabled.
-    if (FALSE !== $container->hasDefinition('views.executable')) {
-      $container->getDefinition('views.executable')
-        ->setClass('Drupal\webprofiler\Views\ViewExecutableFactoryWrapper');
-
+    if (isset($modules['views'])) {
       $container->register('webprofiler.views', 'Drupal\webprofiler\DataCollector\ViewsDataCollector')
         ->addArgument(new Reference(('views.executable')))
         ->addArgument(new Reference(('entity.manager')))
@@ -59,7 +51,7 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
     }
 
     // Add BlockDataCollector only if Block module is enabled.
-    if (FALSE !== $container->hasDefinition('plugin.manager.block')) {
+    if (isset($modules['block'])) {
       $container->register('webprofiler.blocks', 'Drupal\webprofiler\DataCollector\BlocksDataCollector')
         ->addArgument(new Reference(('entity.manager')))
         ->addTag('data_collector', [
@@ -69,5 +61,41 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
           'priority' => 78,
         ]);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function alter(ContainerBuilder $container) {
+    $modules = $container->getParameter('container.modules');
+
+    // Alter the views.executable service only if Views module is enabled.
+    if (isset($modules['views'])) {
+      $container->getDefinition('views.executable')
+        ->setClass('Drupal\webprofiler\Views\ViewExecutableFactoryWrapper');
+    }
+
+    // Replace the regular form_builder service with a traceable one.
+    $container->getDefinition('form_builder')
+      ->setClass('Drupal\webprofiler\Form\FormBuilderWrapper');
+
+    // Replace the regular plugin.manager.mail service with a traceable one.
+    $container->getDefinition('plugin.manager.mail')
+      ->setClass('Drupal\webprofiler\Mail\MailManagerWrapper')
+      ->addMethodCall('setDataCollector', [new Reference('webprofiler.mail')]);
+
+    // Replace the regular access_manager service with a traceable one.
+    $container->getDefinition('access_manager')
+      ->setClass('Drupal\webprofiler\Access\AccessManagerWrapper')
+      ->addMethodCall('setDataCollector', [new Reference('webprofiler.request')]);
+
+    // Replace the regular theme.negotiator service with a traceable one.
+    $container->getDefinition('theme.negotiator')
+      ->setClass('Drupal\webprofiler\Theme\ThemeNegotiatorWrapper');
+
+    // Replace the regular config.factory service with a traceable one.
+    $container->getDefinition('config.factory')
+      ->setClass('Drupal\webprofiler\Config\ConfigFactoryWrapper')
+      ->addMethodCall('setDataCollector', [new Reference('webprofiler.config')]);
   }
 }

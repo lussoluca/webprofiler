@@ -135,7 +135,7 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    * {@inheritdoc}
    */
   public function getTitle() {
-    return $this->t('Extensions (modules/themes)');
+    return $this->t('Extensions');
   }
 
   /**
