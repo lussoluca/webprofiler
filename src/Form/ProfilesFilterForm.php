@@ -33,6 +33,7 @@ class ProfilesFilterForm extends FormBase {
       '#title' => $this->t('IP'),
       '#size' => 30,
       '#default_value' => $this->getRequest()->query->get('ip'),
+      '#prefix' => '<div class="form--inline clearfix">',
     ];
 
     $form['url'] = [
@@ -62,6 +63,7 @@ class ProfilesFilterForm extends FormBase {
       '#type' => 'submit',
       '#value' => t('Filter'),
       '#attributes' => ['class' => ['button--primary']],
+      '#suffix' => '</div>',
     ];
 
     return $form;

@@ -19,15 +19,6 @@ highlight:
   css:
     component:
       /libraries/highlight/styles/idea.css: {}
-webprofiler:
-  version: 2.0
-  css:
-    component:
-      css/webprofiler.css: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
-    - core/drupalSettings
 dashboard:
   version: 2.0
   js:

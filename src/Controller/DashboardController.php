@@ -214,11 +214,6 @@ class DashboardController extends ControllerBase {
         ],
       ],
       '#sticky' => TRUE,
-      '#attached' => [
-        'library' => [
-          'webprofiler/webprofiler',
-        ],
-      ],
     ];
 
     return $build;
