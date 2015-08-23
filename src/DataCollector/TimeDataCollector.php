@@ -7,6 +7,7 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal\field\Tests\reEnableModuleFieldTest;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,34 +99,40 @@ class TimeDataCollector extends BaseTimeDataCollector implements DrupalDataColle
   public function getDrupalSettings() {
     /** @var StopwatchEvent[] $collectedEvents */
     $collectedEvents = $this->getEvents();
-    $sectionPeriods = $collectedEvents['__section__']->getPeriods();
-    $endTime = end($sectionPeriods)->getEndTime();
-    $events = [];
 
-    foreach ($collectedEvents as $key => $collectedEvent) {
-      if ('__section__' != $key) {
-        $periods = [];
-        foreach ($collectedEvent->getPeriods() as $period) {
-          $periods[] = [
-            'start' => sprintf("%F", $period->getStartTime()),
-            'end' => sprintf("%F", $period->getEndTime()),
+    if (!empty($collectedEvents)) {
+      $sectionPeriods = $collectedEvents['__section__']->getPeriods();
+      $endTime = end($sectionPeriods)->getEndTime();
+      $events = [];
+
+      foreach ($collectedEvents as $key => $collectedEvent) {
+        if ('__section__' != $key) {
+          $periods = [];
+          foreach ($collectedEvent->getPeriods() as $period) {
+            $periods[] = [
+              'start' => sprintf("%F", $period->getStartTime()),
+              'end' => sprintf("%F", $period->getEndTime()),
+            ];
+          }
+
+          $events[] = [
+            "name" => $key,
+            "category" => $collectedEvent->getCategory(),
+            "origin" => sprintf("%F", $collectedEvent->getOrigin()),
+            "starttime" => sprintf("%F", $collectedEvent->getStartTime()),
+            "endtime" => sprintf("%F", $collectedEvent->getEndTime()),
+            "duration" => sprintf("%F", $collectedEvent->getDuration()),
+            "memory" => sprintf("%.1F", $collectedEvent->getMemory() / 1024 / 1024),
+            "periods" => $periods,
           ];
         }
-
-        $events[] = [
-          "name" => $key,
-          "category" => $collectedEvent->getCategory(),
-          "origin" => sprintf("%F", $collectedEvent->getOrigin()),
-          "starttime" => sprintf("%F", $collectedEvent->getStartTime()),
-          "endtime" => sprintf("%F", $collectedEvent->getEndTime()),
-          "duration" => sprintf("%F", $collectedEvent->getDuration()),
-          "memory" => sprintf("%.1F", $collectedEvent->getMemory() / 1024 / 1024),
-          "periods" => $periods,
-        ];
       }
-    }
 
-    return ['time' => ['events' => $events, 'endtime' => $endTime]];
+      return ['time' => ['events' => $events, 'endtime' => $endTime]];
+    }
+    else {
+      return ['time' => ['events' => [], 'endtime' => 0]];
+    }
   }
 
   /**

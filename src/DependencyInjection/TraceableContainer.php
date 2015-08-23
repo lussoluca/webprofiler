@@ -33,7 +33,7 @@ class TraceableContainer extends Container {
    */
   public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE) {
     if(!$this->stopwatch) {
-      $this->stopwatch = call_user_func([$this, $this->methodMap['stopwatch']]);
+      $this->stopwatch = $this->createService(unserialize($this->serviceDefinitions['stopwatch']), 'stopwatch');
       $this->stopwatch->openSection();
     }
 

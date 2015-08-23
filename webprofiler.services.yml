@@ -81,7 +81,7 @@ services:
 
   webprofiler.request:
     class: Drupal\webprofiler\DataCollector\RequestDataCollector
-    arguments: ['@controller_resolver', '@webprofiler.ide_link_generator']
+    arguments: ['@controller_resolver']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/request.html.twig', id:'request', title:'Request', priority: 30 }
       - { name: event_subscriber }
@@ -189,10 +189,6 @@ services:
   webprofiler.debug.event_dispatcher.default:
     class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
     arguments: ['@service_container']
-
-  webprofiler.debug.event_dispatcher:
-    class: Drupal\webprofiler\TraceableEventDispatcher
-    arguments: ['@webprofiler.debug.event_dispatcher.default', '@stopwatch']
 
   webprofiler.debug.controller_resolver:
     class: Symfony\Component\HttpKernel\Controller\TraceableControllerResolver
