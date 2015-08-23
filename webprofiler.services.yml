@@ -171,10 +171,6 @@ services:
   stopwatch:
     class: Drupal\webprofiler\Stopwatch
 
-  webprofiler.debug.event_dispatcher:
-    class: Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher
-    arguments: ['@webprofiler.debug.event_dispatcher.parent', '@stopwatch']
-
   webprofiler.debug.event_dispatcher.parent:
     class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
     arguments: ['@service_container']

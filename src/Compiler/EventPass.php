@@ -28,7 +28,9 @@ class EventPass implements CompilerPassInterface {
     $definition = $container->findDefinition('event_dispatcher');
     $definition->setPublic(FALSE);
     $container->setDefinition('webprofiler.debug.event_dispatcher.parent', $definition);
-    $container->setAlias('event_dispatcher', 'webprofiler.debug.event_dispatcher');
+    $container->register('event_dispatcher', 'Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher')
+      ->addArgument(new Reference('webprofiler.debug.event_dispatcher.parent'))
+      ->addArgument(new Reference('stopwatch'));
   }
 
 }
