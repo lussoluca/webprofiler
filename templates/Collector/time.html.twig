@@ -4,8 +4,8 @@
     {% set total_memory = collector.memoryLimit == -1 ? '&infin;' : '%.1f MB'|format(collector.memoryLimit / 1024)|escape %}
     {% set icon %}
     <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: "time"}) }}" title="{{ 'Timeline'|t }}">
-        <img width="20" height="28" alt="Timeline"
-             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAcCAYAAABoMT8aAAABqUlEQVR42t2Vv0sCYRyHX9OmEhsMx/YKGlwLQ69DTEUSBJEQEy5J3FRc/BsuiFqEIIcQIRo6ysUhoaBBWhoaGoJwiMJLglRKrs8bXgienmkQdPDAwX2f57j3fhFJkkbiPwTK5bIiFoul3kmPud8MqKMewDXpwuGww+12n9hsNhFnlijYf/Z4PDmO45Yxo+10ZFGTyWRMEItU6AdCx7lczkgd6n7J2Wx2xm63P6jJMk6n80YQBBN1aUDv9XqvlAbbm2LE7/cLODRB0un0VveAeoDC8/waCQQC18MGQqHQOcEKvw8bcLlcL6TfYnVtCrGRAlartUUYhmn1jKg/E3USjUYfhw3E4/F7ks/nz4YNFIvFQ/ogbUYikdefyqlU6gnuOg2YK5XKvs/n+xhUDgaDTVEUt+HO04ABOBA5isViDTU5kUi81Wq1AzhWMEkDGmAEq2C3UCjcYXGauDvfEsuyUjKZbJRKpVvM8IABU9SVX+cxYABmwIE9cFqtVi9xtgvsC2AHbIAFoKey0gdlHEyDObAEWLACFsEsMALdIJ80+dK0bTS95v7+v/AJnis0eO906QwAAAAASUVORK5CYII="/>
+        <img width="20" height="28" alt="{{ 'Timeline'|t }}"
+             src="data:image/png;base64,{{ collector.icon }}"/>
         <span>{{ duration }} / {{ memory }}</span>
     </a>
     {% endset %}
@@ -28,29 +28,30 @@
 
 {% block panel %}
     <script id="time" type="text/template">
-        <h2>{{ 'Time'|t }}</h2>
+        <h2 class="panel__title">{{ 'Timeline'|t }}</h2>
+        <div class="panel__container">
+            <p><span>{{ 'Total time'|t }}:</span> {{ collector.duration }}ms</p>
+            <p><span>{{ 'Initialization time'|t }}:</span> {{ collector.initTime }}m</p>
 
-        <p><span>{{ 'Total time'|t }}:</span> <%- data.duration %> ms</p>
-        <p><span>{{ 'Initialization time'|t }}:</span> <%- data.initTime %> ms</p>
+            <h3>
+                {{ "Main Request"|t }}
+                <small>
+                    - {{ collector.events.__section__.duration }} ms
+                </small>
+            </h3>
 
-        {#<h3>#}
-            {#{{ "Main Request"|t }}#}
-            {#<small>#}
-                {#- {{ collector.events.__section__.duration }} ms#}
-            {#</small>#}
-        {#</h3>#}
+            <div class="sf-profiler-timeline">
+                <div class="legends">
+                    <span class="default">default</span>
+                    <span class="section">section</span>
+                    <span class="event_listener">event_listener</span>
+                    <span class="event_listener_loading">event_listener_loading</span>
+                    <span class="template">template</span>
+                </div>
 
-        <div class="sf-profiler-timeline">
-            <div class="legends">
-                <span class="default">default</span>
-                <span class="section">section</span>
-                <span class="event_listener">event_listener</span>
-                <span class="event_listener_loading">event_listener_loading</span>
-                <span class="template">template</span>
-                <span class="service">service</span>
+                <div id="timeline" style="margin-top: 20px"></div>
             </div>
-
-            <div id="timeline" style="margin-top: 20px"></div>
         </div>
+
     </script>
 {% endblock %}

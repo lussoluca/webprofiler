@@ -10,8 +10,8 @@
 
     {% set icon %}
     <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'request'}) }}" title="{{ 'Request'|t }}">
-        <img width="28" height="28" alt="Request"
-             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAQAAADYBBcfAAACvElEQVR42tVTbUhTYRTerDCnKVoUUr/KCZmypA9Koet0bXNLJ5XazDJ/WFaCUY0pExRZXxYiJgsxWWjkaL+yK+po1gjyR2QfmqWxtBmaBtqWGnabT++c11Fu4l/P4VzOPc95zoHznsNZodIbLDdRcKnc1Bu8DAK45ZsOnykQNMopsNooLxCknb0cDq5vml9FtHiIgpBR0R6iihYyFMTDt2Lg56ObPkI6TMGXSof1EV67IqCwisJSWliFAG/E0CfFIiebdNypcxi/1zgyFiIiZ3sJQr0RQx5frLa6k7SOKRo3oMFNR5t62h2rttKXEOKFqDCxtXNmmBokO2KKTlp3IdWuT2dYRNGKwEXEBCcL172G5FG0aIxC0kR9PBTVH1kkwQn+IqJnCE33EalVzT9GJQS1tAdD3CKicJYFrxqx7W2ejCEdZy1FiC5tZxHhLJKOZaRdQJAyV/YAvDliySALHxmxR4Hqe2iwvaOR/CEuZYJFSgYhVbZRkA8KGdEktrqnqra90NndCdkt77fjIHIhexOrfO6O3bbbOj/rqu5IptgyR3sU93QbOYhquZK4MCDp0Ina/PLsu5JvbCTRaapUdUmIV/RzoMdsk/0hWRNdAvKOmvqlN0drsJbJf1P4YsQ5lGrJeuosiOUgbOC8cto3LfOXTdVd7BqZsQKbse+0jUL6WPcesqs4MNSUTQAxGjwFiC8m3yzmqwHJBWYKBJ9WNqW/dHkpU/osch1Yj5RJfXPfSEe/2UPsN490NPfZG5CKyJmcV5ayHyzy7BMqsXfuHhGK/cjAIeSpR92gehR55D8TcQhDEKJwytBJ4fr4NULvrEM8NszfJPyxDoHYAQ1oPCWmIX4gifmDS/DV2DKeb25FHWr76yEG7/9L4YFPeiQQ4/8LkgJ8Et+NncTCsYqzXAEXa7CWdPZzGWdlyV+vST0JanfPvwAAAABJRU5ErkJggg==">
+        <img width="28" height="28" alt="{{ 'Request'|t }}"
+             src="data:image/png;base64,{{ collector.icon }}">
     <span class="sf-toolbar-status sf-toolbar-status-{{ request_status_code_color }}"
           title="{{ collector.statustext }}">{{ collector.statuscode }}</span>
     </a>
@@ -42,111 +42,145 @@
 
 {% block panel %}
     <script id="request" type="text/template">
-
-        <h2>{{ 'Request'|t }}</h2>
+        <h2 class="panel__title">{{ 'Request'|t }}</h2>
 
         <% if (!_.isEmpty(data.request_query)) { %>
-        <h3>{{ 'Request GET Parameters'|t }}</h3>
-        <table>
-            <% _.each( data.request_query, function( item, key ){ %>
-            <tr>
-                <td><%- key %></td>
-                <td><%- item %></td>
-            </tr>
-            <% }); %>
-        </table>
+        <div class="panel__container">
+
+            <table class="table--duo">
+                <thead>
+                <th>{{ 'GET Parameters'|t }}</th>
+                <th>{{ 'Value'|t }}</th>
+                </thead>
+                <tbody>
+                <% _.each( data.request_query, function( item, key ){ %>
+                <tr>
+                    <td><%- key %></td>
+                    <td><%- item %></td>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
         <% } %>
 
         <% if (!_.isEmpty(data.request_request)) { %>
-        <h3>{{ 'Request POST Parameters'|t }}</h3>
-        <table>
-            <% _.each( data.request_request, function( item, key ){ %>
-            <tr>
-                <td><%- key %></td>
-                <td><%- item %></td>
-            </tr>
-            <% }); %>
-        </table>
+        <div class="panel__container">
+            <table class="table--duo">
+                <thead>
+                <th>{{ 'POST Parameters'|t }}</th>
+                <th>{{ 'Value'|t }}</th>
+                </thead>
+                <tbody>
+                <% _.each( data.request_request, function( item, key ){ %>
+                <tr>
+                    <td><%- key %></td>
+                    <td><%- item %></td>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+
         <% } %>
+        <div class="panel__container">
+            <table class="table--duo">
+                <thead>
+                <th>{{ 'Attributes'|t }}</th>
+                <th>{{ 'Value'|t }}</th>
+                </thead>
+                <tbody>
+                <% _.each( data.request_attributes, function( item, key ){ %>
+                <tr>
+                    <td><%- key %></td>
 
-        <h3>{{ 'Request Attributes'|t }}</h3>
-        <table>
-            <% _.each( data.request_attributes, function( item, key ){ %>
+                    <% if(key == '_controller') { %>
+                    <td><%= Drupal.webprofiler.helpers.classLink(data.controller) %></td>
+                    <% } else { %>
+                    <td><%- item %></td>
+                    <% } %>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
 
-            <tr>
-                <td><%- key %></td>
-
-                <% if(key == '_controller') { %>
-                <td><%= Drupal.webprofiler.helpers.classLink(data.controller) %></td>
-                <% } else { %>
-                <td><%- item %></td>
-                <% } %>
-            </tr>
-            <% }); %>
-        </table>
 
         <% if (!_.isEmpty(data.request_cookies)) { %>
-        <h3>{{ 'Request Cookies'|t }}</h3>
-        <table>
-            <% _.each( data.request_cookies, function( item, key ){ %>
-            <tr>
-                <td><%- key %></td>
-                <td><%- item %></td>
-            </tr>
-            <% }); %>
-        </table>
-        <% } %>
+        <div class="panel__container">
+            <table class="table--duo">
+                <thead>
+                <th>{{ 'Cookies'|t }}</th>
+                <th>{{ 'Value'|t }}</th>
+                </thead>
+                <tbody>
+                <% _.each( data.request_cookies, function( item, key ){ %>
+                <tr>
+                    <td><%- key %></td>
+                    <td><%- item %></td>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
 
-        <h3>{{ 'Request Headers'|t }}</h3>
-        <table>
-            <% _.each( data.request_headers, function( item, key ){ %>
-            <tr>
-                <td><%- key %></td>
-                <td><%- item %></td>
-            </tr>
-            <% }); %>
-        </table>
+
+        <% } %>
+        <div class="panel__container">
+            <table class="table--duo">
+                <thead>
+                <th>{{ 'Request headers'|t }}</th>
+                <th>{{ 'Value'|t }}</th>
+                </thead>
+                <tbody>
+                <% _.each( data.request_headers, function( item, key ){ %>
+                <tr>
+                    <td><%- key %></td>
+                    <td><%- item %></td>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+
 
         <% if (!_.isEmpty(data.content)) { %>
-        <h3>{{ 'Request Content'|t }}</h3>
-        <div><%- data.content %></div>
+        <h3 class="panel__title">{{ 'Request Content'|t }}</h3>
+        <div class="panel__container">
+            <div><%- data.content %></div>
+            <table class="table--duo">
+                <thead>
+                <th>{{ 'Server Parameters'|t }}</th>
+                <th>{{ 'Value'|t }}</th>
+                </thead>
+                <tbody>
+                <% _.each( data.request_server, function( item, key ){ %>
+                <tr>
+                    <td><%- key %></td>
+                    <td><%- item %></td>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+
         <% } %>
+        <div class="panel__container">
+            <table class="table--duo">
+                <thead>
+                <th>{{ 'Response headers'|t }}</th>
+                <th>{{ 'Value'|t }}</th>
+                </thead>
+                <tbody>
+                <% _.each( data.response_headers, function( item, key ){ %>
+                <tr>
+                    <td><%- key %></td>
+                    <td><%- item %></td>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
 
-        <% if (!_.isEmpty(data.access_check)) { %>
-        <h3>{{ 'Access Check'|t }}</h3>
-        <table>
-            <% _.each( data.access_check, function( items, key ){ %>
-            <tr>
-                <td><%- key %></td>
-                <td>
-                    <% _.each(items, function(item){ %>
-                    <div><%= Drupal.webprofiler.helpers.classLink(item.callable) %> (<%- item.service_id %>)</div>
-                    <% }); %>
-                </td>
-            </tr>
-            <% }); %>
-        </table>
-        <% } %>
-
-        <h3>{{ 'Request Server Parameters'|t }}</h3>
-        <table>
-            <% _.each( data.request_server, function( item, key ){ %>
-            <tr>
-                <td><%- key %></td>
-                <td><%- item %></td>
-            </tr>
-            <% }); %>
-        </table>
-
-
-        <h3>{{ 'Response Headers'|t }}</h3>
-        <table>
-            <% _.each( data.response_headers, function( item, key ){ %>
-            <tr>
-                <td><%- key %></td>
-                <td><%- item %></td>
-            </tr>
-            <% }); %>
-        </table>
     </script>
 {% endblock %}

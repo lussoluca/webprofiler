@@ -29,12 +29,20 @@ interface DrupalDataCollectorInterface {
   public function getName();
 
   /**
-   * Returns th string used in vertical tab summary.
+   * Returns the string used in vertical tab summary.
    *
    * @return string
    *   The panel summary.
    */
   public function getPanelSummary();
+
+  /**
+   * Returns the collector icon in base64 format.
+   *
+   * @return string
+   *   The collector icon.
+   */
+  public function getIcon();
 
   /**
    * Returns true if this datacollector has a detail panel.

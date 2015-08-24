@@ -118,10 +118,49 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
   /**
    * {@inheritdoc}
    */
+  public function getIcon() {
+    return 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQRJREFUeNpi/P//PwM1ARMDlcGogZQDlpMnT7pxc3NbA9nhQKxOpL5rQLwJiPeBsI6Ozl+YBOOOHTv+AOllQNwtLS39F2owKYZ/gRq8G4i3ggxEToggWzvc3d2Pk+1lNL4fFAs6ODi8JzdS7mMRVyDVoAMHDsANdAPiOCC+jCQvQKqBQB/BDbwBxK5AHA3E/kB8nKJkA8TMQBwLxaBIKQbi70AvTADSBiSadwFXpCikpKQU8PDwkGTaly9fHFigkaKIJid4584dkiMFFI6jkTJII0WVmpHCAixZQEXWYhDeuXMnyLsVlEQKI45qFBQZ8eRECi4DBaAlDqle/8A48ip6gAADANdQY88Uc0oGAAAAAElFTkSuQmCC';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getLibraries() {
     return [
       'webprofiler/database',
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getData() {
+    $data = $this->data;
+
+    foreach ($data['queries'] as &$query) {
+      $explain = TRUE;
+      $type = 'select';
+
+      if (strpos($query['query'], 'UPDATE') !== FALSE) {
+        $explain = FALSE;
+        $type = 'update';
+      }
+
+      if (strpos($query['query'], 'INSERT') !== FALSE) {
+        $explain = FALSE;
+        $type = 'insert';
+      }
+
+      if (strpos($query['query'], 'DELETE') !== FALSE) {
+        $explain = FALSE;
+        $type = 'delete';
+      }
+
+      $query['explain'] = $explain;
+      $query['type'] = $type;
+    }
+
+    return $data;
   }
 
   /**
@@ -140,45 +179,6 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
     return ($at < $bt) ? 1 : -1;
   }
 
-//  /**
-//   * {@inheritdoc}
-//   */
-//  public function getPanel() {
-//    $build = array();
-//
-//    $build['filters'] = \Drupal::formBuilder()
-//      ->getForm('Drupal\\webprofiler\\Form\\DatabaseFilterForm');
-//
-//    $build['container'] = array(
-//      '#type' => 'container',
-//      '#attributes' => array('id' => array('wp-query-wrapper')),
-//    );
-//
-//    $position = 0;
-//    foreach ($this->getQueries() as $query) {
-//      $table = $this->getTable('Query arguments', $query['args'], array(
-//          'Placeholder',
-//          'Value',
-//        ));
-//
-//      $explain = TRUE;
-//      $type = 'select';
-//
-//      if (strpos($query['query'], 'UPDATE') !== FALSE) {
-//        $explain = FALSE;
-//        $type = 'update';
-//      }
-//
-//      if (strpos($query['query'], 'INSERT') !== FALSE) {
-//        $explain = FALSE;
-//        $type = 'insert';
-//      }
-//
-//      if (strpos($query['query'], 'DELETE') !== FALSE) {
-//        $explain = FALSE;
-//        $type = 'delete';
-//      }
-//
 //      $profile = \Drupal::request()->get('profile');
 //      $query['copy_link'] = \Drupal::linkGenerator()
 //        ->generate($this->t('Copy'), new Url('webprofiler.database.arguments', array(
@@ -193,25 +193,5 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
 //            )),
 //          ),
 //        )));
-//
-//      $build['container'][] = array(
-//        '#theme' => 'webprofiler_db_panel',
-//        '#query' => $query,
-//        '#table' => $table,
-//        '#explain' => $explain,
-//        '#query_type' => $type,
-//        '#position' => $position,
-//        '#attached' => array(
-//          'library' => array(
-//            'webprofiler/database',
-//            'webprofiler/highlight',
-//          ),
-//        ),
-//      );
-//
-//      $position++;
-//    }
-//
-//    return $build;
-//  }
+
 }

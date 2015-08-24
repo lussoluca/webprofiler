@@ -8,13 +8,6 @@
 
   Drupal.behaviors.webprofiler_database = {
     attach: function (context) {
-      $(context).find('.wp-query-info-button').once('wp_query_info_button').each(function () {
-        $(this).on('click', function () {
-          $(this).toggleClass('open');
-          $('.wp-query-info', $(this).parent()).toggle();
-        });
-      });
-
       $(context).find('.wp-query-explain-button').once('wp_query_explain_button').each(function () {
         $(this).on('click', function () {
           var position = $(this).attr('data-wp-query-position'), wrapper = $(this).parent();
@@ -29,25 +22,6 @@
 
             wrapper.html(template(data));
           });
-        });
-      });
-
-      $(context).find('#edit-query-filter').once('query_filter').each(function () {
-        $(this).on('click', function () {
-          var queryType = $('#edit-query-type').val(),
-            queryCaller = $('#edit-query-caller').val();
-
-          $('.wp-query').show();
-
-          if (queryType) {
-            $('.wp-query:not([data-wp-query-type^="' + queryType + '"])').hide();
-          }
-
-          if (queryCaller) {
-            $('.wp-query:not([data-wp-query-caller^="' + queryCaller + '"])').hide();
-          }
-
-          return false;
         });
       });
 

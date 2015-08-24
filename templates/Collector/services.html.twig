@@ -1,8 +1,8 @@
 {% block toolbar %}
     {% set icon %}
     <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'services'}) }}" title="{{ 'Services'|t }}">
-        <img width="20" height="28" alt="State"
-             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNrkVe0NgjAQBeMAdYO6AWxQNtANGEFHcALZANyADegGsIFsIBvgu6Q/LtWmxdTEjyYvd6Hw8t5de6TzPCex1yp5w/pz0rVrQymVIXSAACqt9TGG0p0hpHWIZb9lebWENOXn1FgWbL8GJHACNHs+ohyjlxSEZPEcKGYC6SbEvljgUHzEOR3IXiiB6YOTlLqdo1Y54tZHDLIauCHtETtn962P6EUVqhhi0gelIJEEk1MjMg9Py9xol/0SuBqFva/DULY3ZSqQF767v8TyZKv83tFXWVaEufsUG+DCr2nwQLGOlGQNizZPy3fMU16K5uV5+qQEpFTC+hCN9Pd/0XcBBgBxwVqjDkAznAAAAABJRU5ErkJggg=="/>
+        <img width="20" height="28" alt="{{ 'Services'|t }}"
+             src="data:image/png;base64,{{ collector.icon }}"/>
         <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.countInitializedServices }}</span>
     </a>
     {% endset %}
@@ -26,67 +26,85 @@
 
 {% block panel %}
     <script id="services" type="text/template">
+        <h2 class="panel__title">{{ 'Services'|t }}</h2>
 
-        <h2>{{ 'Services'|t }}</h2>
-
-        <form>
-            <label for="edit-sid">{{ 'Id'|t }}</label> <input id="edit-sid" type="text"/>
-            <label for="edit-class">{{ 'Class'|t }}</label><input id="edit-class" type="text"/>
-            <label for="edit-tags">{{ 'Tags'|t }}</label><input id="edit-tags" type="text"/>
-            <label for="edit-initialized">{{ 'Initialized'|t }}</label><select id="edit-initialized">
-                <option value="-1">{{ 'Any'|t }}</option>
-                <option value="1">{{ 'Yes'|t }}</option>
-                <option value="0">{{ 'No'|t }}</option>
-            </select>
-            <input id="edit-service-filter" type="submit" value="{{ 'Filter'|t }}">
+        <form class="panel__toolbar">
+            <div class="panel__filter--text">
+                <input id="edit-sid" class="js--live-filter" placeholder="{{ 'ID'|t }}" type="text"/>
+                <label for="edit-sid" class="panel__filter-label">{{ 'ID'|t }}</label>
+            </div>
+            <div class="panel__filter--text">
+                <input id="edit-class" class="js--live-filter" placeholder="{{ 'Class'|t }}" type="text"/>
+                <label for="edit-class" class="panel__filter-label">{{ 'Class'|t }}</label>
+            </div>
+            <div class="panel__filter--text">
+                <input id="edit-tags" class="js--live-filter" placeholder="{{ 'Tags'|t }}" type="text"/>
+                <label for="edit-tags" class="panel__filter-label">{{ 'Tags'|t }}</label>
+            </div>
+            <div class="panel__filter--select">
+                <select id="edit-initialized" class="js--live-filter">
+                    <option value="">{{ 'Any'|t }}</option>
+                    <option value="1">{{ 'Yes'|t }}</option>
+                    <option value="0">{{ 'No'|t }}</option>
+                </select>
+                <label for="edit-initialized" class="panel__filter-label">{{ 'Initialized'|t }}</label>
+            </div>
         </form>
 
-        <table id="wp-service-table">
-            <thead>
-            <tr>
-                <th>{{ 'Id'|t }}</th>
-                <th>{{ 'Class'|t }}</th>
-                <th>{{ 'Initialized'|t }}</th>
-                <th>{{ 'Tags'|t }}</th>
-                <th>{{ 'Depends on'|t }}</th>
-                <th>{{ 'Count'|t }}</th>
-                <th>{{ 'Time'|t }}</th>
-            </tr>
-            </thead>
+        <% _.each( data.services, function( item, key ){ %>
 
-            <tbody>
-            <% _.each( data.services, function( item, key ){ %>
+        <% clazz = Drupal.webprofiler.helpers.classLink({"file" : item.value.file, "class" : item.value.class}) %>
+        <% depends = _.map(item.outEdges, function(el) { return el.id; }).join(', ') %>
+        <% tags = _.map(item.value.tags, function(el, key) { return key; }).join(', ') %>
 
-            <% clazz = Drupal.webprofiler.helpers.classLink({"file" : item.value.file, "class" : item.value.class}) %>
-            <% initialized_value = item.initialized %>
-            <% initialized = (initialized_value) ? "{{ 'Yes'|t }}" : "{{ 'No'|t }}" %>
-            <% depends = _.map(item.outEdges, function(el) { return el.id; }).join(', ') %>
-            <% tags = _.map(item.value.tags, function(el, key) { return key; }).join(', ') %>
+        <div class="panel__container"
+             data-wp-sid="<%- key %>"
+             data-wp-class="<%- item.value.class %>"
+             data-wp-tags="<%- tags %>"
+             data-wp-initialized="<%- (item.initialized) ? '1' : '0' %>">
 
-            <tr data-wp-service-id="<%- key %>" data-wp-service-class="<%- item.value.class %>"
-                data-wp-service-tags="<%- tags %>" data-wp-service-initialized="<%- initialized_value %>">
-                <td><%- key %></td>
-                <td><%= clazz%></td>
-                <td><%- initialized %></td>
-                <td><%= tags %></td>
-                <td><%- depends %></td>
+            <div class="panel__expand-header">
+                <ul class="list--inline">
+                    <li>
+                        <b>{{ 'ID'|t }}</b>: <%- key %>
+                    </li>
+                    <li>
+                        <b>{{ 'Class'|t }}</b>: <%= clazz %>
+                    </li>
+                </ul>
+                <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
+            </div>
 
-                <% if(item.time){ %>
-                <td><%- item.time.count %></td>
-                <td><%- item.time.time %></td>
-                <% } %>
+            <div class="panel__expand-content">
+                <div class="wp-query-arguments">
+                    <table class="table--duo">
+                        <tr>
+                            <td>{{ 'Initialized'|t }}</td>
+                            <td><%- (item.initialized) ? '{{ 'Yes'|t }}' : '{{ 'No'|t }}' %></td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'Tags'|t }}</td>
+                            <td><%- tags %></td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'Depends'|t }}</td>
+                            <td><%- depends %></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <% }); %>
 
-            </tr>
+        <div class="panel__container">
+            <ul>
+                <% _.each( data.http_middleware, function( item, key ){ %>
+                <li><%- key %> (priority: <%- item.value.tags.http_middleware[0].priority %>)</li>
+                <% }); %>
+            </ul>
+        </div>
 
-            <% }); %>
-            </tbody>
-        </table>
-
-        <ul>
-            <% _.each( data.http_middleware, function( item, key ){ %>
-            <li><%- key %> (priority: <%- item.value.tags.http_middleware[0].priority %>)</li>
-            <% }); %>
-        </ul>
+        <% console.log(data) %>
 
     </script>
 {% endblock %}

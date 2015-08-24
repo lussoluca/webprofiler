@@ -1,8 +1,8 @@
 {% block toolbar %}
     {% set icon %}
     <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'blocks'}) }}" title="{{ 'Blocks'|t }}">
-        <img width="20" height="28" alt="Blocks"
-             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowNDgwMTE3NDA3MjA2ODExOEY2MkNCNjI0NDY3NzkwRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowQjg5OTA4OEYwQTgxMUUzQkJDRThFQjA5Q0E1REFCRCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowQjg5OTA4N0YwQTgxMUUzQkJDRThFQjA5Q0E1REFCRCIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgTWFjaW50b3NoIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDM4MDExNzQwNzIwNjgxMTg3MUZDQ0I0RjY1RTlEM0IiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDQ4MDExNzQwNzIwNjgxMThGNjJDQjYyNDQ2Nzc5MEQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz68h+kGAAAAWElEQVR42mL8//8/A7UBEwMNwAg3lAVEODg4UCW2Dhw4wDgapgyMtEj8eCMKFPCkyI1GFCJMiUnQVDUUX0SNllK4wxRf+JAdUeQUfaMRRd+ib4SHKUCAAQAMcyf8vLAstgAAAABJRU5ErkJggg=="/>
+        <img width="20" height="28" alt="{{ 'Blocks'|t }}"
+             src="data:image/png;base64,{{ collector.icon }}"/>
         <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.renderedBlocksCount }}</span>
     </a>
     {% endset %}
@@ -26,6 +26,91 @@
 
 {% block panel %}
     <script id="blocks" type="text/template">
-        Block dashboard
+        <h2 class="panel__title">{{ 'Blocks'|t }}</h2>
+
+        <form class="panel__toolbar">
+            <div class="panel__filter--text">
+                <input id="edit-sid" class="js--live-filter" placeholder="{{ 'ID'|t }}" type="text"/>
+                <label for="edit-sid" class="panel__filter-label">{{ 'ID'|t }}</label>
+            </div>
+            <div class="panel__filter--text">
+                <input id="edit-label" class="js--live-filter" placeholder="{{ 'Label'|t }}" type="text"/>
+                <label for="edit-label" class="panel__filter-label">{{ 'Label'|t }}</label>
+            </div>
+            <div class="panel__filter--text">
+                <input id="edit-region" class="js--live-filter" placeholder="{{ 'Region'|t }}" type="text"/>
+                <label for="edit-region" class="panel__filter-label">{{ 'Region'|t }}</label>
+            </div>
+            <div class="panel__filter--text">
+                <input id="edit-provider" class="js--live-filter" placeholder="{{ 'Provider'|t }}" type="text"/>
+                <label for="edit-provider" class="panel__filter-label">{{ 'Provider'|t }}</label>
+            </div>
+            <div class="panel__filter--select">
+                <select id="edit-rendered" class="js--live-filter">
+                    <option value="">{{ 'Any'|t }}</option>
+                    <option value="1">{{ 'Yes'|t }}</option>
+                    <option value="0">{{ 'No'|t }}</option>
+                </select>
+                <label for="edit-rendered" class="panel__filter-label">{{ 'Rendered'|t }}</label>
+            </div>
+        </form>
+
+        <% _.each( data.blocks.loaded, function( item ){ %>
+
+        <div class="panel__container"
+             data-wp-sid="<%- item.id %>"
+             data-wp-label="<%= item.settings.label %>"
+             data-wp-region="<%= item.region %>"
+             data-wp-provider="<%= item.settings.provider %>"
+             data-wp-rendered="<%- (data.blocks.rendered[item.id]) ? '1' : '0' %>">
+
+            <div class="panel__expand-header ">
+
+                <ul class="list--inline">
+                    <li>
+                        <b>{{ 'ID'|t }}</b>: <%- item.id %>
+                    </li>
+                    <li>
+                        <b>{{ 'Label'|t }}</b>: <%= item.settings.label %>
+                    </li>
+                    <li>
+                        <b>{{ 'Region'|t }}</b>: <%= (item.region == -1) ? '{{ 'No region'|t }}' : item.region %>
+                    </li>
+                    <li>
+                        <b><%- (data.blocks.rendered[item.id]) ? '' : '{{ 'Not rendered'|t }}' %></b>
+                    </li>
+                </ul>
+                <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
+            </div>
+
+            <div class="panel__expand-content">
+                <div class="wp-query-arguments">
+                    <table class="table--duo">
+                        <tr>
+                            <td>{{ 'Provider'|t }}</td>
+                            <td><%- item.settings.provider %></td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'Theme'|t }}</td>
+                            <td><%- item.theme %></td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'Status'|t }}</td>
+                            <td><%- (item.status) ? '{{ 'Enabled'|t }}' : '{{ 'Disabled'|t }}' %></td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'Plugin'|t }}</td>
+                            <td><%- item.plugin %></td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'Operations'|t }}</td>
+                            <td><a href="<%- item.route %>">{{ 'Edit'|t }}</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+
     </script>
 {% endblock %}

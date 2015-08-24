@@ -42,9 +42,6 @@ database:
   version: 2.0
   js:
     js/database.js: {}
-  css:
-    component:
-      css/database.css: {}
   dependencies:
     - core/jquery
     - core/drupal
@@ -59,7 +56,3 @@ timeline:
       css/timeline.css: {}
   dependencies:
     - webprofiler/d3
-service:
-  version: 2.0
-  js:
-    js/service.js: {}

@@ -87,6 +87,13 @@ class RoutingDataCollector extends DataCollector implements DrupalDataCollectorI
     return $this->t('Defined routes: @route', ['@route' => $this->countRoutes()]);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getIcon() {
+    return 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPxJREFUeNrkVsERREAQ7D0koXwlIAISkIGXvwAkoJSfHITg5SMUVR4eMuCxZ1xxV+5uuTL30lV8bPX09PSuFVJKcOOGP+DipLrrusoFdV1Lz/NgmiaKosC0XrAopYT0fc/f/jAMa41Pj23bkrpi9bRpGmRZ9lRKFSzLkl9UHMI4jijLcuaaSZMkQdd1fNMn5r0EHIFhGEjTlDenYRjCcZyHUnqRwXEcz77sYepM+Z1yTOEXZEFVVYcUba2iItsNcbr9IAiw5HMd1CJZtU1VpG3bIooi3gPF933keY43pb9gb1Bskdrap58luMjvRNO04wcK18RfIa59mbgLMAASuWsKAyoEhgAAAABJRU5ErkJggg==';
+  }
+
 //  /**
 //   * {@inheritdoc}
 //   */

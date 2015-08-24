@@ -123,20 +123,16 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Initialized: @count, initialized without Webprofiler: @count_without_webprofiler, available: @available', [
+    return $this->t('Initialized: @count', [
       '@count' => $this->countInitializedServices(),
-      '@count_without_webprofiler' => $this->countInitializedServicesWithoutWebprofiler(),
-      '@available' => $this->countServices()
     ]);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getLibraries() {
-    return [
-      'webprofiler/service',
-    ];
+  public function getIcon() {
+    return 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNrkVe0NgjAQBeMAdYO6AWxQNtANGEFHcALZANyADegGsIFsIBvgu6Q/LtWmxdTEjyYvd6Hw8t5de6TzPCex1yp5w/pz0rVrQymVIXSAACqt9TGG0p0hpHWIZb9lebWENOXn1FgWbL8GJHACNHs+ohyjlxSEZPEcKGYC6SbEvljgUHzEOR3IXiiB6YOTlLqdo1Y54tZHDLIauCHtETtn962P6EUVqhhi0gelIJEEk1MjMg9Py9xol/0SuBqFva/DULY3ZSqQF767v8TyZKv83tFXWVaEufsUG+DCr2nwQLGOlGQNizZPy3fMU16K5uV5+qQEpFTC+hCN9Pd/0XcBBgBxwVqjDkAznAAAAABJRU5ErkJggg==';
   }
 
   /**

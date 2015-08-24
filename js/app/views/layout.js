@@ -3,7 +3,14 @@
   "use strict";
 
   Drupal.webprofiler.views.Layout = Backbone.View.extend({
-    template: _.template('<div id="overview"><ul></ul></div><div id="details">Choose a collector.</div><div style="clear:both"></div>'),
+    template: _.template(
+      '<div id="overview" class="overview">' +
+      '<ul class="overview__list"></ul>' +
+      '</div>' +
+      '<div id="details" class="details">' +
+      'Choose a collector.' +
+      '</div>'
+    ),
 
     /**
      *
@@ -49,14 +56,14 @@
      *
      */
     beginSync: function () {
-      $('.collectors-loading').fadeIn({duration: 100});
+      $('.loading').fadeIn({duration: 100});
     },
 
     /**
      *
      */
     finishSync: function () {
-      $('.collectors-loading').fadeOut({duration: 100});
+      $('.loading').fadeOut({duration: 100});
     }
   });
 

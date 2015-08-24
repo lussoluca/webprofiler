@@ -165,6 +165,13 @@ class TwigDataCollector extends DataCollector implements DrupalDataCollectorInte
     return 'twig';
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getIcon() {
+    return 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAbElEQVRIx2NgGAXUBowMDAwMaWlp/6ll4KxZsxhZYJy0tDRqGMjAwMDAwEQL77OgCxSXlJBsSG9PDwqfJi6lj/fRvTJ4XYocUTBXE4q8oRtRRBnKwsw8RFw6fA0lKkd1dnYOIpfCCthRMIIAAI0IFu9Hxh7ZAAAAAElFTkSuQmCC';
+  }
+
 //  /**
 //   * {@inheritdoc}
 //   */

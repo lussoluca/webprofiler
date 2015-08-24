@@ -16,7 +16,7 @@
     selectCollector: function (id) {
       var collectors = this.collectors, layout = this.layout;
 
-      collectors.resetSelected();
+      //collectors.resetSelected();
       collectors.selectByID(id);
 
       var collector = collectors.get(id);

@@ -115,6 +115,7 @@ class DashboardController extends ControllerBase {
           'name' => $name,
           'label' => $collector->getTitle(),
           'summary' => $collector->getPanelSummary(),
+          'icon' => $collector->getIcon(),
         ];
 
         $libraries = array_merge($libraries, $collector->getLibraries());

@@ -1,8 +1,8 @@
 {% block toolbar %}
     {% set icon %}
     <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'database'}) }}" title="{{ 'Database'|t }}">
-        <img width="20" height="28" alt="Database"
-             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQRJREFUeNpi/P//PwM1ARMDlcGogZQDlpMnT7pxc3NbA9nhQKxOpL5rQLwJiPeBsI6Ozl+YBOOOHTv+AOllQNwtLS39F2owKYZ/gRq8G4i3ggxEToggWzvc3d2Pk+1lNL4fFAs6ODi8JzdS7mMRVyDVoAMHDsANdAPiOCC+jCQvQKqBQB/BDbwBxK5AHA3E/kB8nKJkA8TMQBwLxaBIKQbi70AvTADSBiSadwFXpCikpKQU8PDwkGTaly9fHFigkaKIJid4584dkiMFFI6jkTJII0WVmpHCAixZQEXWYhDeuXMnyLsVlEQKI45qFBQZ8eRECi4DBaAlDqle/8A48ip6gAADANdQY88Uc0oGAAAAAElFTkSuQmCC"/>
+        <img width="20" height="28" alt="{{ 'Database'|t }}"
+             src="data:image/png;base64,{{ collector.icon }}"/>
         <span class="sf-toolbar-info-piece-additional sf-toolbar-status sf-toolbar-status-{{ collector.colorCode }}">{{ collector.querycount }}</span>
         {% if collector.querycount > 0 %}
             <span class="sf-toolbar-info-piece-additional-detail">in {{ '%0.2f ms'|format(collector.time * 1000) }}</span>
@@ -33,21 +33,48 @@
 
 {% block panel %}
     <script id="database" type="text/template">
+        <h2 class="panel__title">{{ 'Database'|t }}</h2>
 
-        <h2>{{ 'Database'|t }}</h2>
+        <form class="panel__toolbar">
+            <div class="panel__filter--text">
+                <input id="edit-caller" class="js--live-filter" placeholder="{{ 'Caller'|t }}" type="text"/>
+                <label for="edit-caller" class="panel__filter-label">{{ 'Caller'|t }}</label>
+            </div>
+            <div class="panel__filter--select">
+                <select id="edit-type" class="js--live-filter">
+                    <option value="">{{ 'Any'|t }}</option>
+                    <option value="select">{{ 'Select'|t }}</option>
+                    <option value="insert">{{ 'Insert'|t }}</option>
+                    <option value="update">{{ 'Update'|t }}</option>
+                    <option value="create">{{ 'Create'|t }}</option>
+                    <option value="delete">{{ 'Delete'|t }}</option>
+                </select>
+                <label for="edit-type" class="panel__filter-label">{{ 'Query type'|t }}</label>
+            </div>
+        </form>
 
         <% _.each( data.queries, function( item, key ){ %>
-        <div class="wp-query wp-query-select" data-wp-query-caller="<%- item.caller.class %>"
-             data-wp-query-type="select">
-            <div class="wp-query-sql">
-                <pre><code class="sql"><%- item.query %></code></pre>
+        <div class="panel__container"
+             data-wp-caller="<%- item.caller.class %>"
+             data-wp-type="<%- item.type %>">
+            <div class="panel__expand-header ">
+                <pre>
+                    <code class="sql">
+                        <%- item.query %>
+                    </code>
+                </pre>
+                <ul class="list--inline">
+                    <li><b>{{ 'Time'|t }}</b>: <%- item.time * 1000 %></li>
+                    <li><b>{{ 'Caller'|t }}</b>: <%= Drupal.webprofiler.helpers.classLink({"file" : item.caller.file,
+                        "class" : item.caller.class, "line" : item.caller.line, "method" : item.caller.function}) %>
+                    </li>
+                    <li><b>{{ 'Target'|t }}</b>: <%- item.target %></li>
+                </ul>
+                <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
             </div>
-            <div class="wp-button wp-query-info-button">Info</div>
-            <div style="clear:both"></div>
-
-            <div class="wp-query-info">
+            <div class="panel__expand-content">
                 <div class="wp-query-arguments">
-                    <table>
+                    <table class="table--duo">
                         <% _.each( item.args, function( item, key ){ %>
                         <tr>
                             <td><%- key %></td>
@@ -56,18 +83,14 @@
                         <% }); %>
                     </table>
                 </div>
-                <span><b>{{ 'Time'|t }}</b>: <%- item.time * 1000 %></span><br/>
-                <span><b>{{ 'Caller'|t }}</b>: <%= Drupal.webprofiler.helpers.classLink({"file" : item.caller.file, "class" : item.caller.class, "line" : item.caller.line, "method" : item.caller.function}) %></span><br/>
-                <span><b>{{ 'Target'|t }}</b>: <%- item.target %></span><br/>
+
             </div>
 
         </div>
         <% }); %>
-
     </script>
 
     <script id="wp-query-explain-template" type="text/template">
-
         <h3>{{ 'Explain'|t }}</h3>
         <table>
             <thead>
@@ -85,6 +108,5 @@
             </tr>
             <% }); %>
         </table>
-
     </script>
 {% endblock %}

@@ -20,7 +20,7 @@
      */
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));
-      this.$el.toggleClass('selected', this.model.get('selected'));
+      this.$el.toggleClass('is--selected', this.model.get('selected'));
       return this;
     }
 

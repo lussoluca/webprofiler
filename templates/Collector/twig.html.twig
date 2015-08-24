@@ -2,8 +2,8 @@
     {% set time = collector.templatecount ? '%0.0f ms'|format(collector.time) : 'n/a' %}
     {% set icon %}
     <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: "twig"}) }}" title="{{ 'Twig'|t }}">
-        <img height="28" alt="Twig"
-             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAbElEQVRIx2NgGAXUBowMDAwMaWlp/6ll4KxZsxhZYJy0tDRqGMjAwMDAwEQL77OgCxSXlJBsSG9PDwqfJi6lj/fRvTJ4XYocUTBXE4q8oRtRRBnKwsw8RFw6fA0lKkd1dnYOIpfCCthRMIIAAI0IFu9Hxh7ZAAAAAElFTkSuQmCC"/>
+        <img height="28" alt="{{ 'Twig'|t }}"
+             src="data:image/png;base64,{{ collector.icon }}"/>
         <span class="sf-toolbar-status">{{ time }}</span>
     </a>
     {% endset %}
@@ -34,6 +34,9 @@
 
 {% block panel %}
     <script id="twig" type="text/template">
-        Twig dashboard
+        <h2 class="panel__title">{{ 'Twig'|t }}</h2>
+        <div class="panel__container">
+
+        </div>
     </script>
 {% endblock %}

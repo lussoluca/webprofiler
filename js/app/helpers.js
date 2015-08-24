@@ -45,10 +45,15 @@
         }
 
         return output;
-      }
+      },
+
+      printTime = function (data, unit) {
+        return data + ' ' + unit;
+      };
 
     return {
-      classLink: classLink
+      classLink: classLink,
+      printTime: printTime
     }
 
   })();

@@ -1,33 +1,46 @@
 {% set resume %}
-<div id="resume">
-    <strong>{{ 'Profile for'|t }}:</strong>
-    {{ profile.method|upper }}
-    {% if profile.method|upper in ['GET', 'HEAD'] %}
-        <a href="{{ profile.url }}">{{ profile.url }}</a>
-    {% else %}
-        {{ profile.url }}
-    {% endif %}
-    <span class="date">
+<div id="resume" class="resume">
+    <span class="resume__subtitle">
+        {{ profile.method|upper }}
+        {% if profile.method|upper in ['GET', 'HEAD'] %}
+            <a href="{{ profile.url }}">{{ profile.url }}</a>
+        {% else %}
+            <em>{{ profile.url }}</em>
+        {% endif %}
+    </span>
+    <span class="resume__time">
         <em>by {{ profile.ip }}</em> at <em>{{ profile.time|date('r') }}</em>
     </span>
 
-    (<a id="resume-view-all" href="{{ url("webprofiler.admin_list") }}">{{ 'View last 10'|t }}</a>)
+    <a id="resume-view-all" class="button--flat resume__button"
+        href="{{ url("webprofiler.admin_list") }}">{{ 'View latest 10'|t }}</a>
 </div>
 {% endset %}
 
-<div id="wrapper">
-    <div class="collectors-loading" style="display: none">
-        <img src="{{ spinner_path }}"/>
-    </div>
+<div id="webprofiler">
 
     {{ resume }}
 
-    <div id="collectors">
+    <div id="collectors" class="collectors panel">
+    </div>
+
+    <div class="loading" style="display: none">
+        <svg class="loading__circular">
+            <circle class="loading__path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
     </div>
 
     <script id="collector" type="text/template">
-        <a href="#<%= id %>" title="<%= summary %>"><%= label %></a>
+        <a href="#<%= id %>" title="<%= summary %>" class="overview__link">
+            <img src="data:image/png;base64,<%= icon %>"
+                 class="overview__icon">
+            <span class="overview__title"><%= label %></span>
+            <% if(typeof(summary) !== "undefined") { %>
+                <span class="overview__subtitle"><%= summary %></span>
+            <% } %>
+        </a>
     </script>
 
     {{ panels }}
+
 </div>
