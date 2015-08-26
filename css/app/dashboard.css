@@ -71,6 +71,8 @@
       padding: 8px; }
   #webprofiler pre, #webprofiler code {
     white-space: normal;
+    word-break: break-all;
+    word-break: break-word;
     font-size: 14px; }
   #webprofiler thead {
     white-space: nowrap; }

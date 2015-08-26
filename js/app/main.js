@@ -34,16 +34,14 @@
 
                     for (key in filter) {
                         if (filter[key].length > 2) {
-
                             select = filter[key].split(' ').filter(Boolean);
-                            console.log('split', select);
                             for (sel in select) {
                                 selector.push('[data-wp-' + key + ' *= ' + select[sel] + ']');
                                 unselected.push('[data-wp-' + key + ']:not([data-wp-' + key + ' *= ' + select[sel] + '])');
                             }
                         }
                         else {
-                            selector = selector + '[data-wp-' + key + ']';
+                            selector.push('[data-wp-' + key + ']');
                         }
                     }
 
@@ -63,7 +61,7 @@
                     if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
                         prompt();
                     } else {
-                        var temp = $('<textarea readonly class="js--textarea">' + clip.innerText + '</textarea>');
+                        var temp = $('<textarea readonly class="js--textarea is--hidden" >' + clip.innerText + '</textarea>');
                             temp.appendTo(e.parent()).select();
                         try {
                             var successful = document.execCommand('copy');

@@ -9,6 +9,7 @@
   Drupal.behaviors.webprofiler_database = {
     attach: function (context) {
       $(context).find('.js--explain-trigger').once('js--explain-trigger').each(function () {
+
         $(this).on('click', function () {
           var position = $(this).attr('data-wp-queryPosition'),
             wrapper = $(this).parent().parent().find('.js--explain-target'),
@@ -30,8 +31,8 @@
               delete _.templateSettings.variable;
             });
           }
+            wrapper.toggle();
 
-          wrapper.toggle();
         });
       });
 
