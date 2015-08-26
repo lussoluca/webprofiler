@@ -99,7 +99,7 @@ services:
 
   webprofiler.database:
     class: Drupal\webprofiler\DataCollector\DatabaseDataCollector
-    arguments: ['@database']
+    arguments: ['@database', '@config.factory']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/database.html.twig', id:'database', title:'Database', priority: 60 }
 

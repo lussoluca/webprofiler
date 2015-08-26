@@ -2,6 +2,7 @@
 
 namespace Drupal\webprofiler\DataCollector;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Database;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -23,10 +24,17 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
   private $database;
 
   /**
-   * @param \Drupal\Core\Database\Connection $database
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  public function __construct(Connection $database) {
+  private $configFactory;
+
+  /**
+   * @param \Drupal\Core\Database\Connection $database
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   */
+  public function __construct(Connection $database, ConfigFactoryInterface $configFactory) {
     $this->database = $database;
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -34,10 +42,6 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
     $queries = $this->database->getLogger()->get('webprofiler');
-    usort($queries, [
-      "Drupal\\webprofiler\\DataCollector\\DatabaseDataCollector",
-      "orderQuery",
-    ]);
 
     foreach ($queries as &$query) {
       // Remove caller args.
@@ -50,6 +54,14 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
 
       // Save time in milliseconds.
       $query['time'] = $query['time'] * 1000;
+    }
+
+    $querySort = $this->configFactory->get('webprofiler.config')->get('query_sort');
+    if('duration' === $querySort) {
+      usort($queries, [
+        "Drupal\\webprofiler\\DataCollector\\DatabaseDataCollector",
+        "orderQueryByTime",
+      ]);
     }
 
     $this->data['queries'] = $queries;
@@ -215,7 +227,7 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
    *
    * @return int
    */
-  private function orderQuery($a, $b) {
+  private function orderQueryByTime($a, $b) {
     $at = $a['time'];
     $bt = $b['time'];
 
@@ -224,20 +236,4 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
     }
     return ($at < $bt) ? 1 : -1;
   }
-
-//      $profile = \Drupal::request()->get('profile');
-//      $query['copy_link'] = \Drupal::linkGenerator()
-//        ->generate($this->t('Copy'), new Url('webprofiler.database.arguments', array(
-//          'profile' => $profile->getToken(),
-//          'qid' => $position,
-//        ), array(
-//          'attributes' => array(
-//            'class' => array('use-ajax', 'wp-button', 'wp-query-copy-button'),
-//            'data-accepts' => 'application/vnd.drupal-modal',
-//            'data-dialog-options' => Json::encode(array(
-//              'width' => 700,
-//            )),
-//          ),
-//        )));
-
 }
