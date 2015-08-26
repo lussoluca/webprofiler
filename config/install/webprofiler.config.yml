@@ -21,3 +21,5 @@ active_toolbar_items:
   routing: '0'
   services: '0'
   state: '0'
+query_sort: source
+query_highlight: 5

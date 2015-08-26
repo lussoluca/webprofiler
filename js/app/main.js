@@ -1,77 +1,112 @@
 (function ($, Drupal, Backbone) {
 
-  "use strict";
+    "use strict";
 
-  /**
-   * Define namespaces.
-   */
-  Drupal.webprofiler = {
-    views: {},
-    models: {},
-    collectors: {},
-    routers: {}
-  };
+    /**
+     * Define namespaces.
+     */
+    Drupal.webprofiler = {
+        views: {},
+        models: {},
+        collectors: {},
+        routers: {}
+    };
 
-  Drupal.behaviors.webprofiler = {
-    attach: function (context) {
-      var el,
-        value,
-        selector = '',
-        unselected = [],
-        filter = [],
+    Drupal.behaviors.webprofiler = {
+        attach: function (context) {
+            var el,
+                elz,
+                key,
+                sel,
+                value,
+                select,
+                selector,
+                unselected,
+                filter = [],
 
-        livefilter = function (e) {
+                livefilter = function (e) {
 
-          el = $(e).attr('id').replace('edit-', '');
-          value = $(e).val();
+                    el = $(e).attr('id').replace('edit-', '');
+                    value = $(e).val();
+                    filter[el] = value.replace('/', '\/');
+                    selector = [];
+                    unselected = [];
 
-          filter[el] = value.replace('/', '\/');
-          selector = '';
-          unselected = [];
-          for (var key in filter) {
-            if (filter[key].length > 2 || filter[key] !== '') {
-              selector = selector + '[data-wp-' + key + ' *= ' + filter[key] + ']';
-              unselected.push('[data-wp-' + key + ']:not([data-wp-' + key + ' *= ' + filter[key] + '])');
-            }
-            else {
-              selector = selector + '[data-wp-' + key + ']';
-            }
-          }
+                    for (key in filter) {
+                        if (filter[key].length > 2) {
 
-          for (var elz in unselected) {
-            $(unselected[elz]).addClass('is--hidden');
-          }
+                            select = filter[key].split(' ').filter(Boolean);
+                            console.log('split', select);
+                            for (sel in select) {
+                                selector.push('[data-wp-' + key + ' *= ' + select[sel] + ']');
+                                unselected.push('[data-wp-' + key + ']:not([data-wp-' + key + ' *= ' + select[sel] + '])');
+                            }
+                        }
+                        else {
+                            selector = selector + '[data-wp-' + key + ']';
+                        }
+                    }
 
-          $(selector).removeClass('is--hidden');
+                    for (elz in unselected) {
+                        $(unselected[elz]).addClass('is--hidden');
+                    }
+                    $(selector.join('')).removeClass('is--hidden');
 
-          console.log(filter);
-          console.log(selector);
-          console.log(unselected);
+                },
 
-        };
+                clipboard = function (e, t) {
+                    var clip = e.parent().find(t).get(0),
+                        prompt = function () {
+                            window.prompt("Copy to clipboard: Ctrl+C or cmd+C, Enter", clip.textContent)
+                        };
 
-      $(context).find('#collectors').once('webprofiler').each(function () {
-        new Drupal.webprofiler.routers.CollectorsRouter({el: $('#collectors')});
-        Backbone.history.start({
-          pushState: false
-        });
-      });
+                    if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+                        prompt();
+                    } else {
+                        var temp = $('<textarea readonly class="js--textarea">' + clip.innerText + '</textarea>');
+                            temp.appendTo(e.parent()).select();
+                        try {
+                            var successful = document.execCommand('copy');
 
-      $(context).find('.js--live-filter').each(function () {
-        $(this).on('keyup', function () {
-          livefilter($(this));
-        });
-        $(this).on('change', function () {
-          livefilter($(this));
-        });
-      });
+                        } catch (err) {
+                            prompt();
+                        }
+                        $('.js--textarea').remove();
+                    }
 
-      $(context).find('.js--panel-toggle').once('js--panel-toggle').each(function () {
-        $(this).on('click', function () {
-          $(this).parent().parent().toggleClass('is--open');
-        });
-      });
-    }
-  };
+                };
+
+
+            $(context).find('#collectors').once('webprofiler').each(function () {
+                new Drupal.webprofiler.routers.CollectorsRouter({el: $('#collectors')});
+                Backbone.history.start({
+                    pushState: false
+                });
+            });
+
+            $(context).find('.js--live-filter').each(function () {
+                $(this).on('keyup', function () {
+                    livefilter($(this));
+                });
+                $(this).on('change', function () {
+                    livefilter($(this));
+                });
+            });
+
+            $(context).find('.js--panel-toggle').once('js--panel-toggle').each(function () {
+                $(this).on('click', function () {
+                    $(this).parent().parent().toggleClass('is--open');
+                });
+            });
+
+            $(context).find('.js--clipboard-trigger').once('js--clipboard-trigger').each(function () {
+                $(this).on('click', function () {
+                        console.log('click');
+                        clipboard($(this), '.js--clipboard-target')
+                    }
+                );
+            });
+        }
+    };
 
 }(jQuery, Drupal, Backbone));

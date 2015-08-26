@@ -113,6 +113,35 @@ class ConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('ide_link'),
     ];
 
+    $form['database'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Database settings'),
+      '#open' => FALSE,
+      '#states' => array(
+        'visible' => array(
+          array(
+            ':input[name="active_toolbar_items[database]' => array('checked' => TRUE),
+          ),
+        ),
+      ),
+    ];
+
+    $form['database']['query_sort'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Sort query log'),
+      '#options' => ['source' => 'by source', 'duration' => 'by duration'],
+      '#description' => $this->t('The query table can be sorted in the order that the queries were executed or by descending duration.'),
+      '#default_value' => $config->get('query_sort'),
+    ];
+
+    $form['database']['query_highlight'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Slow query highlighting'),
+      '#description' => $this->t('Enter an integer in milliseconds. Any query which takes longer than this many milliseconds will be highlighted in the query log. This indicates a possibly inefficient query, or a candidate for caching.'),
+      '#default_value' => $config->get('query_highlight'),
+      '#size' => 4,
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -126,6 +155,8 @@ class ConfigForm extends ConfigFormBase {
       ->set('exclude', $form_state->getValue('exclude'))
       ->set('active_toolbar_items', $form_state->getValue('active_toolbar_items'))
       ->set('ide_link', $form_state->getValue('ide_link'))
+      ->set('query_sort', $form_state->getValue('query_sort'))
+      ->set('query_highlight', $form_state->getValue('query_highlight'))
       ->save();
 
     parent::submitForm($form, $form_state);

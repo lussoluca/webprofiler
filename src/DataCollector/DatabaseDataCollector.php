@@ -3,6 +3,7 @@
 namespace Drupal\webprofiler\DataCollector;
 
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\Database;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,15 +40,22 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
     ]);
 
     foreach ($queries as &$query) {
-      // Remove caller.
+      // Remove caller args.
       unset($query['caller']['args']);
+
+      // Remove query args element if empty.
+      if(empty($query['args'])) {
+        unset($query['args']);
+      }
+
+      $query['time'] = $query['time'] * 1000;
     }
 
     $this->data['queries'] = $queries;
 
     $options = $this->database->getConnectionOptions();
 
-    // Remove password field for security.
+    // Remove password for security.
     unset($options['password']);
 
     $this->data['database'] = $options;
@@ -65,6 +73,13 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
    */
   public function getQueryCount() {
     return count($this->data['queries']);
+  }
+
+  /**
+   * @return array
+   */
+  public function getQueries() {
+    return $this->data['queries'];
   }
 
   /**
@@ -137,18 +152,24 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
   public function getData() {
     $data = $this->data;
 
+    $conn = Database::getConnection();
     foreach ($data['queries'] as &$query) {
       $explain = TRUE;
       $type = 'select';
+
+      if (strpos($query['query'], 'INSERT') !== FALSE) {
+        $explain = FALSE;
+        $type = 'insert';
+      }
 
       if (strpos($query['query'], 'UPDATE') !== FALSE) {
         $explain = FALSE;
         $type = 'update';
       }
 
-      if (strpos($query['query'], 'INSERT') !== FALSE) {
+      if (strpos($query['query'], 'CREATE') !== FALSE) {
         $explain = FALSE;
-        $type = 'insert';
+        $type = 'create';
       }
 
       if (strpos($query['query'], 'DELETE') !== FALSE) {
@@ -158,6 +179,13 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
 
       $query['explain'] = $explain;
       $query['type'] = $type;
+
+      $quoted = [];
+      foreach ((array) $query['args'] as $key => $val) {
+        $quoted[$key] = is_null($val) ? 'NULL' : $conn->quote($val);
+      }
+
+      $query['query_args'] = strtr($query['query'], $quoted);
     }
 
     return $data;

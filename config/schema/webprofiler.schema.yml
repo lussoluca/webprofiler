@@ -21,3 +21,9 @@ webprofiler.config:
     ide_link:
       type: string
       label: 'IDE link'
+    query_sort:
+      type: string
+      label: 'Sort query log'
+    query_highlight:
+      type: string
+      label: 'Slow query highlighting'

@@ -32,6 +32,7 @@
 {% endblock %}
 
 {% block panel %}
+
     <script id="database" type="text/template">
         <h2 class="panel__title">{{ 'Database'|t }}</h2>
 
@@ -51,27 +52,60 @@
                 </select>
                 <label for="edit-type" class="panel__filter-label">{{ 'Query type'|t }}</label>
             </div>
+            <div class="panel__filter--select">
+                <select id="edit-hightlighted" class="js--live-filter">
+                    <option value="">{{ 'Any'|t }}</option>
+                    <option value="1">{{ 'Yes'|t }}</option>
+                    <option value="0">{{ 'No'|t }}</option>
+                </select>
+                <label for="edit-type"
+                       class="panel__filter-label">{{ 'flag name '|t }}{{ 'math '|t }}{{ 'val'|t }}</label>
+            </div>
         </form>
 
         <% _.each( data.queries, function( item, key ){ %>
-        <div class="panel__container"
+        <div class="panel__container<% if (item.time > 5) { %> is--hightlighted <% } %>"
              data-wp-caller="<%- item.caller.class %>"
-             data-wp-type="<%- item.type %>">
+             data-wp-type="<%- item.type %>"
+             data-wp-hightlighted="<%- (item.time > 5) ? '1' : '0' %>">
             <div class="panel__expand-header ">
-                <pre>
-                    <code class="sql">
-                        <%- item.query %>
-                    </code>
-                </pre>
+                    <pre>
+                        <code class="sql">
+                            <%- item.query %>
+                        </code>
+                        <code class="sql js--clipboard-target">
+                            <%- item.query_args %>
+                        </code>
+                    </pre>
                 <ul class="list--inline">
-                    <li><b>{{ 'Time'|t }}</b>: <%- item.time * 1000 %></li>
+                    <li><b>{{ 'Time'|t }}</b>: <%- item.time %></li>
                     <li><b>{{ 'Caller'|t }}</b>: <%= Drupal.webprofiler.helpers.classLink({"file" : item.caller.file,
                         "class" : item.caller.class, "line" : item.caller.line, "method" : item.caller.function}) %>
                     </li>
                     <li><b>{{ 'Target'|t }}</b>: <%- item.target %></li>
                 </ul>
+
+                <% if(item.args){ %>
                 <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
+                <% } %>
+                <div class="button--flat l-right js--clipboard-trigger">{{ 'Copy Query'|t }}</div>
+                <% if(item.explain){ %>
+                <div class="button--flat l-right js--explain-trigger"
+                     data-wp-queryPosition="<%- key %>"
+                        >{{ 'Explain'|t }}</div>
+                <% } %>
             </div>
+
+            <% if(item.explain){ %>
+            <div class="loader--linear js--loader" style="display: none">
+                <div class="loader__bar"></div>
+                <div class="loader__bar"></div>
+                <div class="loader__bar"></div>
+            </div>
+            <div class="panel__expand-content js--explain-target"></div>
+            <% } %>
+
+            <% if(item.args){ %>
             <div class="panel__expand-content">
                 <div class="wp-query-arguments">
                     <table class="table--duo">
@@ -83,16 +117,13 @@
                         <% }); %>
                     </table>
                 </div>
-
             </div>
-
+            <% } %>
         </div>
         <% }); %>
     </script>
-
     <script id="wp-query-explain-template" type="text/template">
-        <h3>{{ 'Explain'|t }}</h3>
-        <table>
+        <table class="table--compact">
             <thead>
             <tr>
                 <% _.each(wp.data[1], function(value, key, list) { %>

@@ -9,8 +9,11 @@
     {% set text %}
     {% spaceless %}
         <div class="sf-toolbar-info-piece">
-            <b>{{ 'Forms'|t }}</b>
-            <span>{{ collector.countForms }}</span>
+            {% for keys, form in collector.forms %}
+                <b>{{ keys }}</b>
+                <div><a href="{{ idelink(form.class.file, form.class.line)|raw }}">{{ abbr(form.class.class)|raw }}
+                        ::{{ form.class.method }}</a></div>
+            {% endfor %}
         </div>
     {% endspaceless %}
     {% endset %}
