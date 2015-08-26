@@ -21,13 +21,13 @@
             loader.show();
 
             $.getJSON(url, function (data) {
-                            _.templateSettings.variable = "rc";
+              _.templateSettings.variable = 'rc';
               var template = _.template(
                 $("#wp-query-explain-template").html()
               );
               wrapper.html(template(data));
-                            loader.hide();
-                            delete _.templateSettings.variable;
+              loader.hide();
+              delete _.templateSettings.variable;
             });
           }
 
@@ -35,11 +35,11 @@
         });
       });
 
-            $(context).find('.js--code-toggle').once('js--code-toggle').each(function () {
-                $(this).on('click', function () {
-                    $(this).parent().find('.js--code-target').find('code').toggleClass('is--hidden');
-                });
-            });
+      $(context).find('.js--code-toggle').once('js--code-toggle').each(function () {
+        $(this).on('click', function () {
+          $(this).parent().find('.js--code-target').find('code').toggleClass('is--hidden');
+        });
+      });
 
       if (typeof hljs != "undefined") {
         $('code.sql').each(function (i, block) {
