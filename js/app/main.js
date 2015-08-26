@@ -33,7 +33,7 @@
                     unselected = [];
 
                     for (key in filter) {
-                        if (filter[key].length > 2) {
+                        if (filter[key].length > 0 && filter[key] != ' ') {
                             select = filter[key].split(' ').filter(Boolean);
                             for (sel in select) {
                                 selector.push('[data-wp-' + key + ' *= ' + select[sel] + ']');
@@ -44,7 +44,7 @@
                             selector.push('[data-wp-' + key + ']');
                         }
                     }
-
+console.log(selector);
                     for (elz in unselected) {
                         $(unselected[elz]).addClass('is--hidden');
                     }

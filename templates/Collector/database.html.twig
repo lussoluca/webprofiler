@@ -57,8 +57,7 @@
                     <option value="1">{{ 'Yes'|t }}</option>
                     <option value="0">{{ 'No'|t }}</option>
                 </select>
-                <label for="edit-type"
-                       class="panel__filter-label">{{ 'flag name '|t }}{{ 'math '|t }}{{ 'val'|t }}</label>
+                <label for="edit-type" class="panel__filter-label">{{ 'Execution time > '|t }} <%- data.query_highlight_threshold %></label>
             </div>
 
             <div class="button--flat l-right js--code-toggle--global">{{ 'Swap Placeholders'|t }}</div>
