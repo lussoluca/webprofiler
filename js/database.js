@@ -42,6 +42,12 @@
         });
       });
 
+      $(context).find('.js--code-toggle--global').once('js--code-toggle--global').each(function () {
+        $(this).on('click', function () {
+          $('.js--code-target').find('code').toggleClass('is--hidden');
+        });
+      });
+
       if (typeof hljs != "undefined") {
         $('code.sql').each(function (i, block) {
           hljs.highlightBlock(block);
