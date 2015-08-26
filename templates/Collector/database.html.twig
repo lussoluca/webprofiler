@@ -68,13 +68,16 @@
              data-wp-type="<%- item.type %>"
              data-wp-hightlighted="<%- (item.time > data.query_highlight_threshold) ? '1' : '0' %>">
             <div class="panel__expand-header ">
-                    <pre>
+                    <pre <% if( item.query_args) { %> class="js--code-target"<% } %> >
                         <code class="sql">
                             <%- item.query %>
                         </code>
-                        <code class="sql js--clipboard-target">
+                        <% if( item.query_args) { %>
+                        <code class="sql js--clipboard-target is--hidden">
                             <%- item.query_args %>
                         </code>
+                        <% } %>
+
                     </pre>
                 <ul class="list--inline">
                     <li><b>{{ 'Time'|t }}</b>: <%- item.time %></li>
@@ -84,6 +87,9 @@
                     <li><b>{{ 'Target'|t }}</b>: <%- item.target %></li>
                 </ul>
 
+                <% if(item.query_args){ %>
+                <div class="button--flat l-right js--code-toggle">{{ 'Swap Placeholders'|t }}</div>
+                <% } %>
                 <% if(item.args){ %>
                 <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
                 <% } %>
@@ -108,12 +114,20 @@
             <div class="panel__expand-content">
                 <div class="wp-query-arguments">
                     <table class="table--duo">
+                        <thead>
+                        <tr>
+                            <th>{{ 'placeholder'|t }}</th>
+                            <th>{{ 'value'|t }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                         <% _.each( item.args, function( item, key ){ %>
                         <tr>
                             <td><%- key %></td>
                             <td><%- item %></td>
                         </tr>
                         <% }); %>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -125,12 +139,12 @@
         <table class="table--compact">
             <thead>
             <tr>
-                <% _.each(wp.data[1], function(value, key, list) { %>
+                <% _.each(rc.data[1], function(value, key, list) { %>
                 <th><%= key %></th>
                 <% }); %>
             </tr>
             </thead>
-            <% _.each(wp.data, function(value) { %>
+            <% _.each(rc.data, function(value) { %>
             <tr>
                 <% _.each(value, function(value2, key, list) { %>
                 <td><%= value2 %></td>

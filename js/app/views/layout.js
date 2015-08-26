@@ -56,14 +56,14 @@
      *
      */
     beginSync: function () {
-      $('.loading').fadeIn({duration: 100});
+            $('.loader--fixed').fadeIn({duration: 100});
     },
 
     /**
      *
      */
     finishSync: function () {
-      $('.loading').fadeOut({duration: 100});
+            $('.loader--fixed').fadeOut({duration: 100});
     }
   });
 
