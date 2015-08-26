@@ -48,6 +48,7 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
         unset($query['args']);
       }
 
+      // Save time in milliseconds.
       $query['time'] = $query['time'] * 1000;
     }
 
@@ -83,6 +84,8 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
   }
 
   /**
+   * Returns the total execution time.
+   *
    * @return float
    */
   public function getTime() {
@@ -96,6 +99,8 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
   }
 
   /**
+   * Returns a color based on the number of executed queries.
+   *
    * @return string
    */
   public function getColorCode() {
@@ -107,6 +112,17 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
     }
 
     return 'red';
+  }
+
+  /**
+   * Returns the configured query highlight threshold.
+   *
+   * @return int
+   */
+  public function getQueryHighlightThreshold() {
+    // When a profile is loaded from storage this object is deserialized and
+    // no constructor is called so we cannot use dependency injection.
+    return \Drupal::config('webprofiler.config')->get('query_highlight');
   }
 
   /**
@@ -187,6 +203,8 @@ class DatabaseDataCollector extends DataCollector implements DrupalDataCollector
 
       $query['query_args'] = strtr($query['query'], $quoted);
     }
+
+    $data['query_highlight_threshold'] = $this->getQueryHighlightThreshold();
 
     return $data;
   }

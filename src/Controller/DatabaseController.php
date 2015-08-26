@@ -77,26 +77,6 @@ class DatabaseController extends ControllerBase {
   }
 
   /**
-   * @param Profile $profile
-   * @param int $qid
-   *
-   * @return JsonResponse
-   */
-  public function argumentsAction(Profile $profile, $qid) {
-    $query = $this->getQuery($profile, $qid);
-
-    $conn = Database::getConnection();
-    $quoted = [];
-    foreach ((array) $query['args'] as $key => $val) {
-      $quoted[$key] = is_null($val) ? 'NULL' : $conn->quote($val);
-    }
-
-    return [
-      '#markup' => strtr($query['query'], $quoted),
-    ];
-  }
-
-  /**
    * @param $profile ->getToken()
    * @param int $qid
    *

@@ -5,7 +5,7 @@
              src="data:image/png;base64,{{ collector.icon }}"/>
         <span class="sf-toolbar-info-piece-additional sf-toolbar-status sf-toolbar-status-{{ collector.colorCode }}">{{ collector.querycount }}</span>
         {% if collector.querycount > 0 %}
-            <span class="sf-toolbar-info-piece-additional-detail">in {{ '%0.2f ms'|format(collector.time * 1000) }}</span>
+            <span class="sf-toolbar-info-piece-additional-detail">in {{ '%0.2f ms'|format(collector.time) }}</span>
         {% endif %}
     </a>
     {% endset %}
@@ -16,7 +16,7 @@
     </div>
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Query time'|t }}</b>
-        <span>{{ '%0.2f ms'|format(collector.time * 1000) }}</span>
+        <span>{{ '%0.2f ms'|format(collector.time) }}</span>
     </div>
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Default database'|t }}</b>
@@ -32,7 +32,6 @@
 {% endblock %}
 
 {% block panel %}
-
     <script id="database" type="text/template">
         <h2 class="panel__title">{{ 'Database'|t }}</h2>
 
@@ -64,10 +63,10 @@
         </form>
 
         <% _.each( data.queries, function( item, key ){ %>
-        <div class="panel__container<% if (item.time > 5) { %> is--hightlighted <% } %>"
+        <div class="panel__container<% if (item.time > data.query_highlight_threshold) { %> is--hightlighted <% } %>"
              data-wp-caller="<%- item.caller.class %>"
              data-wp-type="<%- item.type %>"
-             data-wp-hightlighted="<%- (item.time > 5) ? '1' : '0' %>">
+             data-wp-hightlighted="<%- (item.time > data.query_highlight_threshold) ? '1' : '0' %>">
             <div class="panel__expand-header ">
                     <pre>
                         <code class="sql">

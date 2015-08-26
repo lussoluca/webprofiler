@@ -71,19 +71,6 @@ webprofiler.database.explain:
   requirements:
     _permission: 'access webprofiler'
 
-# get query arguments
-webprofiler.database.arguments:
-  path: '/admin/reports/profiler/database_arguments/{profile}/{qid}'
-  defaults:
-    _controller: '\Drupal\webprofiler\Controller\DatabaseController::argumentsAction'
-    _title: 'Copy query'
-  options:
-    parameters:
-      profile:
-        type: 'webprofiler:token'
-  requirements:
-    _permission: 'access webprofiler'
-
 # manage profiles (import/export/purge)
 webprofiler.admin_manage:
   path: '/admin/config/development/profiler/manage'

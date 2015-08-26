@@ -26,28 +26,36 @@ class TraceableContainer extends Container {
   private $stopwatch = NULL;
 
   /**
+   * @var bool
+   */
+  private $hasStopwatch = FALSE;
+
+  /**
    * @param string $id
    * @param int $invalidBehavior
    *
    * @return object
    */
   public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE) {
-    if(!$this->stopwatch) {
+    if (!$this->stopwatch && $this->has('stopwatch')) {
       $this->stopwatch = $this->createService(unserialize($this->serviceDefinitions['stopwatch']), 'stopwatch');
       $this->stopwatch->openSection();
+      $this->hasStopwatch = TRUE;
     }
 
-    if('stopwatch' === $id) {
+    if ('stopwatch' === $id) {
       return $this->stopwatch;
     }
 
     Timer::start($id);
-    $e = $this->stopwatch->start($id, 'service');
+    if ($this->hasStopwatch) {
+      $e = $this->stopwatch->start($id, 'service');
+    }
 
     $service = parent::get($id, $invalidBehavior);
 
     $this->tracedData[$id] = Timer::stop($id);
-    if($e->isStarted()) {
+    if ($this->hasStopwatch && $e->isStarted()) {
       $e->stop();
     }
 
