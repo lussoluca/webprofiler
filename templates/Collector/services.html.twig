@@ -27,84 +27,114 @@
 {% block panel %}
     <script id="services" type="text/template">
         <h2 class="panel__title">{{ 'Services'|t }}</h2>
+        <div class="tabs">
+            <input class="tabs__radio" type="radio" id="services" name="tabs" checked/>
+            <input class="tabs__radio" type="radio" id="http_middleware" name="tabs"/>
+            <ul class="tabs__tabs list--inline">
+                <li><label class="tabs__label" for="services">services</label></li>
+                <li><label class="tabs__label" for="http_middleware">http_middleware</label></li>
+            </ul>
+            <form class="panel__toolbar">
+                <div class="panel__filter--text">
+                    <input id="edit-sid" class="js--live-filter" placeholder="{{ 'ID'|t }}" type="text"/>
+                    <label for="edit-sid" class="panel__filter-label">{{ 'ID'|t }}</label>
+                </div>
+                <div class="panel__filter--text">
+                    <input id="edit-class" class="js--live-filter" placeholder="{{ 'Class'|t }}" type="text"/>
+                    <label for="edit-class" class="panel__filter-label">{{ 'Class'|t }}</label>
+                </div>
+                <div class="panel__filter--text">
+                    <input id="edit-tags" class="js--live-filter" placeholder="{{ 'Tags'|t }}" type="text"/>
+                    <label for="edit-tags" class="panel__filter-label">{{ 'Tags'|t }}</label>
+                </div>
+                <div class="panel__filter--select">
+                    <select id="edit-initialized" class="js--live-filter">
+                        <option value="">{{ 'Any'|t }}</option>
+                        <option value="1">{{ 'Yes'|t }}</option>
+                        <option value="0">{{ 'No'|t }}</option>
+                    </select>
+                    <label for="edit-initialized" class="panel__filter-label">{{ 'Initialized'|t }}</label>
+                </div>
+            </form>
 
-        <form class="panel__toolbar">
-            <div class="panel__filter--text">
-                <input id="edit-sid" class="js--live-filter" placeholder="{{ 'ID'|t }}" type="text"/>
-                <label for="edit-sid" class="panel__filter-label">{{ 'ID'|t }}</label>
-            </div>
-            <div class="panel__filter--text">
-                <input id="edit-class" class="js--live-filter" placeholder="{{ 'Class'|t }}" type="text"/>
-                <label for="edit-class" class="panel__filter-label">{{ 'Class'|t }}</label>
-            </div>
-            <div class="panel__filter--text">
-                <input id="edit-tags" class="js--live-filter" placeholder="{{ 'Tags'|t }}" type="text"/>
-                <label for="edit-tags" class="panel__filter-label">{{ 'Tags'|t }}</label>
-            </div>
-            <div class="panel__filter--select">
-                <select id="edit-initialized" class="js--live-filter">
-                    <option value="">{{ 'Any'|t }}</option>
-                    <option value="1">{{ 'Yes'|t }}</option>
-                    <option value="0">{{ 'No'|t }}</option>
-                </select>
-                <label for="edit-initialized" class="panel__filter-label">{{ 'Initialized'|t }}</label>
-            </div>
-        </form>
+            <div class="tabs__panels">
+                <div class="tabs__panel">
+                    <% _.each( data.services, function( item, key ){ %>
 
-        <% _.each( data.services, function( item, key ){ %>
+                    <% clazz = Drupal.webprofiler.helpers.classLink({"file" : item.value.file, "class" :
+                    item.value.class}) %>
+                    <% depends = _.map(item.outEdges, function(el) { return el.id; }).join(', ') %>
+                    <% tags = _.map(item.value.tags, function(el, key) { return key; }).join(', ') %>
 
-        <% clazz = Drupal.webprofiler.helpers.classLink({"file" : item.value.file, "class" : item.value.class}) %>
-        <% depends = _.map(item.outEdges, function(el) { return el.id; }).join(', ') %>
-        <% tags = _.map(item.value.tags, function(el, key) { return key; }).join(', ') %>
+                    <div class="panel__container"
+                         data-wp-sid="<%- key %>"
+                         data-wp-class="<%- item.value.class %>"
+                         data-wp-tags="<%- tags %>"
+                         data-wp-initialized="<%- (item.initialized) ? '1' : '0' %>">
 
-        <div class="panel__container"
-             data-wp-sid="<%- key %>"
-             data-wp-class="<%- item.value.class %>"
-             data-wp-tags="<%- tags %>"
-             data-wp-initialized="<%- (item.initialized) ? '1' : '0' %>">
+                        <div class="panel__expand-header">
+                            <ul class="list--inline">
+                                <li>
+                                    <b>{{ 'ID'|t }}</b>: <%- key %>
+                                </li>
+                                <li>
+                                    <b>{{ 'Class'|t }}</b>: <%= clazz %>
+                                </li>
+                                <li>
+                                    <b>{{ 'Initialized'|t }}</b>: <%- (item.initialized) ? '{{ 'Yes'|t }}' : '{{ 'No'|t }}' %>
+                                </li>
+                            </ul>
+                            <% if ( tags.length > 0 || depends.length > 0 ) { %>
+                            <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
+                            <% } %>
+                        </div>
 
-            <div class="panel__expand-header">
-                <ul class="list--inline">
-                    <li>
-                        <b>{{ 'ID'|t }}</b>: <%- key %>
-                    </li>
-                    <li>
-                        <b>{{ 'Class'|t }}</b>: <%= clazz %>
-                    </li>
-                </ul>
-                <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
-            </div>
+                        <% if ( tags.length > 0 || depends.length > 0 ) { %>
+                        <div class="panel__expand-content">
+                            <div class="wp-query-arguments">
+                                <table class="table--duo">
+                                    <tr>
+                                        <th>{{ 'Tags'|t }}</th>
+                                        <td><%- (tags) ? tags : '-' %></td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'Depends'|t }}</th>
+                                        <td><%- (depends) ? depends : '-' %></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                    <% }); %>
+                </div>
 
-            <div class="panel__expand-content">
-                <div class="wp-query-arguments">
-                    <table class="table--duo">
-                        <tr>
-                            <th>{{ 'Initialized'|t }}</th>
-                            <td><%- (item.initialized) ? '{{ 'Yes'|t }}' : '{{ 'No'|t }}' %></td>
-                        </tr>
-                        <tr>
-                            <th>{{ 'Tags'|t }}</th>
-                            <td><%- tags %></td>
-                        </tr>
-                        <tr>
-                            <th>{{ 'Depends'|t }}</th>
-                            <td><%- depends %></td>
-                        </tr>
-                    </table>
+                <div class="tabs__panel">
+                    <div class="panel__container">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>{{ 'name'|t }}</th>
+                                <th>{{ 'priority'|t }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% _.each( data.http_middleware, function( item, key ){ %>
+                            <tr>
+                                <td><%- key %></td>
+                                <td><%- item.value.tags.http_middleware[0].priority %></td>
+                            </tr>
+                            <% }); %>
+                            </tbody>
+
+                        </table>
+
+                    </div>
                 </div>
             </div>
-        </div>
-        <% }); %>
 
-        <div class="panel__container">
-            <ul>
-                <% _.each( data.http_middleware, function( item, key ){ %>
-                <li><%- key %> (priority: <%- item.value.tags.http_middleware[0].priority %>)</li>
-                <% }); %>
-            </ul>
-        </div>
 
-        <% console.log(data) %>
+        </div>
 
     </script>
 {% endblock %}

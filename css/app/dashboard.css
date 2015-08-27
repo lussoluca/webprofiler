@@ -139,6 +139,9 @@
   #webprofiler .tabs {
     position: relative;
     margin: -16px 0 16px 0; }
+    #webprofiler .tabs a {
+      display: inline;
+      padding: 0 0 0 0; }
     #webprofiler .tabs__radio {
       display: none; }
     #webprofiler .tabs__tabs {
