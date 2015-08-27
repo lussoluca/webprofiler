@@ -44,7 +44,6 @@
                             selector.push('[data-wp-' + key + ']');
                         }
                     }
-console.log(selector);
                     for (elz in unselected) {
                         $(unselected[elz]).addClass('is--hidden');
                     }
