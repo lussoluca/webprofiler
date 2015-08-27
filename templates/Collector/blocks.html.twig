@@ -87,23 +87,23 @@
                 <div class="wp-query-arguments">
                     <table class="table--duo">
                         <tr>
-                            <td>{{ 'Provider'|t }}</td>
+                            <th>{{ 'Provider'|t }}</th>
                             <td><%- item.settings.provider %></td>
                         </tr>
                         <tr>
-                            <td>{{ 'Theme'|t }}</td>
+                            <th>{{ 'Theme'|t }}</th>
                             <td><%- item.theme %></td>
                         </tr>
                         <tr>
-                            <td>{{ 'Status'|t }}</td>
+                            <th>{{ 'Status'|t }}</th>
                             <td><%- (item.status) ? '{{ 'Enabled'|t }}' : '{{ 'Disabled'|t }}' %></td>
                         </tr>
                         <tr>
-                            <td>{{ 'Plugin'|t }}</td>
+                            <th>{{ 'Plugin'|t }}</th>
                             <td><%- item.plugin %></td>
                         </tr>
                         <tr>
-                            <td>{{ 'Operations'|t }}</td>
+                            <th>{{ 'Operations'|t }}</th>
                             <td><a href="<%- item.route %>">{{ 'Edit'|t }}</a></td>
                         </tr>
                     </table>

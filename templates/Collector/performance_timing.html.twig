@@ -63,7 +63,7 @@
                 <table class="table--duo">
                     <% _.each( data.performance.computed, function( item, key ){ %>
                     <tr>
-                        <td><%- key %></td>
+                        <th><%- key %></th>
                         <td><%- Drupal.webprofiler.helpers.printTime(item, 'ms') %></td>
                     </tr>
                     <% }); %>

@@ -37,13 +37,32 @@
         <h2 class="panel__title">{{ 'Theme'|t }}</h2>
         <div class="panel__container">
             <table class="table--fixed">
-                <tr><td>{{ 'Name'|t }}</td><td><%- data.activeTheme.name %> (<a href="/admin/appearance/settings/bartik">{{ 'Edit'|t }})</a></td></tr>
-                <tr><td>{{ 'Engine'|t }}</td><td><%- data.activeTheme.engine %></td></tr>
-                <tr><td>{{ 'Base theme'|t }}</td><td><%- data.activeTheme.extensions.base_theme %></td></tr>
-                <tr><td>{{ 'Regions'|t }}</td><td><%- data.activeTheme.regions.join(", ") %></td></tr>
+                <tr>
+                    <th>{{ 'Name'|t }}</th>
+                    <td><%- data.activeTheme.name %> (<a href="/admin/appearance/settings/bartik">{{ 'Edit'|t }})</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{{ 'Engine'|t }}</th>
+                    <td><%- data.activeTheme.engine %></td>
+                </tr>
+                <tr>
+                    <th>{{ 'Base theme'|t }}</th>
+                    <td><%- data.activeTheme.extensions.base_theme %></td>
+                </tr>
+                <tr>
+                    <th>{{ 'Regions'|t }}</th>
+                    <td><%- data.activeTheme.regions.join(", ") %></td>
+                </tr>
                 {#<tr><td>{{ 'Style sheets removed'|t }}</td><td><%- data.activeTheme.extensions.stylesheets-remove.join(", ") %></td></tr>#}
-                <tr><td>{{ 'Libraries'|t }}</td><td><%- data.activeTheme.libraries.join(", ") %></td></tr>
-                <tr><td>{{ 'Path'|t }}</td><td><%- data.activeTheme.path %></td></tr>
+                <tr>
+                    <th>{{ 'Libraries'|t }}</th>
+                    <td><%- data.activeTheme.libraries.join(", ") %></td>
+                </tr>
+                <tr>
+                    <th>{{ 'Path'|t }}</th>
+                    <td><%- data.activeTheme.path %></td>
+                </tr>
             </table>
         </div>
     </script>
