@@ -22,28 +22,45 @@
 {% block panel %}
     <script id="mail" type="text/template">
         <h2 class="panel__title">{{ 'Mail dashboard'|t }}</h2>
-        <div class="panel__container">
-            <table class="table--fixed">
-                <thead>
-                <tr>
-                    <th>{{ 'Subject'|t }}</th>
-                    <th>{{ 'From'|t }}</th>
-                    <th>{{ 'To'|t }}</th>
-                    <th>{{ 'Mail class (plugin)'|t }}</th>
-                </tr>
-                </thead>
 
-                <tbody>
-                <% _.each( data.mail, function( item ) { %>
-                <tr>
-                    <td><%- item.message.subject %></td>
-                    <td><%- item.message.from %></td>
-                    <td><%- item.message.to %></td>
-                    <td><%= Drupal.webprofiler.helpers.classLink(item.plugin) %> (<%- item.plugin.id %>)</td>
-                </tr>
+        <% _.each( data.mail, function( item ) { %>
+        <div class="panel__container">
+            <div class="panel__content">
+                <ul class="list--inline">
+                    <li>
+                        <b>Plugin</b> :<%= Drupal.webprofiler.helpers.classLink(item.plugin) %>
+                    </li>
+                    <li>
+                        <b>ID</b> :<%- item.plugin.id %>
+                    </li>
+                </ul>
+                <table class="table--duo">
+                <% _.each( item.message, function( message, key ) { %>
+                    <% if( key != 'params' && key != 'headers' ){ %>
+                    <tr>
+                        <th><%- key %></th>
+                        <td><%- message %></td>
+                    </tr>
+                    <% } %>
                 <% }); %>
-                </tbody>
-            </table>
+                </table>
+                <% if(item.message.headers){ %>
+                <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
+                <% } %>
+            </div>
+            <div class="panel__expand-content">
+                <table class="table--duo">
+                    <% _.each( item.message.headers, function( header, key ) { %>
+                    <tr>
+                        <th><%- key %></th>
+                        <td><%- header %></td>
+                    </tr>
+                    <% }); %>
+
+                </table>
+            </div>
+
         </div>
+        <% }); %>
     </script>
 {% endblock %}

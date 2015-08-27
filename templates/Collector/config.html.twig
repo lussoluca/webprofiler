@@ -23,6 +23,14 @@
     <script id="config" type="text/template">
         <h2 class="panel__title">{{ 'Configuration'|t }}</h2>
         <div class="panel__container">
+            <table>
+                <% _.each( data.config_names, function( item, key ){ %>
+                <tr>
+                    <th><%- key %></th>
+                    <td><%- item %></td>
+                </tr>
+                <% }); %>
+            </table>
 
         </div>
     </script>

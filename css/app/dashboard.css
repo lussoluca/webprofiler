@@ -83,12 +83,12 @@
     white-space: pre-wrap; }
   #webprofiler thead {
     white-space: nowrap; }
+    #webprofiler thead th {
+      background-color: transparent; }
   #webprofiler th {
     font-size: 12px;
     color: rgba(0, 0, 0, 0.54);
     border: none; }
-    thead #webprofiler th {
-      background-color: #ffffff; }
   #webprofiler td {
     word-break: break-all;
     font-size: 13px;
