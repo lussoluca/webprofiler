@@ -60,7 +60,7 @@
                 <label for="edit-type" class="panel__filter-label">{{ 'Slow queryes'|t }}</label>
             </div>
 
-            <div class="button--flat l-right js--code-toggle--global">{{ 'Swap Placeholders'|t }}</div>
+            <div class="button--flat l-right js--code-toggle--global js--placeholder-visible">{{ 'Swap Placeholders'|t }}</div>
 
         </form>
 
@@ -71,11 +71,11 @@
              data-wp-hightlighted="<%- (item.time > data.query_highlight_threshold) ? '1' : '0' %>">
             <div class="panel__expand-header ">
                     <pre <% if( item.query_args) { %> class="js--code-target"<% } %> >
-                        <code class="sql">
+                        <code class="sql js--placeholder-query">
                             <%- item.query %>
                         </code>
                         <% if( item.query_args) { %>
-                        <code class="sql js--clipboard-target is--hidden">
+                        <code class="sql js--clipboard-target is--hidden js--original-query">
                             <%- item.query_args %>
                         </code>
                         <% } %>
