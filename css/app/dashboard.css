@@ -79,8 +79,9 @@
   #webprofiler th {
     font-size: 12px;
     color: rgba(0, 0, 0, 0.54);
-    background-color: #ffffff;
     border: none; }
+    thead #webprofiler th {
+      background-color: #ffffff; }
   #webprofiler td {
     word-break: break-all;
     font-size: 13px;
@@ -101,6 +102,14 @@
   #webprofiler .table--duo th:first-child,
   #webprofiler .table--duo td:first-child {
     width: 35%; }
+  #webprofiler .table--trio th:first-child,
+  #webprofiler .table--trio td:first-child {
+    width: 80%; }
+  #webprofiler .table--trio th:nth-child(2),
+  #webprofiler .table--trio td:nth-child(2),
+  #webprofiler .table--trio th:nth-child(3),
+  #webprofiler .table--trio td:nth-child(3) {
+    width: 10%; }
   #webprofiler [class*="button"] {
     display: block;
     color: #2979ff;
