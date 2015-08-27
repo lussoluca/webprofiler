@@ -1,0 +1,65 @@
+.tabs {
+  position: relative;
+  margin: -16px 0 16px 0;
+  @extend %clearfix;
+
+  &__radio {
+    display: none;
+  }
+  &__tabs,
+  &__panels,
+  &__panel{
+    @extend %clearfix;
+  }
+  &__tabs{
+    margin: 0 -16px 16px -16px;
+    text-transform: uppercase;
+    height: 48px;
+    background-color: $background-dark;
+    & > li{
+      padding: 0;
+    }
+  }
+  &__label {
+    border-bottom: 5px solid transparent;
+    @extend .t--notice;
+    text-align: center;
+    line-height: 48px;
+    min-width: 160px;
+    display: inline-block;
+    margin: -5px 0 0 0;
+  }
+  &__panel {
+    display: none;
+    width: 100%;
+  }
+
+  // states
+
+  &__radio:checked:nth-child(1) ~ .tabs__panels .tabs__panel:nth-child(1) {
+    display: block
+  }
+
+  &__radio:checked:nth-child(2) ~ .tabs__panels .tabs__panel:nth-child(2) {
+    display: block
+  }
+
+  &__radio:checked:nth-child(3) ~ .tabs__panels .tabs__panel:nth-child(3) {
+    display: block
+  }
+
+  &__radio:checked:nth-child(1) ~ .tabs__tabs li:nth-child(1) .tabs__label {
+    border-bottom-color: $main-darker;
+    @extend .t--heading;
+  }
+
+  &__radio:checked:nth-child(2) ~ .tabs__tabs li:nth-child(2) .tabs__label {
+    border-bottom-color: $main-darker;
+    @extend .t--heading;
+  }
+
+  &__radio:checked:nth-child(3) ~ .tabs__tabs li:nth-child(3) .tabs__label {
+    border-bottom-color: $main-darker;
+    @extend .t--heading;
+  }
+}

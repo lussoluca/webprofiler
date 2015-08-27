@@ -5,6 +5,8 @@
   line-height: 1.2;
   color: rgba(0, 0, 0, 0.7);
   background-color: #ffffff; }
+  #webrofiler * {
+    box-sizing: border-box; }
 
 #webprofiler {
   /*
@@ -39,7 +41,7 @@
       <div class="app__secondary-data"> text
   
   */ }
-  #webprofiler .resume:after, #webprofiler .collectors:after, #webprofiler .panel__toolbar:after, #webprofiler .panel__container:after, #webprofiler .panel__expand-header:after, #webprofiler .panel__expand-content:after, #webprofiler .app__bar:after, #webprofiler .app__container:after {
+  #webprofiler .tabs:after, #webprofiler .tabs__tabs:after, #webprofiler .tabs__panels:after, #webprofiler .tabs__panel:after, #webprofiler .resume:after, #webprofiler .collectors:after, #webprofiler .panel:after, #webprofiler .panel__toolbar:after, #webprofiler .panel__container:after, #webprofiler .panel__expand-header:after, #webprofiler .panel__expand-content:after, #webprofiler .app__bar:after, #webprofiler .app__container:after {
     content: ' ';
     display: block;
     clear: both; }
@@ -69,11 +71,16 @@
     #webprofiler .list--inline > li {
       display: inline-block;
       padding: 8px; }
+  #webprofiler pre {
+    padding: 16px; }
   #webprofiler pre, #webprofiler code {
     white-space: normal;
     word-break: break-all;
     word-break: break-word;
-    font-size: 14px; }
+    font-size: 14px;
+    background-color: #f5f5f5; }
+  #webprofiler code.code--json {
+    white-space: pre-wrap; }
   #webprofiler thead {
     white-space: nowrap; }
   #webprofiler th {
@@ -129,6 +136,40 @@
       background-color: #eeeeee; }
     #webprofiler .button--flat:active, #webprofiler .button--flat:focus {
       background-color: #bdbdbd; }
+  #webprofiler .tabs {
+    position: relative;
+    margin: -16px 0 16px 0; }
+    #webprofiler .tabs__radio {
+      display: none; }
+    #webprofiler .tabs__tabs {
+      margin: 0 -16px 16px -16px;
+      text-transform: uppercase;
+      height: 48px;
+      background-color: #f5f5f5; }
+      #webprofiler .tabs__tabs > li {
+        padding: 0; }
+    #webprofiler .tabs__label {
+      border-bottom: 5px solid transparent;
+      text-align: center;
+      line-height: 48px;
+      min-width: 160px;
+      display: inline-block;
+      margin: -5px 0 0 0; }
+    #webprofiler .tabs__panel {
+      display: none;
+      width: 100%; }
+    #webprofiler .tabs__radio:checked:nth-child(1) ~ .tabs__panels .tabs__panel:nth-child(1) {
+      display: block; }
+    #webprofiler .tabs__radio:checked:nth-child(2) ~ .tabs__panels .tabs__panel:nth-child(2) {
+      display: block; }
+    #webprofiler .tabs__radio:checked:nth-child(3) ~ .tabs__panels .tabs__panel:nth-child(3) {
+      display: block; }
+    #webprofiler .tabs__radio:checked:nth-child(1) ~ .tabs__tabs li:nth-child(1) .tabs__label {
+      border-bottom-color: #2962ff; }
+    #webprofiler .tabs__radio:checked:nth-child(2) ~ .tabs__tabs li:nth-child(2) .tabs__label {
+      border-bottom-color: #2962ff; }
+    #webprofiler .tabs__radio:checked:nth-child(3) ~ .tabs__tabs li:nth-child(3) .tabs__label {
+      border-bottom-color: #2962ff; }
   #webprofiler .overview {
     display: table-cell;
     width: 20%;
@@ -453,10 +494,10 @@
   to {
     left: 0;
     width: 100%; } }
-  #webprofiler .t--heading, #webprofiler .overview__title, #webprofiler .resume__title, #webprofiler .panel select,
+  #webprofiler .t--heading, #webprofiler .tabs__radio:checked:nth-child(1) ~ .tabs__tabs li:nth-child(1) .tabs__label, #webprofiler .tabs__radio:checked:nth-child(2) ~ .tabs__tabs li:nth-child(2) .tabs__label, #webprofiler .tabs__radio:checked:nth-child(3) ~ .tabs__tabs li:nth-child(3) .tabs__label, #webprofiler .overview__title, #webprofiler .resume__title, #webprofiler .panel select,
   #webprofiler .panel input[type="text"], #webprofiler .panel__title {
     color: black; }
-  #webprofiler .t--notice, #webprofiler .overview__subtitle, #webprofiler .resume__subtitle,
+  #webprofiler .t--notice, #webprofiler .tabs__label, #webprofiler .overview__subtitle, #webprofiler .resume__subtitle,
   #webprofiler .resume__time, #webprofiler .panel__filter-label {
     color: rgba(0, 0, 0, 0.3); }
   #webprofiler .l-card {
