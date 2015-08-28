@@ -182,6 +182,12 @@ services:
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/theme.html.twig', id:'theme', title:'Theme', priority: 200 }
 
+  webprofiler.translations:
+    class: Drupal\webprofiler\DataCollector\TranslationsDataCollector
+    arguments: ['@string_translation']
+    tags:
+      - { name: data_collector, template:'@webprofiler/Collector/translations.html.twig', id:'translations', title:'Translations', priority: 210 }
+
 # debug services
   stopwatch:
     class: Drupal\webprofiler\Stopwatch
