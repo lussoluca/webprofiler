@@ -1,7 +1,7 @@
 /**
  * Timeline
  */
-
+/*
 .sf-profiler-timeline .legends {
   font-size: 12px;
   line-height: 1.5em;
@@ -76,4 +76,52 @@
 
 .legends .service {
     border-left-color: #795548;
+}
+*/
+
+text {
+    font-size: 16px;
+    line-height: 20px;
+    height: 22px;
+    fill: rgba(0, 0, 0, 0.87);
+}
+#timeline {
+    background: lightgray;
+    margin: 10px 0;
+    width: 100%;
+    position: relative;
+}
+.timeline__row {
+    fill: rgba(255, 255, 255, 1);
+    stroke: rgba(0, 0, 0, 0.18);
+}
+.timeline__period--default {
+    fill: #E91E63;
+}
+.timeline__period--service {
+    fill: #3F51B5;
+}
+.timeline__period--event_listener {
+    fill: #00BCD4;
+}
+.timeline__period--event_listener_loading {
+    fill: #8BC34A;
+}
+.timeline__period--template {
+    fill: #FFC107;
+}
+.tooltip{
+    position: absolute;
+    padding: 16px;
+    background: white;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    width: 175px;
+    text-align: center;
+}
+.tooltip__title{
+    display: block;
+}
+.tooltip__content{
+    display: block;
 }
