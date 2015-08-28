@@ -46,7 +46,6 @@
 
         <% if (!_.isEmpty(data.request_query)) { %>
         <div class="panel__container">
-
             <table class="table--duo">
                 <thead>
                 <th>{{ 'GET Parameters'|t }}</th>
@@ -81,8 +80,8 @@
                 </tbody>
             </table>
         </div>
-
         <% } %>
+
         <div class="panel__container">
             <table class="table--duo">
                 <thead>
@@ -105,7 +104,6 @@
             </table>
         </div>
 
-
         <% if (!_.isEmpty(data.request_cookies)) { %>
         <div class="panel__container">
             <table class="table--duo">
@@ -123,9 +121,8 @@
                 </tbody>
             </table>
         </div>
-
-
         <% } %>
+
         <div class="panel__container">
             <table class="table--duo">
                 <thead>
@@ -143,11 +140,36 @@
             </table>
         </div>
 
-
         <% if (!_.isEmpty(data.content)) { %>
-        <h3 class="panel__title">{{ 'Request Content'|t }}</h3>
         <div class="panel__container">
             <div><%- data.content %></div>
+        </div>
+        <% } %>
+
+        <% if (!_.isEmpty(data.access_check)) { %>
+        <div class="panel__container">
+            <table class="table--duo">
+                <thead>
+                <th>{{ 'Path'|t }}</th>
+                <th>{{ 'Access check'|t }}</th>
+                </thead>
+                <tbody>
+                <% _.each(data.access_check, function(items, key){ %>
+                <tr>
+                    <td><%- key %></td>
+                    <td>
+                        <% _.each(items, function(item){ %>
+                        <%- item.service_id %>
+                        <% }); %>
+                    </td>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <% } %>
+
+        <div class="panel__container">
             <table class="table--duo">
                 <thead>
                 <th>{{ 'Server Parameters'|t }}</th>
@@ -164,7 +186,6 @@
             </table>
         </div>
 
-        <% } %>
         <div class="panel__container">
             <table class="table--duo">
                 <thead>

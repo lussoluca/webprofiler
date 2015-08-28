@@ -97,5 +97,9 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
     $container->getDefinition('config.factory')
       ->setClass('Drupal\webprofiler\Config\ConfigFactoryWrapper')
       ->addMethodCall('setDataCollector', [new Reference('webprofiler.config')]);
+
+    // Replace the regular string_translation service with a traceable one.
+    $container->getDefinition('string_translation')
+      ->setClass('Drupal\webprofiler\StringTranslation\TranslationManagerWrapper');
   }
 }

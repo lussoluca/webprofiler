@@ -1,0 +1,33 @@
+{% block toolbar %}
+    {% set icon %}
+    <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: "translations"}) }}" title="{{ 'Translations'|t }}">
+        <img height="28" alt="{{ 'Translations'|t }}"
+             src="data:image/png;base64,{{ collector.icon }}"/>
+        <span class="sf-toolbar-status">{{ collector.untranslatedCount }}</span>
+    </a>
+    {% endset %}
+    {% set text %}
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'Translated'|t }}</b>
+        <span>{{ collector.translatedCount }}</span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>{{ 'Untranslated'|t }}</b>
+        <span>{{ collector.untranslatedCount }}</span>
+    </div>
+    {% endset %}
+
+    <div class="sf-toolbar-block">
+        <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
+        <div class="sf-toolbar-info">{{ text|default('') }}</div>
+    </div>
+{% endblock %}
+
+{% block panel %}
+    <script id="translations" type="text/template">
+        <h2 class="panel__title">{{ 'Translations'|t }}</h2>
+        <div class="panel__container">
+<% console.log(data) %>
+        </div>
+    </script>
+{% endblock %}
