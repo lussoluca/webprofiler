@@ -74,6 +74,16 @@ class TranslationsDataCollector extends DataCollector implements DrupalDataColle
   /**
    * {@inheritdoc}
    */
+  public function getPanelSummary() {
+    return $this->t('Translated: @translated, untranslated: @untranslated', [
+      '@translated' => $this->getTranslatedCount(),
+      '@untranslated' => $this->getUntranslatedCount()
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getIcon() {
     return 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAbElEQVRIx2NgGAXUBowMDAwMaWlp/6ll4KxZsxhZYJy0tDRqGMjAwMDAwEQL77OgCxSXlJBsSG9PDwqfJi6lj/fRvTJ4XYocUTBXE4q8oRtRRBnKwsw8RFw6fA0lKkd1dnYOIpfCCthRMIIAAI0IFu9Hxh7ZAAAAAElFTkSuQmCC';
   }
