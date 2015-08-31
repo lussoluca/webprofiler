@@ -15,6 +15,7 @@ an IDE, you can configure the url of those link based on the IDE you are using:
 
 - Sublime text (2 and 3): see https://github.com/dhoulb/subl for Mac OS X
 - Textmate: should be supported by default, use txmt://open?url=file://@file&line=@line as link
+- PhpStorm 8+: use phpstorm://open?file=@file&line=@line as link
 
 #Timeline:
 

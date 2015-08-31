@@ -93,39 +93,4 @@ class RoutingDataCollector extends DataCollector implements DrupalDataCollectorI
   public function getIcon() {
     return 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPxJREFUeNrkVsERREAQ7D0koXwlIAISkIGXvwAkoJSfHITg5SMUVR4eMuCxZ1xxV+5uuTL30lV8bPX09PSuFVJKcOOGP+DipLrrusoFdV1Lz/NgmiaKosC0XrAopYT0fc/f/jAMa41Pj23bkrpi9bRpGmRZ9lRKFSzLkl9UHMI4jijLcuaaSZMkQdd1fNMn5r0EHIFhGEjTlDenYRjCcZyHUnqRwXEcz77sYepM+Z1yTOEXZEFVVYcUba2iItsNcbr9IAiw5HMd1CJZtU1VpG3bIooi3gPF933keY43pb9gb1Bskdrap58luMjvRNO04wcK18RfIa59mbgLMAASuWsKAyoEhgAAAABJRU5ErkJggg==';
   }
-
-//  /**
-//   * {@inheritdoc}
-//   */
-//  public function getPanel() {
-//    $build = array();
-//
-//    $rows = array();
-//    foreach ($this->routing() as $value) {
-//      $row = array();
-//
-//      $row[] = $value['name'];
-//      $row[] = $value['path'];
-//
-//      $rows[] = $row;
-//    }
-//
-//    $build['title'] = array(
-//      '#type' => 'inline_template',
-//      '#template' => '<h3>{{ title }}</h3>',
-//      '#context' => array(
-//        'title' => $this->t('Available routes'),
-//      ),
-//    );
-//
-//    $build['table'] = array(
-//      '#type' => 'table',
-//      '#rows' => $rows,
-//      '#header' => array($this->t('Route name'), 'URL'),
-//      '#sticky' => TRUE,
-//    );
-//
-//    return $build;
-//  }
-
 }

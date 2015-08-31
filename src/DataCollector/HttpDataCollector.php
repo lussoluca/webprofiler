@@ -32,13 +32,48 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
    */
   public function __construct(HttpClientMiddleware $middleware) {
     $this->middleware = $middleware;
+
+    $this->data['completed'] = [];
+    $this->data['failed'] = [];
   }
 
   /**
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-    $this->data['completed'] = $this->middleware->getCompletedRequests();
+    $completed = $this->middleware->getCompletedRequests();
+
+    foreach ($completed as $data) {
+      /** @var \GuzzleHttp\Psr7\Request $request */
+      $request = $data['request'];
+      /** @var \GuzzleHttp\Psr7\Response $response */
+      $response = $data['response'];
+
+      $uri = $request->getUri();
+      $this->data['completed'][] = [
+        'request' => [
+          'method' => $request->getMethod(),
+          'uri' => [
+            'schema' => $uri->getScheme(),
+            'host' => $uri->getHost(),
+            'port' => $uri->getPort(),
+            'path' => $uri->getPath(),
+            'query' => $uri->getQuery(),
+            'fragment' => $uri->getFragment(),
+          ],
+          'headers' => $request->getHeaders(),
+          'protocol' => $request->getProtocolVersion(),
+          'request_target' => $request->getRequestTarget(),
+        ],
+        'response' => [
+          'phrase' => $response->getReasonPhrase(),
+          'status' => $response->getStatusCode(),
+          'headers' => $response->getHeaders(),
+          'protocol' => $response->getProtocolVersion(),
+        ]
+      ];
+    }
+
     $this->data['failed'] = $this->middleware->getFailedRequests();
   }
 
@@ -100,88 +135,4 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
   public function getIcon() {
     return 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAYAAACOGPReAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAATlJREFUeNrsleERgjAMha0TdISOwAZ2BEZghI7ABo7AOQFuwAjoBLgBblBbfb0LudByp/4jdw+PNnxtkqYq7/3h13Y8/MF26B9spfo6yAX1QSa6EY2Y0xLrzROgddAMOcgLmuFbhDqyG00W8Rm1JWgEWCG0oQBuJKjGigNUs/xWUJdJheZQJzhZFGkgKWkw1mM8bmTCvOPQcSVXrTA+Ydc0kujXJGg6p5VwrG5BJzb2CLriN9kT74afUylPloQ+kdDPELXpg1qGvwbtURwjFGkkC8RIZw6d2QeO7MII81wRbDm0Z068Zf0G1bxQl8z1UH1zoQwk9NRZdkPoHt+KbZoqa+HYZS4T3iimdEvRDrIF4KIRclBNjk+uSB2/eBJUvR9KSek26BZHOit2zl3oqkV91P6//3N7CTAAIIc/qj2gy4gAAAAASUVORK5CYII=';
   }
-
-//  /**
-//   * {@inheritdoc}
-//   */
-//  public function getPanel() {
-//    $build = array();
-//
-//    $build += $this->getTable($this->getCompletedRequests(), $this->t('Completed'), 'completed');
-//    $build += $this->getTable($this->getFailedRequests(), $this->t('Error'), 'failure');
-//
-//    return $build;
-//  }
-//
-//  /**
-//   * @param array $calls
-//   * @param string $type
-//   *
-//   * @return array
-//   */
-//  private function getTable($calls, $title, $type) {
-//    $rows = array();
-//
-//    foreach ($calls as $call) {
-//      /** @var \Psr\Http\Message\RequestInterface $request */
-//      $request = $call['request'];
-//
-//      /** @var \Psr\Http\Message\ResponseInterface $response */
-//      $response = isset($call['response']) ? $call['response'] : NULL;
-//
-//      $row = array();
-//
-//      $row[] = $request->getUri();
-//      $row[] = $request->getMethod();
-//
-//      if ($type == 'completed') {
-//        $row[] = $response->getStatusCode();
-//        $row[] = $this->varToString($request->getHeaders());
-//        $row[] = $this->varToString($response->getHeaders(), TRUE);
-//      } else {
-//        $row[] = $call['message'];
-//      }
-//
-//      $rows[] = $row;
-//    }
-//
-//    $header = array(
-//      $this->t('Url'),
-//      $this->t('Method'),
-//    );
-//
-//    if ($type == 'completed') {
-//      $header[] = $this->t('Status code');
-//      $header[] = array(
-//        'data' => $this->t('Request headers'),
-//        'class' => array(RESPONSIVE_PRIORITY_LOW),
-//      );
-//      $header[] = array(
-//        'data' => $this->t('Response headers'),
-//        'class' => array(RESPONSIVE_PRIORITY_LOW),
-//      );
-//    } else {
-//      $header[] = array(
-//        'data' => $this->t('Message'),
-//        'class' => array(RESPONSIVE_PRIORITY_LOW),
-//      );
-//    }
-//
-//    $build['title_' . $type] = array(
-//      '#type' => 'inline_template',
-//      '#template' => '<h3>{{ title }}</h3>',
-//      '#context' => array(
-//        'title' => $title,
-//      ),
-//    );
-//
-//    $build['table_' . $type] = array(
-//      '#type' => 'table',
-//      '#rows' => $rows,
-//      '#header' => $header,
-//      '#sticky' => TRUE,
-//    );
-//
-//    return $build;
-//  }
 }

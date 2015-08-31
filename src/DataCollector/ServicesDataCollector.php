@@ -141,11 +141,12 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
   public function getData() {
     $data = $this->data;
 
-    $http_middleware = [];
-    foreach ($data['services'] as $key => $service) {
-      if (isset($service['value']['tags']['http_middleware'])) {
-        $http_middleware[$key] = $service;
-      }
+    $http_middleware = array_filter($data['services'], function($service) {
+      return isset($service['value']['tags']['http_middleware']);
+    });
+
+    foreach ($http_middleware as &$service) {
+      $service['value']['handle_method'] = $this->getMethodData($service['value']['class'], 'handle');
     }
 
     uasort($http_middleware, function ($a, $b) {
