@@ -177,7 +177,7 @@
 // Draw X-axis grid lines
                 var axis = d3.select('.timeline__parts').insert('g', '.timeline__parts')
                     .selectAll("line")
-                    .data(xscale.ticks(20))
+                    .data(xscale.ticks(10))
                     .enter()
                     .append("line")
                     .attr("class", "timeline__scale--x")
@@ -187,7 +187,7 @@
                     .attr("y2", data.length * 22)
                     .attr("transform", "translate( " + scalePadding + " , 0)");
 
-                var xAxis = d3.svg.axis().scale(xscale).ticks(20).orient('bottom').tickFormat(function (d) {
+                var xAxis = d3.svg.axis().scale(xscale).ticks(10).orient('bottom').tickFormat(function (d) {
                     return d + ' ms'
                 });
 
@@ -197,6 +197,7 @@
                     .call(xAxis);
 
                 endScale = xscale(parseInt(data[(dataL - 1)].endtime) - rowW - scalePadding );
+
                 var zoom = d3.select('.timeline__canvas')
                     .call(
                     d3.behavior.zoom()
@@ -206,9 +207,8 @@
                             var t = d3.event.translate,
                                 tx = t[0];
                             tx = tx > 0 ? 0 : tx;
-                            tx = tx < -(endScale) ? -(endScale) : tx;
+                            tx = tx < endScale ? endScale : tx;
 
-                            console.log(tx, endScale);
                             d3.select('.timeline__parts').attr("transform", "translate( " + tx + " , 0)");
                         }));
 

@@ -91,6 +91,7 @@ text {
     width: 175px;
     text-align: center;
     display: none;
+    color: white;
 }
 .tooltip__title{
     display: block;
