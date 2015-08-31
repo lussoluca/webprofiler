@@ -126,7 +126,7 @@
                         <% _.each( item.args, function( item, key ){ %>
                         <tr>
                             <td><%- key %></td>
-                            <td><%- item %></td>
+                            <td><%= Drupal.webprofiler.helpers.frm(item) %></td>
                         </tr>
                         <% }); %>
                         </tbody>

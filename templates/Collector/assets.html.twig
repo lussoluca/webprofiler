@@ -61,9 +61,7 @@
                                 <tr>
                                     <% if(key != 'data'){ %>
                                     <th><%- key %></th>
-                                    <td>
-                                        <%- item %>
-                                    </td>
+                                    <td><%= Drupal.webprofiler.helpers.frm(item) %></td>
                                     <% } %>
                                 </tr>
                                 <% }); %>
@@ -88,9 +86,7 @@
                             <tr>
                                 <% if(key != 'browsers' && key != 'attributes'){ %>
                                 <th><%- key %></th>
-                                <td>
-                                    <%- item %>
-                                </td>
+                                <td><%= Drupal.webprofiler.helpers.frm(item) %></td>
                                 <% } %>
                             </tr>
                             <% }); %>
@@ -139,9 +135,7 @@
                             <tr>
                                 <% if(key != 'browsers' && key != 'attributes'){ %>
                                 <th><%- key %></th>
-                                <td>
-                                    <%- item %>
-                                </td>
+                                <td><%= Drupal.webprofiler.helpers.frm(item) %></td>
                                 <% } %>
                             </tr>
                             <% }); %>

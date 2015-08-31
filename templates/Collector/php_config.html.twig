@@ -43,7 +43,7 @@
                 <% _.each( data, function( item, key ){ %>
                 <tr>
                     <th><%- key %></th>
-                    <td><%- item %></td>
+                    <td><%= Drupal.webprofiler.helpers.frm(item) %></td>
                 </tr>
                 <% }); %>
             </table>
