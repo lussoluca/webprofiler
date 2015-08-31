@@ -69,9 +69,6 @@
 
                 };
 
-
-
-
             $(context).find('#collectors').once('webprofiler').each(function () {
                 new Drupal.webprofiler.routers.CollectorsRouter({el: $('#collectors')});
                 Backbone.history.start({
