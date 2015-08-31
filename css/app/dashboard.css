@@ -106,6 +106,8 @@
     table-layout: fixed; }
     #webprofiler .table--compact td, #webprofiler .table--compact th {
       word-spacing: 99em; }
+  #webprofiler .table--fixed {
+    table-layout: fixed; }
   #webprofiler .table--duo th:first-child,
   #webprofiler .table--duo td:first-child {
     width: 35%; }
@@ -516,5 +518,9 @@
     float: left; }
   #webprofiler .l-right {
     float: right; }
+  #webprofiler .h--word-broken {
+    word-break: break-all; }
+  #webprofiler .h--word-intact {
+    word-break: normal; }
 
 /*# sourceMappingURL=dashboard.css.map */

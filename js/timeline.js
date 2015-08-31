@@ -105,6 +105,7 @@
                  })
                  .attr("height", 10);*/
 
+
                 var parts = [],
                     dataL = data.length,
                     perL,
@@ -136,35 +137,15 @@
                         .style("opacity", .9);
                 };
 
-                var xscale = d3.scale.linear().domain([0, endTime]).range([0, endTime]),
-                    container = d3.select('#timeline').append('svg').attr('height', dataL * 22 + 'px').attr('width', '100%').attr('class', 'timeline__canvas');
+                var xscale = d3.scale.linear().domain([0, endTime]).range([0, 1000]),
+                    container = d3.select('#timeline').append('svg').attr('height', (dataL + 1 ) * 22 + 'px').attr('width', '100%').attr('class', 'timeline__canvas');
 
-// Draw X-axis grid lines
-
-                /*
-                 var chart = d3.select('.timeline__canvas')
-                 .selectAll("line.x")
-                 .data(xscale.ticks(10))
-                 .enter()
-                 .append("line")
-                 .attr("class", "xscale")
-                 .attr("x1", xscale)
-                 .attr("x2", xscale)
-                 .attr("y1", 0)
-                 .attr("y2", 300)
-                 .style("stroke", "#ccc");
-
-                 var xAxis = d3.svg.axis().scale(xscale).orient('top');
-
-                 var xa = d3.select('svg').append('g')
-                 .attr("class", "axis")
-                 .call(xAxis);
-                 */
 
                 //tooltops
                 var tooltip = d3.select('#timeline')
                     .append("div")
                     .attr("class", "tooltip");
+
 
 // rows
                 var rows = d3.select('.timeline__canvas')
@@ -202,7 +183,7 @@
                         return Drupal.webprofiler.helpers.ideLink(d.link);
                     })
                     .attr('class', function (d) {
-                        return d.category + ' label'
+                        return 'timeline__label ' + d.category
                     })
                     .attr('x', xscale(5))
                     .attr('y', function (d, i) {
@@ -228,33 +209,30 @@
 
                 scalePadding = Math.max.apply(null, labelW) + 10;
 
+                scale.insert('rect', 'title')
+                    .attr('x', 0)
+                    .attr('y', function (d, i) {
+                        return (i * 22)
+                    })
+
+                    .attr('height', 22)
+                    .attr('stroke', 'transparent')
+                    .attr('strokw-width', 1)
+                    .attr('width', scalePadding);
+
 // times
                 var events = d3.select('.timeline__canvas')
-                    .call(
-                    d3.behavior.zoom()
-                        .scaleExtent([1, 1])
-                        .x(xscale)
-                        .on("zoom", function () {
-                            var t = d3.event.translate,
-                                tx = t[0];
-
-                            tx = Math.min(tx, xscale(-(rowW - endTime + 10)));
-                            tx = tx > 0 ? 0 : tx;
-
-                            console.log(tx);
-                            events.attr("transform", "translate( " + tx + " , 0)");
-                        }))
-                    .append('g')
+                    .insert('g', '.timeline__scale')
                     .attr('class', 'timeline__parts')
                     .attr('x', 0)
                     .attr('y', 0)
                     .selectAll('g')
                     .data(parts)
-                    .enter()
-                    .append('rect')
-                    .attr('class', function (d) {
-                        return 'timeline__period--' + d.category
-                    })
+                    .enter();
+
+                events.append('rect').attr('class', function (d) {
+                    return 'timeline__period--' + d.category
+                })
                     .attr('x', function (d) {
                         return parseInt(d.start) + scalePadding
                     })
@@ -264,6 +242,20 @@
                     .attr('height', 22)
                     .attr('width', function (d) {
                         return Math.max(parseInt(d.end - d.start), 1)
+                    });
+
+                events.append('rect').attr('class', function (d) {
+                    return 'timeline__period-trigger'
+                })
+                    .attr('x', function (d) {
+                        return parseInt(d.start) + scalePadding - 5
+                    })
+                    .attr('y', function (d) {
+                        return d.lane * 22
+                    })
+                    .attr('height', 22)
+                    .attr('width', function (d) {
+                        return Math.max(parseInt(d.end - d.start), 1) + 11
                     })
                     .on("mouseover", function (d, i) {
                         tooltipCtrl(d, i);
@@ -273,9 +265,44 @@
                             .style("display", 'none');
                     });
 
-                var z = d3.select('.timeline__canvas')
-                    .append('use')
-                    .attr('xlink:href', '#timeline__scale');
+// Draw X-axis grid lines
+                var axis = d3.select('.timeline__parts').append('g')
+                    .selectAll("line")
+                    .data(xscale.ticks(10))
+                    .enter()
+                    .append("line")
+                    .attr("class", "timeline__scale--x")
+                    .attr("x1", xscale)
+                    .attr("x2", xscale)
+                    .attr("y1", 0)
+                    .attr("y2", data.length * 22)
+                    .attr("transform", "translate( " + scalePadding + " , 0)")
+                    .style("stroke", "#ccc");
+
+                var xAxis = d3.svg.axis().scale(xscale).orient('bottom').tickFormat(function (d, i) {
+                    return d + ' ms'
+                });
+
+                var axe = d3.select('.timeline__parts').append('g')
+                    .attr("class", "axis")
+                    .attr('transform', 'translate(' + scalePadding + ', ' + dataL * 22 + ')')
+                    .call(xAxis);
+
+                var zoom = d3.select('.timeline__canvas')
+                    .call(
+                    d3.behavior.zoom()
+                        .scaleExtent([1, 1])
+                        .x(xscale)
+                        .on("zoom", function () {
+                            var t = d3.event.translate,
+                                tx = t[0];
+
+                            tx = tx > 0 ? 0 : tx;
+                            tx = tx < -(endTime - scalePadding + 175 ) ? -(endTime - scalePadding + 175 ) : tx;
+                            d3.select('.timeline__parts').attr("transform", "translate( " + tx + " , 0)");
+                        }));
+
+
             }
         }
     }
