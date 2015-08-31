@@ -2,38 +2,38 @@
  * Timeline
  */
 
-.legends {
+.timeline__legends {
   font-size: 12px;
   line-height: 1.5em;
 }
 
-.legends span {
+.timeline__legends span {
   border-left-width: 10px;
   border-left-style: solid;
   padding: 0 10px 0 5px;
 }
 
-.legends .default {
+.timeline__legends--default {
   border-left-color: #E91E63;
 }
 
-.legends .section {
+.timeline__legends--section {
   border-left-color: #3F51B5;
 }
 
-.legends .event_listener {
+.timeline__legends--event_listener {
   border-left-color: #00BCD4;
 }
 
-.legends .event_listener_loading {
+.timeline__legends--event_listener_loading {
   border-left-color: #8BC34A;
 }
 
-.legends .template {
+.timeline__legends--template {
   border-left-color: #FFC107;
 }
 
-.legends .service {
+.timeline__legends--service {
     border-left-color: #795548;
 }
 
