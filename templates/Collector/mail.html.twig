@@ -21,34 +21,39 @@
 
 {% block panel %}
     <script id="mail" type="text/template">
-        <h2 class="panel__title">{{ 'Mail dashboard'|t }}</h2>
+        <h2 class="panel__title">{{ 'Mail dashboard'|t }}</h2><% console.log(data) %>
 
         <% _.each( data.mail, function( item ) { %>
         <div class="panel__container">
-            <div class="panel__content">
+            <div class="panel__expand-header">
                 <ul class="list--inline">
                     <li>
-                        <b>Plugin</b> :<%= Drupal.webprofiler.helpers.classLink(item.plugin) %>
+                        <b>{{ 'Plugin'|t }}</b>: <%= Drupal.webprofiler.helpers.classLink(item.plugin) %>
                     </li>
                     <li>
-                        <b>ID</b> :<%- item.plugin.id %>
+                        <b>{{ 'ID'|t }}</b>: <%- item.message.id %>
+                    </li>
+                    <li>
+                        <b>{{ 'To'|t }}</b>: <%- item.message.to %>
+                    </li>
+                    <li>
+                        <b>{{ 'Subject'|t }}</b>: <%- item.message.subject %>
                     </li>
                 </ul>
+                <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
+            </div>
+
+            <div class="panel__expand-content">
                 <table class="table--duo">
                 <% _.each( item.message, function( message, key ) { %>
-                    <% if( key != 'params' && key != 'headers' ){ %>
-                    <tr>
-                        <th><%- key %></th>
-                        <td><%- message %></td>
-                    </tr>
-                    <% } %>
+                <% if( key != 'params' && key != 'headers' ){ %>
+                <tr>
+                    <th><%- key %></th>
+                    <td><%- message %></td>
+                </tr>
+                <% } %>
                 <% }); %>
                 </table>
-                <% if(item.message.headers){ %>
-                <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
-                <% } %>
-            </div>
-            <div class="panel__expand-content">
                 <table class="table--duo">
                     <% _.each( item.message.headers, function( header, key ) { %>
                     <tr>
@@ -56,7 +61,6 @@
                         <td><%- header %></td>
                     </tr>
                     <% }); %>
-
                 </table>
             </div>
 

@@ -61,6 +61,19 @@ class WebprofilerServiceProvider extends ServiceProviderBase {
           'priority' => 78,
         ]);
     }
+
+    // Add TranslationsDataCollector only if Locale module is enabled.
+    if (isset($modules['locale'])) {
+      $container->register('webprofiler.translations', 'Drupal\webprofiler\DataCollector\TranslationsDataCollector')
+        ->addArgument(new Reference(('string_translation')))
+        ->addArgument(new Reference(('url_generator')))
+        ->addTag('data_collector', [
+          'template' => '@webprofiler/Collector/translations.html.twig',
+          'id' => 'translations',
+          'title' => 'Translations',
+          'priority' => 210,
+        ]);
+    }
   }
 
   /**

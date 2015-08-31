@@ -49,18 +49,14 @@ class MailDataCollector extends DataCollector implements DrupalDataCollectorInte
    */
   public function addMessage($message, $plugin_id, $configuration, MailInterface $mail) {
     $class = get_class($mail);
-    $method = new \ReflectionMethod($class, 'mail');
+    $method = $this->getMethodData($class, 'mail');
 
     $this->messages[] = [
       'message' => $message,
       'plugin' => [
         'id' => $plugin_id,
-        'class' => $class,
-        'method' => 'mail',
-        'file' => $method->getFilename(),
-        'line' => $method->getStartLine(),
         'configuration' => $configuration,
-      ]
+      ] + $method
     ];
   }
 

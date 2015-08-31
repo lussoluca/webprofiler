@@ -26,14 +26,43 @@
 {% block panel %}
     <script id="http" type="text/template">
         <h2 class="panel__title">{{ 'Http'|t }}</h2>
+
+        <% _.each( data.completed, function( item ) { %>
         <div class="panel__container">
-            <table>
-                <% _.each( data.completed, function( item ){ %>
-                <tr>
-                    <td><%- item %></td>
-                </tr>
-                <% }); %>
-            </table>
+            <div class="panel__expand-header">
+                <ul class="list--inline">
+                    <li>
+                        <b>{{ 'Host'|t }}</b>: <%- item.request.uri.host %>
+                    </li>
+                    <li>
+                        <b>{{ 'Path'|t }}</b>: <%- item.request.uri.path %>
+                    </li>
+                    <li>
+                        <b>{{ 'Status'|t }}</b>: <%- item.response.status %> <%- item.response.phrase %>
+                    </li>
+                </ul>
+                <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
+            </div>
+
+            <div class="panel__expand-content">
+                <table class="table--duo">
+                    <% _.each( item.request, function( message, key ) { %>
+                    <tr>
+                        <th><%- key %></th>
+                        <td><%- message %></td>
+                    </tr>
+                    <% }); %>
+                </table>
+                <table class="table--duo">
+                    <% _.each( item.response, function( header, key ) { %>
+                    <tr>
+                        <th><%- key %></th>
+                        <td><%- header %></td>
+                    </tr>
+                    <% }); %>
+                </table>
+            </div>
         </div>
+        <% }); %>
     </script>
 {% endblock %}

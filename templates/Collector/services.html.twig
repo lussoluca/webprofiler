@@ -32,33 +32,34 @@
             <input class="tabs__radio" type="radio" id="http_middleware" name="tabs"/>
             <ul class="tabs__tabs list--inline">
                 <li><label class="tabs__label" for="services">services</label></li>
-                <li><label class="tabs__label" for="http_middleware">http_middleware</label></li>
+                <li><label class="tabs__label" for="http_middleware">middleware</label></li>
             </ul>
-            <form class="panel__toolbar">
-                <div class="panel__filter--text">
-                    <input id="edit-sid" class="js--live-filter" placeholder="{{ 'ID'|t }}" type="text"/>
-                    <label for="edit-sid" class="panel__filter-label">{{ 'ID'|t }}</label>
-                </div>
-                <div class="panel__filter--text">
-                    <input id="edit-class" class="js--live-filter" placeholder="{{ 'Class'|t }}" type="text"/>
-                    <label for="edit-class" class="panel__filter-label">{{ 'Class'|t }}</label>
-                </div>
-                <div class="panel__filter--text">
-                    <input id="edit-tags" class="js--live-filter" placeholder="{{ 'Tags'|t }}" type="text"/>
-                    <label for="edit-tags" class="panel__filter-label">{{ 'Tags'|t }}</label>
-                </div>
-                <div class="panel__filter--select">
-                    <select id="edit-initialized" class="js--live-filter">
-                        <option value="">{{ 'Any'|t }}</option>
-                        <option value="1">{{ 'Yes'|t }}</option>
-                        <option value="0">{{ 'No'|t }}</option>
-                    </select>
-                    <label for="edit-initialized" class="panel__filter-label">{{ 'Initialized'|t }}</label>
-                </div>
-            </form>
 
             <div class="tabs__panels">
                 <div class="tabs__panel">
+                    <form class="panel__toolbar">
+                        <div class="panel__filter--text">
+                            <input id="edit-sid" class="js--live-filter" placeholder="{{ 'ID'|t }}" type="text"/>
+                            <label for="edit-sid" class="panel__filter-label">{{ 'ID'|t }}</label>
+                        </div>
+                        <div class="panel__filter--text">
+                            <input id="edit-class" class="js--live-filter" placeholder="{{ 'Class'|t }}" type="text"/>
+                            <label for="edit-class" class="panel__filter-label">{{ 'Class'|t }}</label>
+                        </div>
+                        <div class="panel__filter--text">
+                            <input id="edit-tags" class="js--live-filter" placeholder="{{ 'Tags'|t }}" type="text"/>
+                            <label for="edit-tags" class="panel__filter-label">{{ 'Tags'|t }}</label>
+                        </div>
+                        <div class="panel__filter--select">
+                            <select id="edit-initialized" class="js--live-filter">
+                                <option value="">{{ 'Any'|t }}</option>
+                                <option value="1">{{ 'Yes'|t }}</option>
+                                <option value="0">{{ 'No'|t }}</option>
+                            </select>
+                            <label for="edit-initialized" class="panel__filter-label">{{ 'Initialized'|t }}</label>
+                        </div>
+                    </form>
+
                     <% _.each( data.services, function( item, key ){ %>
 
                     <% clazz = Drupal.webprofiler.helpers.classLink({"file" : item.value.file, "class" :
@@ -83,6 +84,14 @@
                                 <li>
                                     <b>{{ 'Initialized'|t }}</b>: <%- (item.initialized) ? '{{ 'Yes'|t }}' : '{{ 'No'|t }}' %>
                                 </li>
+                                <% if ( item.time ) { %>
+                                    <li>
+                                        <b>{{ 'Count'|t }}</b>: <%- item.time.count %>
+                                    </li>
+                                    <li>
+                                        <b>{{ 'Time'|t }}</b>: <%- Drupal.webprofiler.helpers.printTime(item.time.time, 'ms') %>
+                                    </li>
+                                <% } %>
                             </ul>
                             <% if ( tags.length > 0 || depends.length > 0 ) { %>
                             <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
@@ -114,21 +123,22 @@
                         <table>
                             <thead>
                             <tr>
-                                <th>{{ 'name'|t }}</th>
+                                <th>{{ 'id'|t }}</th>
+                                <th>{{ 'class'|t }}</th>
                                 <th>{{ 'priority'|t }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <% _.each( data.http_middleware, function( item, key ){ %>
+                            <% clazz = Drupal.webprofiler.helpers.classLink(item.value.handle_method) %>
                             <tr>
                                 <td><%- key %></td>
+                                <td><%= clazz %></td>
                                 <td><%- item.value.tags.http_middleware[0].priority %></td>
                             </tr>
                             <% }); %>
                             </tbody>
-
                         </table>
-
                     </div>
                 </div>
             </div>
