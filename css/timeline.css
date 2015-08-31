@@ -1,83 +1,42 @@
 /**
  * Timeline
  */
-/*
-.sf-profiler-timeline .legends {
+
+.legends {
   font-size: 12px;
   line-height: 1.5em;
 }
 
-.sf-profiler-timeline .legends span {
+.legends span {
   border-left-width: 10px;
   border-left-style: solid;
   padding: 0 10px 0 5px;
-}
-
-.timeline {
-  background-color: #fbfbfb;
-  margin-bottom: 15px;
-  margin-top: 5px;
-  shape-rendering: crispEdges;
-}
-
-.mini text {
-  font: 9px sans-serif;
-}
-
-.default {
-  fill: #E91E63;
-  stroke-width: 6;
 }
 
 .legends .default {
   border-left-color: #E91E63;
 }
 
-.section {
-  fill: #3F51B5;
-  stroke-width: 6;
-}
-
 .legends .section {
   border-left-color: #3F51B5;
-}
-
-.event_listener {
-  fill: #00BCD4;
-  stroke-width: 6;
 }
 
 .legends .event_listener {
   border-left-color: #00BCD4;
 }
 
-.event_listener_loading {
-  fill: #8BC34A;
-  stroke-width: 6;
-}
-
 .legends .event_listener_loading {
   border-left-color: #8BC34A;
-}
-
-.template {
-  fill: #FFC107;
-  stroke-width: 6;
 }
 
 .legends .template {
   border-left-color: #FFC107;
 }
 
-.service {
-    fill: #795548;
-    stroke-width: 6;
-}
-
 .legends .service {
     border-left-color: #795548;
 }
-*/
+
 text {
     font-size: 12px;
     line-height: 20px;
@@ -91,10 +50,13 @@ text {
     position: relative;
     padding:  0 0 40px 0;
 }
-.timeline__row ,
-.timeline__label rect{
-    fill: transparent;
+.timeline__row,
+.timeline__scale--x,
+.timeline__label rect {
     stroke: rgba(0, 0, 0, 0.18);
+}
+.timeline__row{
+    fill: transparent;
 }
 .timeline__label rect {
     fill: white;
@@ -122,8 +84,8 @@ text {
 }
 .tooltip{
     position: absolute;
-    padding: 16px;
-    background: white;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.87);
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
     width: 175px;
@@ -136,9 +98,7 @@ text {
 .tooltip__content{
     display: block;
 }
-
 .axis{
     stroke-width: 2px;
     fill: none;
-
 }
