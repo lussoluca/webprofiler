@@ -64,9 +64,21 @@
 
             printTime = function (data, unit) {
                 return data + ' ' + unit;
+            },
+
+            objCycle = function (obj){
+              var str = '<ul class="list--unstyled">', prop;
+                if(typeof obj != 'object'){
+                    return obj;
+                }
+                for (prop in obj){
+                    str += '<li>' + prop + ': ' + objCycle(obj[prop]) + '</li>';
+                }
+                return str + '</ul>';
             };
 
         return {
+            objCycle: objCycle,
             ideLink: ideLink,
             shortLink: shortLink,
             classLink: classLink,

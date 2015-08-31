@@ -80,6 +80,8 @@
                     </li>
                 </ul>
                 <div class="button--flat l-right js--panel-toggle">{{ 'Info'|t }}</div>
+                <a class="button--flat l-right " href="<%- item.route %>">{{ 'Edit'|t }}</a>
+
             </div>
 
             <div class="panel__expand-content">
@@ -100,10 +102,6 @@
                         <tr>
                             <th>{{ 'Plugin'|t }}</th>
                             <td><%- item.plugin %></td>
-                        </tr>
-                        <tr>
-                            <th>{{ 'Operations'|t }}</th>
-                            <td><a href="<%- item.route %>">{{ 'Edit'|t }}</a></td>
                         </tr>
                     </table>
                 </div>

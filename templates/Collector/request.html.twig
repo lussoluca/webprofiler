@@ -74,7 +74,7 @@
                 <% _.each( data.request_request, function( item, key ){ %>
                 <tr>
                     <td><%- key %></td>
-                    <td><%- item %></td>
+                    <td><%= Drupal.webprofiler.helpers.objCycle(item) %></td>
                 </tr>
                 <% }); %>
                 </tbody>
@@ -96,7 +96,7 @@
                     <% if(key == '_controller') { %>
                     <td><%= Drupal.webprofiler.helpers.classLink(data.controller) %></td>
                     <% } else { %>
-                    <td><%- item %></td>
+                    <td><%= Drupal.webprofiler.helpers.objCycle(item) %></td>
                     <% } %>
                 </tr>
                 <% }); %>
@@ -115,7 +115,7 @@
                 <% _.each( data.request_cookies, function( item, key ){ %>
                 <tr>
                     <td><%- key %></td>
-                    <td><%- item %></td>
+                    <td><%= Drupal.webprofiler.helpers.objCycle(item) %></td>
                 </tr>
                 <% }); %>
                 </tbody>
@@ -133,7 +133,7 @@
                 <% _.each( data.request_headers, function( item, key ){ %>
                 <tr>
                     <td><%- key %></td>
-                    <td><%- item %></td>
+                    <td><%= Drupal.webprofiler.helpers.objCycle(item) %></td>
                 </tr>
                 <% }); %>
                 </tbody>
@@ -179,7 +179,7 @@
                 <% _.each( data.request_server, function( item, key ){ %>
                 <tr>
                     <td><%- key %></td>
-                    <td><%- item %></td>
+                    <td><%= Drupal.webprofiler.helpers.objCycle(item) %></td>
                 </tr>
                 <% }); %>
                 </tbody>
@@ -196,7 +196,7 @@
                 <% _.each( data.response_headers, function( item, key ){ %>
                 <tr>
                     <td><%- key %></td>
-                    <td><%- item %></td>
+                    <td><%= Drupal.webprofiler.helpers.objCycle(item) %></td>
                 </tr>
                 <% }); %>
                 </tbody>
