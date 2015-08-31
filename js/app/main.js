@@ -51,33 +51,37 @@
 
                 },
 
+
+                modalFill = function(t,c){
+                    $('.modal__title').html(t);
+                    $('.modal__main-data').html(c);
+                },
+
                 clipboard = function (e, t) {
                     var clip = e.parent().find(t).get(0),
-                        prompt = function () {
-                            window.prompt("Copy to clipboard: Ctrl+C or cmd+C, Enter", clip.textContent)
-                        };
+                        title = 'Original Code',
+                        content = '<textarea readonly >' +
+                            clip.textContent +
+                            '</textarea>';
 
-                    if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
-                        prompt();
-                    } else {
-                        var temp = $('<textarea readonly class="js--textarea is--hidden" >' + clip.innerText + '</textarea>');
-                            temp.appendTo(e.parent()).select();
-                        try {
-                            var successful = document.execCommand('copy');
-
-                        } catch (err) {
-                            prompt();
-                        }
-                        $('.js--textarea').remove();
-                    }
+                    modalFill(title,content);
+                    $('.modal').show();
 
                 };
+
+
 
 
             $(context).find('#collectors').once('webprofiler').each(function () {
                 new Drupal.webprofiler.routers.CollectorsRouter({el: $('#collectors')});
                 Backbone.history.start({
                     pushState: false
+                });
+            });
+
+            $(context).find('.js--modal-close').each(function () {
+                $(this).on('click', function () {
+                    $('.js--modal').hide();
                 });
             });
 
@@ -98,7 +102,6 @@
 
             $(context).find('.js--clipboard-trigger').once('js--clipboard-trigger').each(function () {
                 $(this).on('click', function () {
-                        console.log('click');
                         clipboard($(this), '.js--clipboard-target')
                     }
                 );
