@@ -22,9 +22,21 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
   use StringTranslationTrait, DrupalDataCollectorTrait;
 
   /**
-   * Constructs a AssetDataCollector object.
+   * The app root.
+   *
+   * @var string
    */
-  public function __construct() {
+  protected $root;
+
+  /**
+   * Constructs a AssetDataCollector object.
+   *
+   * @param string $root
+   *   The app root.
+   */
+  public function __construct($root) {
+    $this->root = $root;
+
     $this->data['js'] = [];
     $this->data['css'] = [];
   }
@@ -33,6 +45,7 @@ class AssetsDataCollector extends DataCollector implements DrupalDataCollectorIn
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
+    $this->data['assets']['installation_path'] = $this->root . '/';
   }
 
   /**

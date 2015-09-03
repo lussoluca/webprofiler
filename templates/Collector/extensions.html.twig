@@ -27,8 +27,69 @@
 {% block panel %}
     <script id="drupal_extension" type="text/template">
         <h2 class="panel__title">{{ 'Extensions'|t }}</h2>
-        <div class="panel__container">
+        <div class="tabs">
+            <input class="tabs__radio" type="radio" id="modules" name="tabs" checked/>
+            <input class="tabs__radio" type="radio" id="themes" name="tabs"/>
+            <ul class="tabs__tabs list--inline">
+                <li><label class="tabs__label" for="modules">{{ 'Modules'|t }}</label></li>
+                <li><label class="tabs__label" for="themes">{{ 'Themes'|t }}</label></li>
+            </ul>
 
+            <div class="tabs__panels">
+                <div class="tabs__panel">
+                    <div class="panel__container">
+                        <table class="table--compact">
+                            <thead>
+                            <tr>
+                                <th>{{ 'Name'|t }}</th>
+                                <th>{{ 'Path'|t }}</th>
+                                <th>{{ 'Info file'|t }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% _.each( data.drupal_extension.modules, function( value, key ){ %>
+                            <% if(value.public_type == 'module') { %>
+                            <tr>
+                                <td><%- key %></td>
+                                <td><%- value.public_path %></td>
+                                <td><%= Drupal.webprofiler.helpers.classLink({"file" :
+                                    data.drupal_extension.installation_path + value.public_pathname, "class":
+                                    value.public_pathname, "line": 0}) %>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tabs__panel">
+                    <div class="panel__container">
+                        <table class="table--compact">
+                            <thead>
+                            <tr>
+                                <th>{{ 'Name'|t }}</th>
+                                <th>{{ 'Path'|t }}</th>
+                                <th>{{ 'Info file'|t }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% _.each( data.drupal_extension.themes, function( value, key ){ %>
+                            <tr>
+                                <td><%- key %></td>
+                                <td><%- value.public_path %></td>
+                                <td><%= Drupal.webprofiler.helpers.classLink({"file" :
+                                    data.drupal_extension.installation_path + value.public_pathname, "class":
+                                    value.public_pathname, "line": 0}) %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </script>
 {% endblock %}

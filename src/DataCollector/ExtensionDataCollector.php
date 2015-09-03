@@ -37,14 +37,24 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
   protected $themeHandler;
 
   /**
+   * The app root.
+   *
+   * @var string
+   */
+  protected $root;
+
+  /**
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
    * @param \Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
    *   The theme handler.
+   * @param string $root
+   *   The app root.
    */
-  public function __construct(ModuleHandlerInterface $module_handler, ThemeHandlerInterface $theme_handler) {
+  public function __construct(ModuleHandlerInterface $module_handler, ThemeHandlerInterface $theme_handler, $root) {
     $this->moduleHandler = $module_handler;
     $this->themeHandler = $theme_handler;
+    $this->root = $root;
 
     $this->data['drupal_extension']['modules'] = [];
     $this->data['drupal_extension']['themes'] = [];
@@ -60,6 +70,7 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
     $this->data['drupal_extension']['count'] = count($modules) + count($themes);
     $this->data['drupal_extension']['modules'] = $modules;
     $this->data['drupal_extension']['themes'] = $themes;
+    $this->data['drupal_extension']['installation_path'] = $this->root . '/';
   }
 
   /**

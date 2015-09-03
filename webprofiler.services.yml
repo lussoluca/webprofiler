@@ -117,7 +117,7 @@ services:
 
   webprofiler.drupal_extensions:
     class: Drupal\webprofiler\DataCollector\ExtensionDataCollector
-    arguments: ['@module_handler', '@theme_handler']
+    arguments: ['@module_handler', '@theme_handler', '@app.root']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/extensions.html.twig', id:'drupal_extension', title:'Extensions', priority: 90 }
 
@@ -134,6 +134,7 @@ services:
 
   webprofiler.assets:
     class: Drupal\webprofiler\DataCollector\AssetsDataCollector
+    arguments: ['@app.root']
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/assets.html.twig', id:'assets', title:'Assets', priority: 120}
 
@@ -165,22 +166,16 @@ services:
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/http.html.twig', id:'http', title:'Http', priority: 170 }
 
-  webprofiler.twig:
-    class: Drupal\webprofiler\DataCollector\TwigDataCollector
-    arguments: ['@twig.profile']
+  webprofiler.theme:
+    class: Drupal\webprofiler\DataCollector\ThemeDataCollector
+    arguments: ['@theme.manager', '@theme.negotiator', '@twig.profile']
     tags:
-      - { name: data_collector, template:'@webprofiler/Collector/twig.html.twig', id:'twig', title:'Twig', priority: 180 }
+      - { name: data_collector, template:'@webprofiler/Collector/theme.html.twig', id:'theme', title:'Theme', priority: 180 }
 
   webprofiler.mail:
     class: Drupal\webprofiler\DataCollector\MailDataCollector
     tags:
       - { name: data_collector, template:'@webprofiler/Collector/mail.html.twig', id:'mail', title:'Mail', priority: 190 }
-
-  webprofiler.theme:
-    class: Drupal\webprofiler\DataCollector\ThemeDataCollector
-    arguments: ['@theme.manager', '@theme.negotiator']
-    tags:
-      - { name: data_collector, template:'@webprofiler/Collector/theme.html.twig', id:'theme', title:'Theme', priority: 200 }
 
 # debug services
   stopwatch:

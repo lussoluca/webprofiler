@@ -82,7 +82,7 @@
 
                     </pre>
                 <ul class="list--inline">
-                    <li><b>{{ 'Time'|t }}</b>: <%- item.time %></li>
+                    <li><b>{{ 'Time'|t }}</b>: <%- Drupal.webprofiler.helpers.printTime(item.time, 'ms') %></li>
                     <li><b>{{ 'Caller'|t }}</b>: <%= Drupal.webprofiler.helpers.classLink({"file" : item.caller.file,
                         "class" : item.caller.class, "line" : item.caller.line, "method" : item.caller.function}) %>
                     </li>

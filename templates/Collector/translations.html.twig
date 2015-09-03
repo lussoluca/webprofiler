@@ -51,7 +51,7 @@
                             <tr>
                                 <td><%= key %></td>
                                 <td><%= value %></td>
-                                <td><a href="<%- data.user_interface_translations_path %>?string=<%- key%>" target="_blank">{{ 'Edit'|t }}</a></td>
+                                <td><a href="<%- data.user_interface_translations_path %>?string=<%- key%>" target="_blank" class="h--word-intact">{{ 'Edit'|t }}</a></td>
                             </tr>
                             <% }); %>
                             </tbody>
@@ -72,12 +72,11 @@
                             <% _.each( data.translations.untranslated, function( value, key ){ %>
                             <tr>
                                 <td><%= key %></td>
-                                <td><a href="<%- data.user_interface_translations_path %>?string=<%- key%>" target="_blank">{{ 'Edit'|t }}</a></td>
+                                <td><a href="<%- data.user_interface_translations_path %>?string=<%- key%>" target="_blank" class="h--word-intact">{{ 'Edit'|t }}</a></td>
                             </tr>
                             <% }); %>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>

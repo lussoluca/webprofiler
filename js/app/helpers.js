@@ -63,6 +63,7 @@
             },
 
             printTime = function (data, unit) {
+                data = Math.round((data + 0.00001) * 100) / 100;
                 return data + ' ' + unit;
             },
 

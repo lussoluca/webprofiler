@@ -67,13 +67,13 @@
             <div class="panel__expand-header">
                 <ul class="list--inline">
                     <li>
-                        <b>{{ 'ID'|t }}</b>: <%- item.id %>
+                        <b>{{ 'ID'|t }}</b> <%- item.id %>
                     </li>
                     <li>
-                        <b>{{ 'Label'|t }}</b>: <%= item.settings.label %>
+                        <b>{{ 'Label'|t }}</b> <%= item.settings.label %>
                     </li>
                     <li>
-                        <b>{{ 'Region'|t }}</b>: <%= (item.region == -1) ? '{{ 'No region'|t }}' : item.region %>
+                        <b>{{ 'Region'|t }}</b> <%= (item.region == -1) ? '{{ 'No region'|t }}' : item.region %>
                     </li>
                     <li>
                         <b><%- (data.blocks.rendered[item.id]) ? '' : '{{ 'Not rendered'|t }}' %></b>
