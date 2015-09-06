@@ -12,7 +12,7 @@ use Drupal\Core\Theme\ThemeNegotiatorInterface;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webprofiler\Theme\ThemeNegotiatorWrapper;
-use Drupal\webprofiler\Twig\Dumper\Html;
+use Drupal\webprofiler\Twig\Dumper\HtmlDumper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
