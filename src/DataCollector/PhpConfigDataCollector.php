@@ -143,6 +143,13 @@ class PhpConfigDataCollector extends DataCollector implements DrupalDataCollecto
   /**
    * {@inheritdoc}
    */
+  public function getPanelSummary() {
+    return $this->t('PHP: @version', ['@version' => $this->getPhpVersion()]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getName() {
     return 'php_config';
   }

@@ -81,7 +81,7 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
    * @return \Drupal\Core\Session\AccountInterface
    */
   public function getUserName() {
-    return SafeMarkup::checkPlain($this->data['name']);
+    return $this->data['name'];
   }
 
   /**
@@ -124,6 +124,13 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
    */
   public function getTitle() {
     return $this->t('User');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPanelSummary() {
+    return $this->getUserName();
   }
 
   /**
