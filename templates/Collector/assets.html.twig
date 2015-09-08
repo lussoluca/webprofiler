@@ -37,22 +37,18 @@
             <ul class="tabs__tabs list--inline">
                 <% if( data.js.length != 0){ %>
                 <li><label class="tabs__label" for="js">JS</label></li>
-
                 <% } %>
                 <% if( data.js.length != 0){ %>
                 <li><label class="tabs__label" for="css">CSS</label></li>
-
                 <% } %>
             </ul>
             <div class="tabs__panels">
                 <div class="tabs__panel">
                     <% if( data.js.length != 0){ %>
-
                     <% _.each( data.js, function( item, key ){ %>
                     <% if( key === 'drupalSettings' ){ %>
                     <div class="panel__container">
                         <div class="panel__expand-header ">
-
                             <ul class="list--inline">
                                 <li><b>asset</b> <%- key %></li>
                             </ul>
@@ -105,7 +101,6 @@
                 </div>
                 <div class="tabs__panel">
                     <% if( data.css.length != 0){ %>
-
                     <% _.each( data.css, function( item, key ){ %>
                     <div class="panel__container">
                         <div class="panel__expand-header ">
@@ -132,7 +127,6 @@
                 </div>
             </div>
         </div>
-
 
         <% } %>
     </script>

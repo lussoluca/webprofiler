@@ -78,9 +78,11 @@
                                 <li>
                                     <b>{{ 'ID'|t }}</b> <%- key %>
                                 </li>
+                                <% if (clazz) { %>
                                 <li>
                                     <b>{{ 'Class'|t }}</b> <%= clazz %>
                                 </li>
+                                <% } %>
                                 <li>
                                     <b>{{ 'Initialized'|t }}</b> <%- (item.initialized) ? '{{ 'Yes'|t }}' : '{{ 'No'|t }}' %>
                                 </li>

@@ -53,8 +53,12 @@ class PerformanceTimingDataCollector extends DataCollector implements DrupalData
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    $performanceData = new PerformanceTimingData($this->data['performance']);
-    return $this->t('TTFB: @ttfb', ['@ttfb' => $performanceData->getTtfbTiming()]);
+    if (isset($this->data['performance'])) {
+      $performanceData = new PerformanceTimingData($this->data['performance']);
+      return $this->t('TTFB: @ttfb', ['@ttfb' => sprintf('%.0f ms', $performanceData->getTtfbTiming())]);
+    }
+
+    return NULL;
   }
 
   /**

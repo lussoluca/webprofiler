@@ -26,6 +26,8 @@ class FormsDataCollector extends DataCollector implements DrupalDataCollectorInt
    */
   public function __construct(FormBuilderWrapper $formBuilder) {
     $this->formBuilder = $formBuilder;
+
+    $this->data['forms'] = [];
   }
 
   /**

@@ -25,7 +25,6 @@
                 filter = [],
 
                 livefilter = function (e) {
-
                     el = $(e).attr('id').replace('edit-', '');
                     value = $(e).val();
                     filter[el] = value.replace('/', '\/');
@@ -48,9 +47,7 @@
                         $(unselected[elz]).addClass('is--hidden');
                     }
                     $(selector.join('')).removeClass('is--hidden');
-
                 },
-
 
                 modalFill = function(t,c){
                     $('.modal__title').html(t);
@@ -66,7 +63,6 @@
 
                     modalFill(title,content);
                     $('.modal').show();
-
                 };
 
             $(context).find('#collectors').once('webprofiler').each(function () {

@@ -24,15 +24,20 @@ class TranslationsDataCollector extends DataCollector implements DrupalDataColle
   private $translation;
 
   /**
+   * @var \Drupal\Core\Routing\UrlGeneratorInterface
+   */
+  private $urlGenerator;
+
+  /**
    * @param \Drupal\Core\StringTranslation\TranslationInterface $translation
    * @param \Drupal\Core\Routing\UrlGeneratorInterface $urlGenerator
    */
   public function __construct(TranslationInterface $translation, UrlGeneratorInterface $urlGenerator) {
     $this->translation = $translation;
+    $this->urlGenerator = $urlGenerator;
 
     $this->data['translations']['translated'] = [];
     $this->data['translations']['untranslated'] = [];
-    $this->data['user_interface_translations_path'] = '';//$urlGenerator->generateFromRoute('locale.translate_page');
   }
 
   /**
@@ -44,6 +49,7 @@ class TranslationsDataCollector extends DataCollector implements DrupalDataColle
       $this->data['translations']['translated'] = $this->translation->getTranslated();
       $this->data['translations']['untranslated'] = $this->translation->getUntranslated();
     }
+    $data['user_interface_translations_path'] = $this->urlGenerator->generateFromRoute('locale.translate_page');
   }
 
   /**
