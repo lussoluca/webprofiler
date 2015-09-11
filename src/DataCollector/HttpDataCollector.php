@@ -42,6 +42,7 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
     $completed = $this->middleware->getCompletedRequests();
+    $failed = $this->middleware->getFailedRequests();
 
     foreach ($completed as $data) {
       /** @var \GuzzleHttp\Psr7\Request $request */
@@ -74,7 +75,36 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
       ];
     }
 
-    $this->data['failed'] = $this->middleware->getFailedRequests();
+    foreach ($failed as $data) {
+      /** @var \GuzzleHttp\Psr7\Request $request */
+      $request = $data['request'];
+      /** @var \GuzzleHttp\Psr7\Response $response */
+      $response = $data['response'];
+
+      $uri = $request->getUri();
+      $this->data['failed'][] = [
+        'request' => [
+          'method' => $request->getMethod(),
+          'uri' => [
+            'schema' => $uri->getScheme(),
+            'host' => $uri->getHost(),
+            'port' => $uri->getPort(),
+            'path' => $uri->getPath(),
+            'query' => $uri->getQuery(),
+            'fragment' => $uri->getFragment(),
+          ],
+          'headers' => $request->getHeaders(),
+          'protocol' => $request->getProtocolVersion(),
+          'request_target' => $request->getRequestTarget(),
+        ],
+        'response' => [
+          'phrase' => $response->getReasonPhrase(),
+          'status' => $response->getStatusCode(),
+          'headers' => $response->getHeaders(),
+          'protocol' => $response->getProtocolVersion(),
+        ]
+      ];
+    }
   }
 
   /**

@@ -36,6 +36,46 @@ class EventsDataCollector extends BaseEventDataCollector implements DrupalDataCo
   /**
    * {@inheritdoc}
    */
+  public function setCalledListeners(array $listeners) {
+    $listeners = $this->computePriority($listeners);
+    $this->data['called_listeners'] = $listeners;
+  }
+
+  /**
+   * Adds the priority value to the $listeners array.
+   *
+   * @param array $listeners
+   * @return array
+   */
+  private function computePriority(array $listeners) {
+    foreach ($listeners as &$listener) {
+      foreach ($listener['class']::getSubscribedEvents() as $event => $methods) {
+
+        if (is_string($methods)) {
+          $methods = [[$methods], 0];
+        }
+        else {
+          if (is_string($methods[0])) {
+            $methods = [$methods];
+          }
+        }
+
+        foreach ($methods as $method) {
+          if ($listener['event'] === $event) {
+            if ($listener['method'] === $method[0]) {
+              $listener['priority'] = isset($method[1]) ? $method[1] : 0;
+            }
+          }
+        }
+      }
+    }
+
+    return $listeners;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getTitle() {
     return $this->t('Events');
   }

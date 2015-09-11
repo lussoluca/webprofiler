@@ -229,7 +229,7 @@ services:
     properties:
       _serviceId: 'state'
 
-# middlewares
+# middleware
   http_middleware.webprofiler:
     class: Drupal\webprofiler\StackMiddleware\WebprofilerMiddleware
     tags:

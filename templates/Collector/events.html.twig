@@ -33,7 +33,8 @@
             <table class="table--duo">
                 <thead>
                 <th>{{ 'Called listeners'|t }}</th>
-                <th>{{ 'Value'|t }}</th>
+                <th>{{ 'Class'|t }}</th>
+                <th>{{ 'Priority'|t }}</th>
                 </thead>
                 <tbody> <% _.each( data.called_listeners, function( item ){ %>
                 <tr>
@@ -45,6 +46,7 @@
                     <% } else { %>
                     <td>{{ 'Closure'|t }}</td>
                     <% } %>
+                    <td><%= item.priority %></td>
                 </tr>
                 <% }); %>
                 </tbody>
@@ -55,7 +57,7 @@
             <table class="table--duo">
                 <thead>
                 <th>{{ 'Non called listeners'|t }}</th>
-                <th>{{ 'Value'|t }}</th>
+                <th>{{ 'Class'|t }}</th>
                 </thead>
                 <tbody>
                 <% _.each( data.not_called_listeners, function( item ){ %>

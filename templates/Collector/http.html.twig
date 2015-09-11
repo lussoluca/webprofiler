@@ -50,7 +50,7 @@
                     <% _.each( item.request, function( message, key ) { %>
                     <tr>
                         <th><%- key %></th>
-                        <td><%- message %></td>
+                        <td><%= Drupal.webprofiler.helpers.frm(message) %></td>
                     </tr>
                     <% }); %>
                 </table>
@@ -58,7 +58,7 @@
                     <% _.each( item.response, function( header, key ) { %>
                     <tr>
                         <th><%- key %></th>
-                        <td><%- header %></td>
+                        <td><%= Drupal.webprofiler.helpers.frm(header) %></td>
                     </tr>
                     <% }); %>
                 </table>
