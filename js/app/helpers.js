@@ -68,7 +68,7 @@
       },
 
       frm = function (obj) {
-        var str = '<ul class="list--unstyled">', prop;
+        var str = '<ul class="list--unstyled list--flat">', prop;
         if (typeof obj != 'object') {
           return obj;
         }
