@@ -165,7 +165,7 @@ class ThemeDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->getActiveTheme();
+    return $this->t('Name: @name', ['@name' => $this->getActiveTheme()['name']]);
   }
 
   /**
