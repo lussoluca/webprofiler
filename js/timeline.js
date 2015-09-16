@@ -19,7 +19,7 @@
                     rowW,
                     scalePadding,
                     endTime = parseInt(data[(dataL - 1)].endtime),
-                    roundTime = Math.ceil(endTime/1000)*1000,
+                    roundTime = Math.ceil(endTime / 1000) * 1000,
                     endScale;
 
                 for (var j = 0; j < dataL; j++) {
@@ -196,22 +196,38 @@
                     .attr('transform', 'translate(' + scalePadding + ', ' + dataL * 22 + ')')
                     .call(xAxis);
 
-                endScale = xscale(parseInt(data[(dataL - 1)].endtime) - rowW - scalePadding );
 
-                var zoom = d3.select('.timeline__canvas')
-                    .call(
-                    d3.behavior.zoom()
-                        .scaleExtent([1, 1])
-                        .x(xscale)
-                        .on("zoom", function () {
-                            var t = d3.event.translate,
-                                tx = t[0];
-                            tx = tx > 0 ? 0 : tx;
-                            tx = tx < endScale ? endScale : tx;
+                endScale = xscale(endTime) - rowW - parseInt(scalePadding);
 
-                            d3.select('.timeline__parts').attr("transform", "translate( " + tx + " , 0)");
-                        }));
+                console.log('x ', endTime);
+                console.log('xscale ',parseInt(xscale(endTime)));
+                console.log('r ',rowW);
+                console.log('sca ',parseInt(scalePadding));
+                console.log('e  ',endScale);
 
+                if( parseInt(xscale(endTime)) > ( rowW - parseInt(scalePadding))){
+                    var zoom = d3.select('.timeline__canvas')
+                        .call(
+                        d3.behavior.zoom()
+                            .scaleExtent([1, 1])
+                            .x(xscale)
+                            .on("zoom", function () {
+
+                                var t = d3.event.translate,
+                                    tx = t[0];
+
+                                console.log('t ',t);
+                                console.log('tx ',tx);
+                                console.log('end ',endScale);
+
+                                tx = tx > 0 ? 0 : tx;
+
+                                tx = tx < endScale ? endScale : tx;
+
+
+                                d3.select('.timeline__parts').attr("transform", "translate( " + tx + " , 0)");
+                            }));
+                }
 
             }
         }

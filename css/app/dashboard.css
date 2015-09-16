@@ -78,6 +78,8 @@
     #webprofiler .list--inline > li {
       display: inline-block;
       padding: 8px; }
+  #webprofiler .list--flat > li {
+    padding: 0 0 0 0; }
   #webprofiler pre {
     padding: 16px; }
   #webprofiler pre, #webprofiler code {
