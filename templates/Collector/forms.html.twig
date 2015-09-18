@@ -27,7 +27,7 @@
 {% block panel %}
     <script id="forms" type="text/template">
         <h2 class="panel__title">{{ 'Forms'|t }}</h2>
-        <% if( data.forms.length != 0){ %>
+        <% if( data.forms && data.forms.length != 0){ %>
             <% _.each( data.forms, function( item, key ){ %>
                 <div class="panel__container">
 

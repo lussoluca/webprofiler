@@ -10,6 +10,7 @@ namespace Drupal\webprofiler\DataCollector;
 use Drupal\webprofiler\Http\HttpClientMiddleware;
 use Drupal\webprofiler\DrupalDataCollectorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use GuzzleHttp\TransferStats;
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,6 +50,8 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
       $request = $data['request'];
       /** @var \GuzzleHttp\Psr7\Response $response */
       $response = $data['response'];
+      /** @var \GuzzleHttp\TransferStats $stats */
+      $stats = $request->stats;
 
       $uri = $request->getUri();
       $this->data['completed'][] = [
@@ -65,6 +68,10 @@ class HttpDataCollector extends DataCollector implements DrupalDataCollectorInte
           'headers' => $request->getHeaders(),
           'protocol' => $request->getProtocolVersion(),
           'request_target' => $request->getRequestTarget(),
+          'stats' => [
+            'transferTime' => $stats->getTransferTime(),
+            'handlerStats' => $stats->getHandlerStats()
+          ],
         ],
         'response' => [
           'phrase' => $response->getReasonPhrase(),

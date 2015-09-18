@@ -3,6 +3,7 @@
 namespace Drupal\webprofiler\Http;
 
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\TransferStats;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -34,6 +35,11 @@ class HttpClientMiddleware {
   public function __invoke() {
     return function ($handler) {
       return function (RequestInterface $request, array $options) use ($handler) {
+
+        $options['on_stats'] = function (TransferStats $stats) use ($request) {
+          $request->stats = $stats;
+        };
+
         return $handler($request, $options)->then(
           function ($response) use ($request) {
 

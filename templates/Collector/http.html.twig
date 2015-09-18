@@ -48,6 +48,9 @@
             <div class="panel__expand-content">
                 <table class="table--duo">
                     <% _.each( item.request, function( message, key ) { %>
+
+                    <% if(key == 'stats') { key = 'stats (time in milliseconds and data in bytes)' } %>
+
                     <tr>
                         <th><%- key %></th>
                         <td><%= Drupal.webprofiler.helpers.frm(message) %></td>

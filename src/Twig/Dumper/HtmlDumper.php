@@ -18,7 +18,7 @@ class HtmlDumper extends \Twig_Profiler_Dumper_Text {
    * {@inheritdoc}
    */
   public function dump(\Twig_Profiler_Profile $profile) {
-    return '<pre class="h--word-intact">' . parent::dump($profile) . '</pre>';
+    return '<pre class="h--word-intact"><code class="code--json">' . parent::dump($profile) . '</code></pre>';
   }
 
   protected function formatTemplate(\Twig_Profiler_Profile $profile, $prefix) {

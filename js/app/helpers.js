@@ -67,16 +67,17 @@
         return data + ' ' + unit;
       },
 
-      frm = function (obj) {
-        var str = '<ul class="list--unstyled list--flat">', prop;
+      frm = function (obj, level) {
+        level = level || 0;
+        var str = '<ul class="list--unstyled list--level-' + level + ' list--flat">', prop;
         if (typeof obj != 'object') {
           return obj;
         }
         for (prop in obj) {
           if (isInt(prop)) {
-            str += '<li>' + frm(obj[prop]) + '</li>';
+            str += '<li>' + frm(obj[prop], level + 1) + '</li>';
           } else {
-            str += '<li>' + prop + ': ' + frm(obj[prop]) + '</li>';
+            str += '<li><span class="list-item--bold">' + prop + '</span>: ' + frm(obj[prop], level + 1) + '</li>';
           }
         }
         return str + '</ul>';
