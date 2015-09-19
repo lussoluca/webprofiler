@@ -21,7 +21,7 @@
 
 {% block panel %}
     <script id="mail" type="text/template">
-        <h2 class="panel__title">{{ 'Mail dashboard'|t }}</h2><% console.log(data) %>
+        <h2 class="panel__title">{{ 'Mail dashboard'|t }}</h2>
 
         <% if( data.mail.length != 0){ %>
         <% _.each( data.mail, function( item ) { %>

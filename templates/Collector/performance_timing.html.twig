@@ -64,7 +64,7 @@
                     <% _.each( data.performance.computed, function( item, key ){ %>
                     <tr>
                         <th><%- key %></th>
-                        <td><%- Drupal.webprofiler.helpers.printTime(item, 'ms') %></td>
+                        <td><%- Drupal.webprofiler.helpers.printTime(item) %></td>
                     </tr>
                     <% }); %>
                 </table>

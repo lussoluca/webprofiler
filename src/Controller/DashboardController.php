@@ -127,7 +127,7 @@ class DashboardController extends ControllerBase {
     $build['panels'] = [
       '#theme' => 'webprofiler_dashboard',
       '#profile' => $profile,
-      '#panels' => render($panels),
+      '#panels' => $panels,
       '#spinner_path' => '/' . $this->moduleHandler()
           ->getModule('webprofiler')
           ->getPath() . '/images/searching.gif',

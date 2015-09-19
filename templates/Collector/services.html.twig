@@ -91,7 +91,7 @@
                                         <b>{{ 'Count'|t }}</b> <%- item.time.count %>
                                     </li>
                                     <li>
-                                        <b>{{ 'Time'|t }}</b> <%- Drupal.webprofiler.helpers.printTime(item.time.time, 'ms') %>
+                                        <b>{{ 'Time'|t }}</b> <%- Drupal.webprofiler.helpers.printTime(item.time.time) %>
                                     </li>
                                 <% } %>
                             </ul>

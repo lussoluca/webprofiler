@@ -199,12 +199,6 @@
 
                 endScale = xscale(endTime) - rowW - parseInt(scalePadding);
 
-                console.log('x ', endTime);
-                console.log('xscale ',parseInt(xscale(endTime)));
-                console.log('r ',rowW);
-                console.log('sca ',parseInt(scalePadding));
-                console.log('e  ',endScale);
-
                 if( parseInt(xscale(endTime)) > ( rowW - parseInt(scalePadding))){
                     var zoom = d3.select('.timeline__canvas')
                         .call(
@@ -215,10 +209,6 @@
 
                                 var t = d3.event.translate,
                                     tx = t[0];
-
-                                console.log('t ',t);
-                                console.log('tx ',tx);
-                                console.log('end ',endScale);
 
                                 tx = tx > 0 ? 0 : tx;
 

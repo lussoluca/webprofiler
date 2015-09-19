@@ -74,13 +74,13 @@ class WebprofilerEventSubscriber implements EventSubscriberInterface {
 
     if (FALSE !== $pos) {
       if ($token = $response->headers->get('X-Debug-Token')) {
-        $toolbar = [
+        $loader = [
           '#theme' => 'webprofiler_loader',
           '#token' => $token,
           '#profiler_url' => $this->urlGenerator->generate('webprofiler.toolbar', ['profile' => $token]),
         ];
 
-        $content = mb_substr($content, 0, $pos) . $this->renderer->renderRoot($toolbar) . mb_substr($content, $pos);
+        $content = mb_substr($content, 0, $pos) . $this->renderer->renderRoot($loader) . mb_substr($content, $pos);
         $response->setContent($content);
       }
     }
