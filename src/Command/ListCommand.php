@@ -7,7 +7,7 @@
 
 namespace Drupal\webprofiler\Command;
 
-use Drupal\AppConsole\Command\ContainerAwareCommand;
+use Drupal\Console\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

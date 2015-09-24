@@ -7,7 +7,7 @@
 
 namespace Drupal\webprofiler\Command;
 
-use Drupal\AppConsole\Command\ContainerAwareCommand;
+use Drupal\Console\Command\ContainerAwareCommand;
 use Drupal\Core\Archiver\ArchiveTar;
 use Drupal\webprofiler\Profiler\Profiler;
 use Symfony\Component\Console\Helper\ProgressBar;
