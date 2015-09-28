@@ -357,8 +357,22 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
   /**
    * {@inheritdoc}
    */
-  public function getFormModeOptions($entity_type_id, $include_disabled = FALSE) {
-    return $this->entityManager->getFormModeOptions($entity_type_id, $include_disabled);
+  public function getFormModeOptions($entity_type_id) {
+    return $this->entityManager->getFormModeOptions($entity_type_id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getViewModeOptionsByBundle($entity_type_id, $bundle) {
+    return $this->entityManager->getViewModeOptionsByBundle($entity_type_id, $bundle);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormModeOptionsByBundle($entity_type_id, $bundle) {
+    return $this->entityManager->getFormModeOptionsByBundle($entity_type_id, $bundle);
   }
 
   /**
