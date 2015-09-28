@@ -5,7 +5,7 @@
   Drupal.webprofiler.collectors.Collectors = Backbone.Collection.extend({
     model: Drupal.webprofiler.models.Collector,
 
-    url: '/admin/reports/profiler/view/' + drupalSettings.webprofiler.token + '/collectors',
+    url: Drupal.url('admin/reports/profiler/view/' + drupalSettings.webprofiler.token + '/collectors'),
 
     /**
      * Unselect all models.

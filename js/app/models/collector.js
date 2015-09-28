@@ -4,7 +4,7 @@
 
   Drupal.webprofiler.models.Collector = Backbone.Model.extend({
     idAttribute: 'name',
-    urlRoot: '/admin/reports/profiler/view/' + drupalSettings.webprofiler.token + '/collectors',
+    urlRoot: Drupal.url('admin/reports/profiler/view/' + drupalSettings.webprofiler.token + '/collectors'),
     defaults: {
       name: "default",
       data: [],
