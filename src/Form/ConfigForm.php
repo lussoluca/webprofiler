@@ -135,11 +135,11 @@ class ConfigForm extends ConfigFormBase {
     ];
 
     $form['database']['query_highlight'] = [
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#title' => $this->t('Slow query highlighting'),
       '#description' => $this->t('Enter an integer in milliseconds. Any query which takes longer than this many milliseconds will be highlighted in the query log. This indicates a possibly inefficient query, or a candidate for caching.'),
       '#default_value' => $config->get('query_highlight'),
-      '#size' => 4,
+      '#min' => 0,
     ];
 
     return parent::buildForm($form, $form_state);

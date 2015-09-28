@@ -25,5 +25,5 @@ webprofiler.config:
       type: string
       label: 'Sort query log'
     query_highlight:
-      type: string
+      type: integer
       label: 'Slow query highlighting'
