@@ -30,6 +30,7 @@ class EventPass implements CompilerPassInterface {
     $container->setDefinition('webprofiler.debug.event_dispatcher.default', $definition);
     $container->register('event_dispatcher', 'Drupal\webprofiler\TraceableEventDispatcher')
       ->addArgument(new Reference('webprofiler.debug.event_dispatcher.default'))
-      ->addArgument(new Reference('stopwatch'));
+      ->addArgument(new Reference('stopwatch'))
+      ->setProperty('_serviceId', 'event_dispatcher');
   }
 }
