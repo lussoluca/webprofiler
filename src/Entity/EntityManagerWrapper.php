@@ -140,13 +140,6 @@ class EntityManagerWrapper extends DefaultPluginManager implements EntityManager
   /**
    * {@inheritdoc}
    */
-  public function onBundleRename($bundle, $bundle_new, $entity_type_id) {
-    $this->entityManager->onBundleRename($bundle, $bundle_new, $entity_type_id);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function onBundleDelete($bundle, $entity_type_id) {
     $this->entityManager->onBundleDelete($bundle, $entity_type_id);
   }
