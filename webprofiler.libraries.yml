@@ -36,8 +36,10 @@ dashboard:
       css/app/dashboard.css: {}
   dependencies:
     - core/jquery
+    - core/jquery.once
     - core/drupal
     - core/drupalSettings
+    - core/backbone
 database:
   version: 2.0
   js:
