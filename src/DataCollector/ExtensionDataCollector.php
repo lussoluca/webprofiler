@@ -78,7 +78,7 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    *
    * @return int
    */
-  public function countExtensions() {
+  public function getExtensionsCount() {
     return isset($this->data['drupal_extension']['count']) ? $this->data['drupal_extension']['count'] : 0;
   }
 
@@ -87,7 +87,7 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    *
    * @return int
    */
-  public function countModules() {
+  public function getModulesCount() {
     return count($this->data['drupal_extension']['modules']);
   }
 
@@ -96,7 +96,7 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    *
    * @return int
    */
-  public function countThemes() {
+  public function getThemesCount() {
     return count($this->data['drupal_extension']['themes']);
   }
 
@@ -118,7 +118,7 @@ class ExtensionDataCollector extends DataCollector implements DrupalDataCollecto
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Total: @extensions', ['@extensions' => $this->countExtensions()]);
+    return $this->t('Total: @extensions', ['@extensions' => $this->getExtensionsCount()]);
   }
 
   /**

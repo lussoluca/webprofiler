@@ -85,7 +85,7 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
    *
    * @return int
    */
-  public function countCacheCids($type) {
+  public function getCacheCidsCount($type) {
     return $this->data['total'][$type];
   }
 
@@ -94,8 +94,8 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
    *
    * @return int
    */
-  public function countCacheHits() {
-    return $this->countCacheCids(CacheDataCollector::WEBPROFILER_CACHE_HIT);
+  public function getCacheHitsCount() {
+    return $this->getCacheCidsCount(CacheDataCollector::WEBPROFILER_CACHE_HIT);
   }
 
   /**
@@ -103,8 +103,8 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
    *
    * @return int
    */
-  public function countCacheMisses() {
-    return $this->countCacheCids(CacheDataCollector::WEBPROFILER_CACHE_MISS);
+  public function getCacheMissesCount() {
+    return $this->getCacheCidsCount(CacheDataCollector::WEBPROFILER_CACHE_MISS);
   }
 
   /**

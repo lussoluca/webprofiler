@@ -22,14 +22,14 @@ class EventsDataCollector extends BaseEventDataCollector implements DrupalDataCo
   /**
    * @return int
    */
-  public function countCalledListeners() {
+  public function getCalledListenersCount() {
     return count($this->getCalledListeners());
   }
 
   /**
    * @return int
    */
-  public function countNotCalledListeners() {
+  public function getNotCalledListenersCount() {
     return count($this->getNotCalledListeners());
   }
 

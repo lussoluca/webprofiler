@@ -3,18 +3,18 @@
     <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: 'services'}) }}" title="{{ 'Services'|t }}">
         <img width="20" height="28" alt="{{ 'Services'|t }}"
              src="data:image/png;base64,{{ collector.icon }}"/>
-        <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.countInitializedServices }}</span>
+        <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.getInitializedServicesCount }}</span>
     </a>
     {% endset %}
     {% set text %}
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Initialized'|t }}</b>
-        <span>{{ collector.countInitializedServices }} ({{ collector.countInitializedServicesWithoutWebprofiler }}
+        <span>{{ collector.getInitializedServicesCount }} ({{ collector.getInitializedServicesWithoutWebprofilerCount }}
             )</span>
     </div>
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Available'|t }}</b>
-        <span>{{ collector.countServices }}</span>
+        <span>{{ collector.getServicesCount }}</span>
     </div>
     {% endset %}
 

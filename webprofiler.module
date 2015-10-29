@@ -18,16 +18,13 @@ function webprofiler_theme() {
       'template' => 'Profiler/webprofiler_toolbar',
       'variables' => [
         'token' => NULL,
-        'templates' => [],
-        'profile' => NULL,
+        'toolbar' => NULL,
       ],
     ],
     'webprofiler_panel' => [
       'template' => 'Profiler/webprofiler_panel',
       'variables' => [
-        'template' => [],
-        'token' => NULL,
-        'name' => NULL,
+        'panel' => NULL,
       ],
     ],
     'webprofiler_dashboard' => [

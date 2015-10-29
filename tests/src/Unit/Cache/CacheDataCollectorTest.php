@@ -43,7 +43,7 @@ class CacheDataCollectorTest extends UnitTestCase {
 
     $this->assertFalse($cache);
 
-    $this->assertEquals(1, $this->cacheDataCollector->countCacheMisses());
+    $this->assertEquals(1, $this->cacheDataCollector->getCacheMissesCount());
   }
 
   /**
@@ -63,7 +63,7 @@ class CacheDataCollectorTest extends UnitTestCase {
 
     $this->assertNotNull($cache2);
 
-    $this->assertEquals(1, $this->cacheDataCollector->countCacheHits());
+    $this->assertEquals(1, $this->cacheDataCollector->getCacheHitsCount());
   }
 
 }

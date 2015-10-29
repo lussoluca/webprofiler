@@ -38,7 +38,7 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
    * {@inheritdoc}
    */
   public function collect(Request $request, Response $response, \Exception $exception = NULL) {
-    if ($this->countServices()) {
+    if ($this->getServicesCount()) {
 
       $tracedData = [];
       if ($this->container instanceof TraceableContainer) {
@@ -69,7 +69,7 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
   /**
    * @return int
    */
-  public function countServices() {
+  public function getServicesCount() {
     return count($this->getServices());
   }
 
@@ -85,7 +85,7 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
   /**
    * @return int
    */
-  public function countInitializedServices() {
+  public function getInitializedServicesCount() {
     return count($this->getInitializedServices());
   }
 
@@ -101,7 +101,7 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
   /**
    * @return int
    */
-  public function countInitializedServicesWithoutWebprofiler() {
+  public function getInitializedServicesWithoutWebprofilerCount() {
     return count($this->getInitializedServicesWithoutWebprofiler());
   }
 
@@ -124,7 +124,7 @@ class ServicesDataCollector extends DataCollector implements DrupalDataCollector
    */
   public function getPanelSummary() {
     return $this->t('Initialized: @count', [
-      '@count' => $this->countInitializedServices(),
+      '@count' => $this->getInitializedServicesCount(),
     ]);
   }
 

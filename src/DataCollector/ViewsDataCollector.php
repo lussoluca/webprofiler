@@ -89,7 +89,7 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
   /**
    * @return int
    */
-  public function countViews() {
+  public function getViewsCount() {
     return count($this->data['views']);
   }
 
@@ -111,7 +111,7 @@ class ViewsDataCollector extends DataCollector implements DrupalDataCollectorInt
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Total: @count', ['@count' => $this->countViews()]);
+    return $this->t('Total: @count', ['@count' => $this->getViewsCount()]);
   }
 
   /**

@@ -69,11 +69,19 @@ class ToolbarController extends ControllerBase {
 
     $templates = $this->templateManager->getTemplates($profile);
 
+    $rendered = '';
+    foreach ($templates as $name => $template) {
+      $rendered .= $template->renderBlock('toolbar', [
+        'collector' => $profile->getcollector($name),
+        'token' => $profile->getToken(),
+        'name' => $name
+      ]);
+    }
+
     $toolbar = [
       '#theme' => 'webprofiler_toolbar',
+      '#toolbar' => $rendered,
       '#token' => $profile->getToken(),
-      '#templates' => $templates,
-      '#profile' => $profile,
     ];
 
     return new Response($this->renderer->render($toolbar));

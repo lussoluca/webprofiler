@@ -39,7 +39,7 @@ class ConfigDataCollector extends DataCollector implements DrupalDataCollectorIn
   /**
    * Callback to display the config names.
    */
-  public function configNames() {
+  public function getConfigNames() {
     return $this->data['config_names'];
   }
 

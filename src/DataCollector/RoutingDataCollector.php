@@ -55,7 +55,7 @@ class RoutingDataCollector extends DataCollector implements DrupalDataCollectorI
   /**
    * @return int
    */
-  public function countRoutes() {
+  public function getRoutesCount() {
     return count($this->routing());
   }
 

@@ -4,17 +4,17 @@
        title="{{ 'Extensions'|t }}">
         <img width="20" height="28" alt="{{ 'Extensions'|t }}"
              src="data:image/png;base64,{{ collector.icon }}"/>
-        <span class="sf-toolbar-info-piece-additional sf-toolbar-status{% if 150 < collector.countExtensions %} sf-toolbar-status-yellow{% endif %}">{{ collector.countExtensions }}</span>
+        <span class="sf-toolbar-info-piece-additional sf-toolbar-status{% if 150 < collector.countExtensions %} sf-toolbar-status-yellow{% endif %}">{{ collector.getExtensionsCount }}</span>
     </a>
     {% endset %}
     {% set text %}
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Active Modules'|t }}</b>
-        <span>{{ collector.countModules }}</span>
+        <span>{{ collector.getModulesCount }}</span>
     </div>
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Active Themes'|t }}</b>
-        <span>{{ collector.countThemes }}</span>
+        <span>{{ collector.getThemesCount }}</span>
     </div>
     {% endset %}
 

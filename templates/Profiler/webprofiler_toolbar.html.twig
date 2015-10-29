@@ -23,14 +23,7 @@
 <div id="sfToolbarClearer-{{ token }}" style="clear: both; height: 38px;"></div>
 
 <div id="sfToolbarMainContent-{{ token }}" class="sf-toolbarreset">
-    {% for name, template in templates %}
-        {{ template.renderblock('toolbar', {
-            'collector': profile.getcollector(name),
-            'profiler_url': profiler_url,
-            'token': profile.token,
-            'name': name
-        }) }}
-    {% endfor %}
+    {{ toolbar|raw }}
 
     <a class="hide-button" title="{{ "Close Toolbar"|t }}" onclick="
             var p = this.parentNode;

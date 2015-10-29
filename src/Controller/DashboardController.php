@@ -103,11 +103,14 @@ class DashboardController extends ControllerBase {
       $collector = $profile->getCollector($name);
 
       if ($collector->hasPanel()) {
+        $rendered = $template->renderBlock('panel', [
+          'token' => $profile->getToken(),
+          'name' => $name,
+        ]);
+
         $panels[] = [
           '#theme' => 'webprofiler_panel',
-          '#name' => $name,
-          '#template' => $template,
-          '#token' => $profile->getToken(),
+          '#panel' => $rendered,
         ];
 
         $drupalSettings['webprofiler']['collectors'][] = [

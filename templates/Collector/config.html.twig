@@ -3,13 +3,13 @@
     <a href="{{ url("webprofiler.dashboard", {profile: token}, {fragment: "config"}) }}" title="{{ 'Config'|t }}">
         <img width="20" height="28" alt="{{ 'Config'|t }}"
              src="data:image/png;base64,{{ collector.icon }}"/>
-        <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.confignames|length }}</span>
+        <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ collector.getConfigNames|length }}</span>
     </a>
     {% endset %}
     {% set text %}
     <div class="sf-toolbar-info-piece">
         <b>{{ 'Config get'|t }}</b>
-        <span>{{ collector.confignames|length }}</span>
+        <span>{{ collector.getConfigNames|length }}</span>
     </div>
     {% endset %}
 
