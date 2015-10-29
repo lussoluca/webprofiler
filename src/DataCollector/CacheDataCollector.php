@@ -163,8 +163,8 @@ class CacheDataCollector extends DataCollector implements DrupalDataCollectorInt
    */
   public function getPanelSummary() {
     return $this->t('Hit: @cache_hit, miss: @cache_miss', [
-      '@cache_hit' => $this->countCacheCids(CacheDataCollector::WEBPROFILER_CACHE_HIT),
-      '@cache_miss' => $this->countCacheCids(CacheDataCollector::WEBPROFILER_CACHE_MISS),
+      '@cache_hit' => $this->getCacheCidsCount(CacheDataCollector::WEBPROFILER_CACHE_HIT),
+      '@cache_miss' => $this->getCacheCidsCount(CacheDataCollector::WEBPROFILER_CACHE_MISS),
     ]);
   }
 

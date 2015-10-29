@@ -84,7 +84,7 @@ class RoutingDataCollector extends DataCollector implements DrupalDataCollectorI
    * {@inheritdoc}
    */
   public function getPanelSummary() {
-    return $this->t('Defined routes: @route', ['@route' => $this->countRoutes()]);
+    return $this->t('Defined routes: @route', ['@route' => $this->getRoutesCount()]);
   }
 
   /**
